@@ -19,3 +19,26 @@ We welcome contributions from the community. However, to maintain a consistent a
 - Master Branch: Protected; no direct pushes allowed(Do not push to master!).
 - Feature Branches: For new features and bug fixes, create a new branch from main, named appropriately, e.g., feature/your-feature-name.
 - Pull Requests: Once the feature branch is ready, submit a Pull Request for code review. Your PR should include tests for new functionality, if applicable.
+
+### Available APIs
+##### Sign up API
+- Endpoint: 
+`http://127.0.0.1:8000/onboarding/create-user/`
+- Success response(Sample):
+```json
+{
+    "data": {
+        "username": "dev017",
+        "first_name": "Gbenga",
+        "last_name": "Dev",
+        "email": "test06@myport.ac.uk"
+    }
+}
+```
+- Error Response(Sample):
+```json
+{
+    "code": 400,
+    "message": "'first_name' is missing"
+}
+```
