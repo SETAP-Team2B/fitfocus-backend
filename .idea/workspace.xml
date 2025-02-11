@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="399543b6-549d-4019-87c2-9b6b4d3b86b7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fitfocus/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/fitfocus/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fitfocus/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/fitfocus/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="399543b6-549d-4019-87c2-9b6b4d3b86b7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
