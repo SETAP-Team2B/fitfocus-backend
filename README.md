@@ -42,3 +42,40 @@ We welcome contributions from the community. However, to maintain a consistent a
     "message": "'first_name' is missing"
 }
 ```
+
+#### Login API
+- Endpoint:
+http://127.0.0.1:8000/onboarding/login-user/
+- Request Body :
+```json
+{
+    "username": "dev017",
+    "password": "securepassword123"
+}
+```
+- Success Response:
+```json
+{
+    "data": {
+        "username": "dev017",
+        "first_name": "Gbenga",
+        "last_name": "Dev",
+        "email": "test06@myport.ac.uk",
+        "token": "abc123xyz"
+    }
+}
+```
+- Error Response (Invalid Credentials):
+```json
+{
+    "code": 400,
+    "message": "Invalid username or password"
+}
+```
+- Error Response (Missing Fields):
+```json
+{
+    "code": 400,
+    "message": "'password' is missing"
+}
+```
