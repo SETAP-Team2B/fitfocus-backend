@@ -21,10 +21,10 @@ We welcome contributions from the community. However, to maintain a consistent a
 - Pull Requests: Once the feature branch is ready, submit a Pull Request for code review. Your PR should include tests for new functionality, if applicable.
 
 ### Available APIs
-##### Sign up API
+#### Sign up API
 - Endpoint: 
 `http://127.0.0.1:8000/onboarding/create-user/`
-- Success response(Sample):
+- Success response (Sample):
 ```json
 {
     "data": {
@@ -35,7 +35,7 @@ We welcome contributions from the community. However, to maintain a consistent a
     }
 }
 ```
-- Error Response(Sample):
+- Error Response (Sample):
 ```json
 {
     "code": 400,
@@ -45,8 +45,8 @@ We welcome contributions from the community. However, to maintain a consistent a
 
 #### Login API
 - Endpoint:
-http://127.0.0.1:8000/onboarding/login-user/
-- Request Body :
+`http://127.0.0.1:8000/onboarding/login-user/`
+- Request Body:
 ```json
 {
     "username": "dev017",
@@ -77,5 +77,106 @@ http://127.0.0.1:8000/onboarding/login-user/
 {
     "code": 400,
     "message": "'password' is missing"
+}
+```
+
+#### Generate One-Time Password API
+- Endpoint: 
+`127.0.01:8000/onboarding/generate-otp/`
+- Request Body (Sample 1):
+```json
+{
+    "username": "spearmintage",
+}
+```
+- Request Body (Sample 2):
+```json
+{
+    "email": "test_email@gmail.com",
+}
+```
+- Success Response:
+```json
+{
+    "data": {
+        "user": "spearmintage",
+        "otp": "623688",
+        "created_at": "2025-02-14T01:01:25.681676Z",
+        "expiry_time": "2025-02-14T01:06:25.681676Z"
+    }
+}
+```
+- Error Response (Invalid Username or Invalid Email):
+```json
+{
+    "code": 400,
+    "message": "Could not find User. User matching query does not exist."
+}
+```
+- Error Response (No Username/Password Entered):
+```json
+{
+    "code": 400,
+    "message": "No valid email or username was provided."
+}
+```
+
+
+#### Validate One-Time Password API
+- Endpoint: 
+`127.0.01:8000/onboarding/validate-otp/`
+- Request Body (Sample 1):
+```json
+{
+    "username": "fit_test",
+    "otp": 600100
+}
+```
+- Request Body (Sample 2):
+```json
+{
+    "email": "fitfocusup@gmail.com",
+    "otp": 600100
+}
+```
+- Success Response:
+```json
+{
+    "data": "success"
+}
+```
+- Error Response (Incorrect OTP):
+```json
+{
+    "code": 400,
+    "message": "The OTP is incorrect."
+}
+```
+- Error Response (Expired OTP):
+```json
+{
+    "code": 400,
+    "message": "The OTP has expired. Request a new OTP."
+}
+```
+- Error Response (Invalid Username/Password Entered):
+```json
+{
+    "code": 400,
+    "message": "Could not find User. User matching query does not exist."
+}
+```
+- Error Response (No Username/Password Entered):
+```json
+{
+    "code": 400,
+    "message": "No valid email or username was provided."
+}
+```
+- Error Response (No OTP Entered):
+```json
+{
+    "code": 400,
+    "message": "No OTP was provided."
 }
 ```
