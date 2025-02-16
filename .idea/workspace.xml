@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="97a84aa4-8aa9-4410-af22-7f51508c363f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fitfocus/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/fitfocus/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onboarding/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/strings.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/strings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/testme.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,17 +66,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/utils/strings.py</url>
+          <url>file://$PROJECT_DIR$/utils/validator.py</url>
           <line>28</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/utils/strings.py</url>
+          <url>file://$PROJECT_DIR$/utils/validator.py</url>
           <line>29</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/utils/strings.py</url>
+          <url>file://$PROJECT_DIR$/utils/validator.py</url>
           <line>23</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
