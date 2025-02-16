@@ -225,3 +225,6 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_success("success")
         else:
             return api_error("The OTP is incorrect.")
+        
+
+#hfhsdoh
