@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 
-from utils.strings import Status, Messages
+from utils.validator import Status, Messages
 
 
 def extract_400_error(what: str):
