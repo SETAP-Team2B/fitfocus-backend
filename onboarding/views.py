@@ -23,6 +23,8 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 
+from django.http import HttpRequest
+
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
@@ -62,6 +64,28 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),  # Refresh token (Used to get a new access token)
         'access': str(refresh.access_token),  # Main token used for authentication
     }
+
+# given a request with an email/password, finds the user associated with the account
+# used multiple times by several functions
+# should either return a User object or call an api_error.
+def get_user_by_email_username(request):
+    target_user: User | None = None
+
+    # following if/elif/else statements find the user based on the inputted email/username
+    if "email" in request.data:
+        try:
+            target_user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist as notExistErr:
+            return api_error(f"Could not find User. {notExistErr.__str__()}")
+    elif "username" in request.data:
+        try:
+            target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist as notExistErr:
+            return api_error(f"Could not find User. {notExistErr.__str__()}")
+    else:
+        return api_error("No valid email or username was provided.")
+    
+    return target_user
 
 
 class LoginView(APIView):
@@ -221,7 +245,13 @@ class ValidateOTPView(generics.CreateAPIView):
         if timezone.now() > stored_otp.expiry_time:
             return api_error(f"The OTP has expired. Request a new OTP.")
         
+        # checks if the OTP has already been entered before
+        if stored_otp.verified:
+            return api_error("This OTP has already been entered before.")
+
         if request.data["otp"].strip() == stored_otp.otp:
+            stored_otp.verified = True
+            stored_otp.save()
             return api_success("success")
         else:
             return api_error("The OTP is incorrect.")
