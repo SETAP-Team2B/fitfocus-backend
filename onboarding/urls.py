@@ -8,6 +8,5 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("generate-otp/", views.CreateGetOTPView().as_view()),
     path("validate-otp/", views.ValidateOTPView().as_view()),
-    path("request-password-reset/", views.RequestPasswordResetView().as_view(), name="request-password-reset"),
     path("reset-password/", views.ResetPasswordView().as_view(), name="reset-password"),
 ]

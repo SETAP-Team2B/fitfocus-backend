@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import OTP
-from .models import ForgottenPassword
 
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:

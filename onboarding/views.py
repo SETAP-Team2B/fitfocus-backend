@@ -254,18 +254,8 @@ class ValidateOTPView(generics.CreateAPIView):
         else:
             return api_error("The OTP is incorrect.")
         
-class RequestPasswordResetView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
-
-    def post(self, request, *args, **kwargs):
-        new_request = request.POST.copy()
-        target_user = get_user_by_email_username(request)
-        
-        new_request.update({'email': target_user.email})
-
-        CreateGetOTPView.post(self, new_request)
-        
 class ResetPasswordView(generics.CreateAPIView):
+    serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
         target_user = get_user_by_email_username(request)
