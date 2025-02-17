@@ -23,8 +23,6 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 
-from django.http import HttpRequest
-
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
