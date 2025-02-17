@@ -187,6 +187,7 @@ class CreateGetOTPView(generics.CreateAPIView):
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
             new_otp.expiry_time = new_otp.created_at + timezone.timedelta(minutes=5)
+            new_otp.verified = False
 
             # MAKE SURE TO SAVE WHEN UPDATING. 15 minutes of bugfixing to find out objects dont save without this lol
             new_otp.save()
@@ -198,6 +199,7 @@ class CreateGetOTPView(generics.CreateAPIView):
                 "otp": new_otp.otp,
                 "created_at": new_otp.created_at,
                 "expiry_time": new_otp.expiry_time,
+                "verified": new_otp.verified
             })
         except smtplib.SMTPException as smtpErr:
             return api_error(f"Email failed to send: {smtpErr.__str__()}")
@@ -242,12 +244,11 @@ class ValidateOTPView(generics.CreateAPIView):
         # checks if the OTP has passed expiry
         if timezone.now() > stored_otp.expiry_time:
             return api_error(f"The OTP has expired. Request a new OTP.")
-        
-        # checks if the OTP has already been entered before
-        if stored_otp.verified:
-            return api_error("This OTP has already been entered before.")
 
         if request.data["otp"].strip() == stored_otp.otp:
+            # checks if the OTP has already been entered before
+            if stored_otp.verified: return api_error("This OTP has already been entered before.")
+
             stored_otp.verified = True
             stored_otp.save()
             return api_success("success")
