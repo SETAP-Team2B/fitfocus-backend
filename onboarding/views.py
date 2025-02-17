@@ -14,7 +14,7 @@ import json
 
 from django.contrib.auth.models import User
 from .models import OTP
-from .serializers import CreateUserSerializer, CreateOTPSerializer
+from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateNewPasswordSerializer
 
 from random import randint
 import smtplib
@@ -22,6 +22,8 @@ from email.mime.multipart import MIMEMultipart # for easy segregation of email s
 from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
+
+from utils.validator import check_password
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
@@ -226,5 +228,58 @@ class ValidateOTPView(generics.CreateAPIView):
         else:
             return api_error("The OTP is incorrect.")
         
+class ForgottenPasswordView(generics.CreateAPIView):
+    serializer_class = CreateUserSerializer
 
-#hfhsdoh
+
+    def request_password_reset(self, request):
+        target_username = request.data.get('username')
+        target_email = request.data.get('email')
+
+        if target_username in request.data:
+            try:
+                if validate_username(target_username):
+                    target_user_email = User.objects.get(username=request.data['username']).email
+            except User.DoesNotExist as notExistErr:
+                return api_error(f"Could not find Username. {notExistErr.__str__()}")
+
+        else:
+            if target_email in request.data:
+                try:
+                    if validate_email(target_email):
+                        target_user_email = target_email
+                except User.DoesNotExist as notExistErr:
+                    return api_error(f"Could not find email. {notExistErr.__str__()}")
+        
+        #need to send target_user_email into CreateGetOTPView
+
+        new_request = request.POST.copy()
+        new_request.update({'email', target_user_email})
+        
+        CreateGetOTPView.post(self, new_request)
+        ForgottenPasswordView.reset_password(self, new_request)
+
+    
+    def reset_password(self, request):
+            if ValidateOTPView.post(self, request) == api_success("success"):
+                try:
+                    new_password = request.data.get('password')
+                    confirm_password = request.data.get('confirm_password')
+
+                    if new_password or confirm_password == "":
+                        return api_error(f"Password is blank. ")
+
+                    if new_password != confirm_password:
+                        return api_error(f"Passwords do not match: ")
+                    
+                    if check_password(new_password):
+                        User.objects.update(password=new_password)
+                    
+                    else:
+                        return api_error(f"Invalid Password: ")
+                    
+                    return api_success("Password Successfully Changed")
+                    
+
+                except OTP.DoesNotExist as otpExistErr:
+                    return api_error(f"OTP does not match. ")
