@@ -23,8 +23,6 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 
-from django.http import HttpRequest
-
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
@@ -255,3 +253,50 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_success("success")
         else:
             return api_error("The OTP is incorrect.")
+        
+class RequestPasswordResetView(generics.CreateAPIView):
+    serializer_class = CreateUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        new_request = request.POST.copy()
+        target_user = get_user_by_email_username(request)
+        
+        new_request.update({'email': target_user.email})
+
+        CreateGetOTPView.post(self, new_request)
+        
+class ResetPasswordView(generics.CreateAPIView):
+
+    def post(self, request, *args, **kwargs):
+        target_user = get_user_by_email_username(request)
+
+        # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
+        valid_otp = (OTP.objects.get(user=target_user).verified)
+        ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
+
+        if valid_otp:
+            new_password = ""
+            confirm_password = ""
+            
+            if 'new_password' in request.data:
+                new_password = request.data['new_password']
+            else:
+                return api_error("No password entered.")
+            
+            if 'confirm_password' in request.data:
+                new_password = request.data['confirm_password']
+            else:
+                return api_error("No password confirmation entered.")
+
+            if new_password != confirm_password:
+                return api_error("Passwords do not match.")
+            
+            if check_password(new_password):
+                target_user.set_password(new_password)
+                target_user.save()
+            else:
+                return api_error("Invalid password.")
+            
+            return api_success("Password Successfully Changed")
+        else:
+            return api_error("OTP has not been verified. Validate OTP or request")
