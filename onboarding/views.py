@@ -265,8 +265,8 @@ class ResetPasswordView(generics.CreateAPIView):
         ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
 
         if valid_otp:
-            new_password = ""
-            confirm_password = ""
+            new_password: str = ""
+            confirm_password: str = ""
             
             if 'new_password' in request.data:
                 new_password = request.data['new_password']
@@ -274,7 +274,7 @@ class ResetPasswordView(generics.CreateAPIView):
                 return api_error("No password entered.")
             
             if 'confirm_password' in request.data:
-                new_password = request.data['confirm_password']
+                confirm_password = request.data['confirm_password']
             else:
                 return api_error("No password confirmation entered.")
 
@@ -282,7 +282,7 @@ class ResetPasswordView(generics.CreateAPIView):
                 return api_error("Passwords do not match.")
             
             if check_password(new_password):
-                target_user.set_password(new_password)
+                target_user.password = new_password
                 target_user.save()
             else:
                 return api_error("Invalid password.")
