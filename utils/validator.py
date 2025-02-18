@@ -21,7 +21,7 @@ def validate_email(email: str):
     is_valid = False
     if at not in email or dot not in email:
         return is_valid
-    email_segments = email.strip().split(at)
+    email_segments = email.strip().lower().split(at)
     if len(email_segments) == 2:
         # email_segments[0][0].isalpha() and email_segments[0].isalnum()
         if validate_username(email_segments[0]):
@@ -50,3 +50,7 @@ def check_password(password: str):
     else:
         raise WeakPasswordError
 
+
+if __name__ == '__main__':
+    print(validate_email("michaelgbenga91@gmailcom"))
+    print(validate_username("dev023"))
