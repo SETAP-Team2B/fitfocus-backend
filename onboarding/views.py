@@ -259,7 +259,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
 
-        if "username" in request.data:
+        if "username" in request.data: #Checks if user entered email or password
             try:
                 target_user = User.objects.get(username=request.data["username"])
             except User.DoesNotExist as notExistErr:
