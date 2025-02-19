@@ -24,10 +24,10 @@ def validate_email(email: str):
     email_segments = email.strip().lower().split(at)
     if len(email_segments) == 2:
         # email_segments[0][0].isalpha() and email_segments[0].isalnum()
-        if validate_username(email_segments[0]):
+        if email_segments[0][0].isalpha():
             # start of email should not be a digit
             domain_seg = email_segments[1].split(dot)
-            is_valid = len(domain_seg) == 2 and domain_seg[0].isalpha() and domain_seg[1].isalpha()
+            is_valid = (1 < len(domain_seg) < 4) and domain_seg[0].isalpha() and domain_seg[1].isalpha()
     return is_valid
 
 
@@ -50,7 +50,3 @@ def check_password(password: str):
     else:
         raise WeakPasswordError
 
-
-if __name__ == '__main__':
-    print(validate_email("michaelgbenga91@gmailcom"))
-    print(validate_username("dev023"))

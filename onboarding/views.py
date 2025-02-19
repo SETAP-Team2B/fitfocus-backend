@@ -22,6 +22,7 @@ from email.mime.multipart import MIMEMultipart  # for easy segregation of email 
 from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
+from .acct_type import AccountType
 
 
 # Create your views here.
@@ -29,9 +30,9 @@ class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        if validate_email(request.data['email']) \
-                and validate_username(request.data['username']):
-            try:
+        try:
+            if validate_email(request.data['email']) \
+                    and validate_username(request.data['username']):
                 first_name = check_name(request.data['first_name'])
                 last_name = check_name(request.data['last_name'])
                 user = User.objects.create_user(email=request.data['email'],
@@ -39,23 +40,24 @@ class CreateAccountView(generics.CreateAPIView):
                                                 username=request.data['username'])
                 user.first_name = first_name
                 user.last_name = last_name
-                user.acct_type = "unverified"
+                user.acct_type = AccountType.unverify
                 user.save()
 
                 return api_success({
                     "username": user.username,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
-                    "email": user.email
+                    "email": user.email,
+                    "acct_type": user.acct_type
                 })
-            except IntegrityError:
-                return api_error("Username already exist. Please try again")
-            except KeyError as keyErr:
-                return api_error('{} is missing'.format(keyErr.__str__()))
-            except (WeakPasswordError, InvalidNameException) as error:
-                return api_error(error.__str__())
-        else:
-            return api_error("Invalid email or username")
+            else:
+                return api_error("Invalid email or username")
+        except IntegrityError:
+            return api_error("Username already exist. Please try again")
+        except KeyError as keyErr:
+            return api_error('{} is missing'.format(keyErr.__str__()))
+        except (WeakPasswordError, InvalidNameException) as error:
+            return api_error(error.__str__())
 
 
 def get_tokens_for_user(user):
