@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3c0d7c8-8488-433b-bec2-3d75f5955b75" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Fitfocus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fitfocus.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fitfocus/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/fitfocus/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/onboarding/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/onboarding/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/validator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

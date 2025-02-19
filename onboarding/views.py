@@ -30,6 +30,8 @@ class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
+        if type(request.data) is not dict:
+            return api_error("Invalid request type")
         try:
             if validate_email(request.data['email']) \
                     and validate_username(request.data['username']):
