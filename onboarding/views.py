@@ -75,7 +75,7 @@ def get_user_by_email_username(request):
             target_user = User.objects.get(email=request.data["email"])
         except User.DoesNotExist as notExistErr:
             return api_error(f"Could not find User. {notExistErr.__str__()}")
-    elif "username" in request.data:
+    elif "username" in request.data:        
         try:
             target_user = User.objects.get(username=request.data["username"])
         except User.DoesNotExist as notExistErr:
@@ -258,13 +258,26 @@ class ResetPasswordView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        target_user = get_user_by_email_username(request)
+
+        if "username" in request.data:
+            if validate_username("username"):
+                target_user = get_user_by_email_username(request)
+            else:
+                return api_error("Invalid Username")
+
+        elif "email" in request.data:
+            if not validate_email("email"):
+                return api_error("Invalid Email")
+
 
         # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
         valid_otp = (OTP.objects.get(user=target_user).verified)
         ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
 
+
+
         if valid_otp:
+                       
             new_password: str = ""
             confirm_password: str = ""
             
