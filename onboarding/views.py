@@ -260,14 +260,27 @@ class ResetPasswordView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
 
         if "username" in request.data:
+            try:
+                target_user = User.objects.get(username=request.data["username"])
+            except User.DoesNotExist as notExistErr:
+                return api_error(f"Could not find User. {notExistErr.__str__()}")
+
             if validate_username("username"):
                 target_user = get_user_by_email_username(request)
             else:
                 return api_error("Invalid Username")
 
         elif "email" in request.data:
+            try:
+                target_user = User.objects.get(email=request.data["email"])
+            except User.DoesNotExist as notExistErr:
+                return api_error(f"Could not find User. {notExistErr.__str__()}")
+            
             if not validate_email("email"):
                 return api_error("Invalid Email")
+        
+        else:
+            return api_error("No email/username entered")
 
 
         # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
