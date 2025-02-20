@@ -58,7 +58,7 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error("Username already exist. Please try again")
         except KeyError as keyErr:
             return api_error('{} is missing'.format(keyErr.__str__()))
-        except (WeakPasswordError, InvalidNameException) as error:
+        except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
 
 

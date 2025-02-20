@@ -32,6 +32,8 @@ def validate_email(email: str):
 
 
 def validate_username(username: str):
+    if len(username) < 1:
+        return False
     return username[0].isalpha() and username.isalnum()
 
 
