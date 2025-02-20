@@ -7,5 +7,6 @@ urlpatterns = [
     path("login-user/", views.LoginView.as_view(), name="login-user"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("generate-otp/", views.CreateGetOTPView().as_view(), name="generate-otp"),
-    path("validate-otp/", views.ValidateOTPView().as_view(), name="validate-otp")
+    path("validate-otp/", views.ValidateOTPView().as_view(), name="validate-otp"),
+    path("reset-password/", views.ResetPasswordView().as_view(), name="reset-password"),
 ]

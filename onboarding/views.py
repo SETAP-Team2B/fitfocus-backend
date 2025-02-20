@@ -81,7 +81,7 @@ def get_user_by_email_username(request):
             target_user = User.objects.get(email=request.data["email"])
         except User.DoesNotExist as notExistErr:
             return api_error(f"Could not find User. {notExistErr.__str__()}")
-    elif "username" in request.data:
+    elif "username" in request.data:        
         try:
             target_user = User.objects.get(username=request.data["username"])
         except User.DoesNotExist as notExistErr:
@@ -264,3 +264,66 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_success("success")
         else:
             return api_error("The OTP is incorrect.")
+        
+class ResetPasswordView(generics.CreateAPIView):
+    serializer_class = CreateUserSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        if "username" in request.data: #Checks if user entered email or password
+            try:
+                target_user = User.objects.get(username=request.data["username"])
+            except User.DoesNotExist as notExistErr:
+                return api_error(f"Could not find User. {notExistErr.__str__()}")
+
+            if validate_username("username"):
+                target_user = get_user_by_email_username(request)
+            else:
+                return api_error("Invalid Username")
+
+        elif "email" in request.data:
+            try:
+                target_user = User.objects.get(email=request.data["email"])
+            except User.DoesNotExist as notExistErr:
+                return api_error(f"Could not find User. {notExistErr.__str__()}")
+            
+            if not validate_email("email"):
+                return api_error("Invalid Email")
+        
+        else:
+            return api_error("No email/username entered")
+
+
+        # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
+        valid_otp = (OTP.objects.get(user=target_user).verified)
+        ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
+
+
+
+        if valid_otp:
+                       
+            new_password: str = ""
+            confirm_password: str = ""
+            
+            if 'new_password' in request.data:
+                new_password = request.data['new_password']
+            else:
+                return api_error("No password entered.")
+            
+            if 'confirm_password' in request.data:
+                confirm_password = request.data['confirm_password']
+            else:
+                return api_error("No password confirmation entered.")
+
+            if new_password != confirm_password:
+                return api_error("Passwords do not match.")
+            
+            if check_password(new_password):
+                target_user.password = new_password
+                target_user.save()
+            else:
+                return api_error("Invalid password.")
+            
+            return api_success("Password Successfully Changed")
+        else:
+            return api_error("OTP has not been verified. Validate OTP or request")
