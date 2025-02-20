@@ -21,19 +21,17 @@ def validate_email(email: str):
     is_valid = False
     if at not in email or dot not in email:
         return is_valid
-    email_segments = email.strip().lower().split(at)
+    email_segments = email.strip().split(at)
     if len(email_segments) == 2:
         # email_segments[0][0].isalpha() and email_segments[0].isalnum()
-        if email_segments[0][0].isalpha():
+        if validate_username(email_segments[0]):
             # start of email should not be a digit
             domain_seg = email_segments[1].split(dot)
-            is_valid = (1 < len(domain_seg) < 4) and domain_seg[0].isalpha() and domain_seg[1].isalpha()
+            is_valid = len(domain_seg) == 2 and domain_seg[0].isalpha() and domain_seg[1].isalpha()
     return is_valid
 
 
 def validate_username(username: str):
-    if len(username) < 1:
-        return False
     return username[0].isalpha() and username.isalnum()
 
 
