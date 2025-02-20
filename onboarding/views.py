@@ -18,19 +18,23 @@ from .serializers import CreateUserSerializer, CreateOTPSerializer
 
 from random import randint
 import smtplib
-from email.mime.multipart import MIMEMultipart # for easy segregation of email sections
+from email.mime.multipart import MIMEMultipart  # for easy segregation of email sections
 from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
+from .acct_type import AccountType
+
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        if validate_email(request.data['email']) \
-                and validate_username(request.data['username']):
-            try:
+        if type(request.data) is not dict:
+            return api_error("Invalid request type")
+        try:
+            if validate_email(request.data['email']) \
+                    and validate_username(request.data['username']):
                 first_name = check_name(request.data['first_name'])
                 last_name = check_name(request.data['last_name'])
                 user = User.objects.create_user(email=request.data['email'],
@@ -38,22 +42,24 @@ class CreateAccountView(generics.CreateAPIView):
                                                 username=request.data['username'])
                 user.first_name = first_name
                 user.last_name = last_name
+                user.acct_type = AccountType.unverify
                 user.save()
 
                 return api_success({
                     "username": user.username,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
-                    "email": user.email
+                    "email": user.email,
+                    "acct_type": user.acct_type
                 })
-            except IntegrityError:
-                return api_error("Username already exist. Please try again")
-            except KeyError as keyErr:
-                return api_error('{} is missing'.format(keyErr.__str__()))
-            except (WeakPasswordError, InvalidNameException) as error:
-                return api_error(error.__str__())
-        else:
-            return api_error("Invalid email or username")
+            else:
+                return api_error("Invalid email or username")
+        except IntegrityError:
+            return api_error("Username already exist. Please try again")
+        except KeyError as keyErr:
+            return api_error('{} is missing'.format(keyErr.__str__()))
+        except (WeakPasswordError, InvalidNameException, TypeError) as error:
+            return api_error(error.__str__())
 
 
 def get_tokens_for_user(user):
@@ -107,9 +113,10 @@ class LoginView(APIView):
             })
         return api_error("Invalid username or password")
 
+
 class CreateGetOTPView(generics.CreateAPIView):
     serializer_class = CreateOTPSerializer
-        
+
     # function which uses the OTP model
 
     # input should be:
@@ -138,7 +145,7 @@ class CreateGetOTPView(generics.CreateAPIView):
             return api_error("No valid email or username was provided.")
 
         # generates OTP and send to user, contains 6 digits from 0-9
-        otp = (f"{randint(0,999999):06d}" if custom_otp == None else custom_otp)
+        otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
 
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
@@ -156,18 +163,20 @@ class CreateGetOTPView(generics.CreateAPIView):
             message["To"] = target_user.email
             message["From"] = SENDER_EMAIL
             message["Subject"] = "Your FitFocus One-Time Password"
-            messageText = MIMEText(f"Your FitFocus OTP is {otp}.<br>This OTP will expire within 5 minutes.<br>Should you require a new OTP, request another one.", "html")
+            messageText = MIMEText(
+                f"Your FitFocus OTP is {otp}.<br>This OTP will expire within 5 minutes.<br>Should you require a new OTP, request another one.",
+                "html")
             message.attach(messageText)
-            
+
             notes_text = "Email successfully sent. Don\'t see it? Be sure to check spam folders."
 
             # Send the email and close the server
             smtpserver.sendmail(
-                from_addr = SENDER_EMAIL, 
-                to_addrs = target_user.email, 
-                msg = message.as_string()
+                from_addr=SENDER_EMAIL,
+                to_addrs=target_user.email,
+                msg=message.as_string()
             )
-            smtpserver.close() 
+            smtpserver.close()
 
             # create/update the existing OTP in the OTP table
             # created_at and expiry_time SHOULD automatically update
@@ -177,16 +186,17 @@ class CreateGetOTPView(generics.CreateAPIView):
             new_otp: OTP | None = None
             try:
                 new_otp = OTP.objects.get(
-                    user = target_user
+                    user=target_user
                 )
             except OTP.DoesNotExist:
                 new_otp = OTP.objects.create(
-                    user = target_user
+                    user=target_user
                 )
 
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
             new_otp.expiry_time = new_otp.created_at + timezone.timedelta(minutes=5)
+            new_otp.verified = False
 
             # MAKE SURE TO SAVE WHEN UPDATING. 15 minutes of bugfixing to find out objects dont save without this lol
             new_otp.save()
@@ -198,10 +208,12 @@ class CreateGetOTPView(generics.CreateAPIView):
                 "otp": new_otp.otp,
                 "created_at": new_otp.created_at,
                 "expiry_time": new_otp.expiry_time,
+                "verified": new_otp.verified
             })
         except smtplib.SMTPException as smtpErr:
             return api_error(f"Email failed to send: {smtpErr.__str__()}")
-        
+
+
 class ValidateOTPView(generics.CreateAPIView):
     serializer_class = CreateOTPSerializer
 
@@ -231,23 +243,22 @@ class ValidateOTPView(generics.CreateAPIView):
                 return api_error(f"Could not find User. {notExistErr.__str__()}")
         else:
             return api_error("No valid email or username was provided.")
-        
+
         # determines if an OTP was included
         if "otp" not in request.data:
             return api_error("No OTP was provided.")
-        
+
         # gathers the OTP data for the user
-        stored_otp = OTP.objects.get(user = target_user)
-        
+        stored_otp = OTP.objects.get(user=target_user)
+
         # checks if the OTP has passed expiry
         if timezone.now() > stored_otp.expiry_time:
             return api_error(f"The OTP has expired. Request a new OTP.")
-        
-        # checks if the OTP has already been entered before
-        if stored_otp.verified:
-            return api_error("This OTP has already been entered before.")
 
         if request.data["otp"].strip() == stored_otp.otp:
+            # checks if the OTP has already been entered before
+            if stored_otp.verified: return api_error("This OTP has already been entered before.")
+
             stored_otp.verified = True
             stored_otp.save()
             return api_success("success")

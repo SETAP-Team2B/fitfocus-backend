@@ -42,7 +42,6 @@ We welcome contributions from the community. However, to maintain a consistent a
     "message": "'first_name' is missing"
 }
 ```
-<<<<<<< HEAD
 
 #### Login API
 - Endpoint:
@@ -181,7 +180,6 @@ We welcome contributions from the community. However, to maintain a consistent a
     "message": "No OTP was provided."
 }
 ```
-||||||| 978e2ec
 
 #### Login API
 - Endpoint:
@@ -318,5 +316,12 @@ We welcome contributions from the community. However, to maintain a consistent a
 {
     "code": 400,
     "message": "No OTP was provided."
+}
+```
+- Error Response (Entering an already validated OTP):
+```json
+{
+    "code": 400,
+    "message": "This OTP has already been entered before."
 }
 ```
