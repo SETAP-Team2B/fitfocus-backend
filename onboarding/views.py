@@ -149,8 +149,8 @@ class CreateGetOTPView(generics.CreateAPIView):
 
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
-            SENDER_EMAIL = 'fitfocusup@gmail.com'  # The email you setup to send the email using app password
-            SENDER_EMAIL_APP_PASSWORD = 'ywhq vvqt fqri jvbb'  # The app password you generated
+            SENDER_EMAIL = 'fitfocus.noreply@gmail.com'  # The email you setup to send the email using app password
+            SENDER_EMAIL_APP_PASSWORD = 'aert jobp cwip goyr'  # The app password you generated
 
             # Construct SMTP server
             smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
