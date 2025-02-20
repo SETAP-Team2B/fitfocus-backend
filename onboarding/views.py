@@ -69,6 +69,28 @@ def get_tokens_for_user(user):
         'access': str(refresh.access_token),  # Main token used for authentication
     }
 
+# given a request with an email/password, finds the user associated with the account
+# used multiple times by several functions
+# should either return a User object or call an api_error.
+def get_user_by_email_username(request):
+    target_user: User | None = None
+
+    # following if/elif/else statements find the user based on the inputted email/username
+    if "email" in request.data:
+        try:
+            target_user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist as notExistErr:
+            return api_error(f"Could not find User. {notExistErr.__str__()}")
+    elif "username" in request.data:
+        try:
+            target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist as notExistErr:
+            return api_error(f"Could not find User. {notExistErr.__str__()}")
+    else:
+        return api_error("No valid email or username was provided.")
+    
+    return target_user
+
 
 class LoginView(APIView):
     def post(self, request):
@@ -174,6 +196,7 @@ class CreateGetOTPView(generics.CreateAPIView):
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
             new_otp.expiry_time = new_otp.created_at + timezone.timedelta(minutes=5)
+            new_otp.verified = False
 
             # MAKE SURE TO SAVE WHEN UPDATING. 15 minutes of bugfixing to find out objects dont save without this lol
             new_otp.save()
@@ -185,6 +208,7 @@ class CreateGetOTPView(generics.CreateAPIView):
                 "otp": new_otp.otp,
                 "created_at": new_otp.created_at,
                 "expiry_time": new_otp.expiry_time,
+                "verified": new_otp.verified
             })
         except smtplib.SMTPException as smtpErr:
             return api_error(f"Email failed to send: {smtpErr.__str__()}")
@@ -232,6 +256,11 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_error(f"The OTP has expired. Request a new OTP.")
 
         if request.data["otp"].strip() == stored_otp.otp:
+            # checks if the OTP has already been entered before
+            if stored_otp.verified: return api_error("This OTP has already been entered before.")
+
+            stored_otp.verified = True
+            stored_otp.save()
             return api_success("success")
         else:
             return api_error("The OTP is incorrect.")
