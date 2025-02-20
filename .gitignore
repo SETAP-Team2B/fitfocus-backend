@@ -1,5 +1,5 @@
-myvenv
-env
-.idea
+myvenv/
+env/
+.idea/
 utils/secrets.py
 **/__pycache__/
