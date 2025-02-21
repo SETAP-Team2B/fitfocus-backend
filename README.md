@@ -180,3 +180,86 @@ We welcome contributions from the community. However, to maintain a consistent a
     "message": "No OTP was provided."
 }
 ```
+
+
+#### Reset Password API
+- Endpoint: 
+`127.0.01:8000/onboarding/reset-password/`
+- Request Body (Sample 1):
+```json
+{
+    "username": "fit_test",
+    "new_password": "Password123!",
+    "confirm_password": "Password123!"
+}
+```
+- Request Body (Sample 2):
+```json
+{
+    "email": "fitfocus_email_test@gmail.com",
+    "new_password": "Password123!",
+    "confirm_password": "Password123!"
+}
+```
+- Success Response:
+```json
+{
+    "data": "Password Successfully Changed"
+}
+```
+- Error Response (User Not Found):
+```json
+{
+    "code": 400,
+    "message": "Could not find User. User matching query does not exist."
+}
+```
+- Error Response (No Email/Username Entered):
+```json
+{
+    "code": 400,
+    "message": "No email/username entered"
+}
+```
+- Error Response (No Password Entered):
+```json
+{
+    "code": 400,
+    "message": "No password entered."
+}
+```
+- Error Response (No Confirmation Password Entered):
+```json
+{
+    "code": 400,
+    "message": "No password confirmation entered."
+}
+```
+- Error Response (Passwords Do Not Match):
+```json
+{
+    "code": 400,
+    "message": "Passwords do not match."
+}
+```
+- Error Response (Password = Current Password):
+```json
+{
+    "code": 400,
+    "message": "Cannot set new password to current password."
+}
+```
+- Error Response (Password Not Strong Enough):
+```json
+{
+    "code": 400,
+    "message": "New password is too weak."
+}
+```
+- Error Response (User Not Validated):
+```json
+{
+    "code": 400,
+    "message": "OTP has not been verified. Validate OTP or request"
+}
+```
