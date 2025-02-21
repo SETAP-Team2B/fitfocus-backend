@@ -114,7 +114,7 @@ class LoginView(APIView):
         return api_error("Invalid username or password")
 
 
-class CreateGetOTPView(generics.CreateAPIView):
+class GenerateOTPView(generics.CreateAPIView):
     serializer_class = CreateOTPSerializer
 
     # function which uses the OTP model
@@ -150,7 +150,7 @@ class CreateGetOTPView(generics.CreateAPIView):
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
             SENDER_EMAIL = 'fitfocus.noreply@gmail.com'  # The email you setup to send the email using app password
-            SENDER_EMAIL_APP_PASSWORD = 'aert jobp cwip goyr'  # The app password you generated
+            SENDER_EMAIL_APP_PASSWORD = 'akuy mdii dbdg empt'  # The app password you generated
 
             # Construct SMTP server
             smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -185,13 +185,14 @@ class CreateGetOTPView(generics.CreateAPIView):
 
             new_otp: OTP | None = None
             try:
-                new_otp = OTP.objects.get(
-                    user=target_user
-                )
+                new_otp = OTP.objects.get(user=target_user)
             except OTP.DoesNotExist:
-                new_otp = OTP.objects.create(
-                    user=target_user
-                )
+                new_otp = OTP.objects.create(user=target_user)
+            except OTP.MultipleObjectsReturned:
+                # if there are somehow multiple instances of an OTP for a specific user
+                # simplest option is to cull all existing entries and create a new one
+                OTP.objects.get(user=target_user).delete()
+                new_otp = OTP.objects.create(user=target_user)
 
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
@@ -318,12 +319,15 @@ class ResetPasswordView(generics.CreateAPIView):
             if new_password != confirm_password:
                 return api_error("Passwords do not match.")
             
-            if check_password(new_password):
-                target_user.password = new_password
-                target_user.save()
-            else:
-                return api_error("Invalid password.")
+            if new_password == target_user.password:
+                return api_error("Cannot set new password to current password.")
             
-            return api_success("Password Successfully Changed")
+            try:
+                target_user.password = check_password(new_password)
+                target_user.save()
+                return api_success("Password Successfully Changed")
+            except WeakPasswordError:
+                return api_error("New password is too weak.")
+            
         else:
             return api_error("OTP has not been verified. Validate OTP or request")
