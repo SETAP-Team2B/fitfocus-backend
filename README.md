@@ -42,7 +42,6 @@ We welcome contributions from the community. However, to maintain a consistent a
     "message": "'first_name' is missing"
 }
 ```
-<<<<<<< HEAD
 
 #### Login API
 - Endpoint:
