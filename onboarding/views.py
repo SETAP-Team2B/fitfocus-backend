@@ -150,7 +150,8 @@ class GenerateOTPView(generics.CreateAPIView):
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
             SENDER_EMAIL = 'fitfocus.noreply@gmail.com'  # The email you setup to send the email using app password
-            SENDER_EMAIL_APP_PASSWORD = 'akuy mdii dbdg empt'  # The app password you generated
+            SENDER_EMAIL_APP_PASSWORD = 'akuymdiidbdgempt'  # The app password you generated
+            EMAIL_USE_TLS = True
 
             # Construct SMTP server
             smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
