@@ -134,15 +134,15 @@ class GenerateOTPView(generics.CreateAPIView):
         if "username" in request.data:
             try:
                 target_user = User.objects.get(username=request.data['username'])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
+            except User.DoesNotExist:
+                return api_error(f"Could not find user.")
         elif "email" in request.data:
             try:
                 target_user = User.objects.get(email=request.data['email'])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
+            except User.DoesNotExist:
+                return api_error(f"Could not find user.")
         else:
-            return api_error("No valid email or username was provided.")
+            return api_error("No email or username was provided.")
 
         # generates OTP and send to user, contains 6 digits from 0-9
         otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
@@ -151,7 +151,6 @@ class GenerateOTPView(generics.CreateAPIView):
             # REMOVE FROM GITHUB IF POSSIBLE
             SENDER_EMAIL = 'fitfocus.noreply@gmail.com'  # The email you setup to send the email using app password
             SENDER_EMAIL_APP_PASSWORD = 'akuymdiidbdgempt'  # The app password you generated
-            EMAIL_USE_TLS = True
 
             # Construct SMTP server
             smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -295,40 +294,32 @@ class ResetPasswordView(generics.CreateAPIView):
         else:
             return api_error("No email/username entered")
 
-
-        # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
-        valid_otp = (OTP.objects.get(user=target_user).verified)
-        ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
-
-
-
-        if valid_otp:
-                       
-            new_password: str = ""
-            confirm_password: str = ""
-            
-            if 'new_password' in request.data:
-                new_password = request.data['new_password']
-            else:
-                return api_error("No password entered.")
-            
-            if 'confirm_password' in request.data:
-                confirm_password = request.data['confirm_password']
-            else:
-                return api_error("No password confirmation entered.")
-
-            if new_password != confirm_password:
-                return api_error("Passwords do not match.")
-            
-            if new_password == target_user.password:
-                return api_error("Cannot set new password to current password.")
-            
-            try:
-                target_user.password = check_password(new_password)
-                target_user.save()
-                return api_success("Password Successfully Changed")
-            except WeakPasswordError:
-                return api_error("New password is too weak.")
-            
-        else:
+        # checks if the user has verified their OTP before continuing
+        if not (OTP.objects.get(user=target_user).objects.first().verified):
             return api_error("OTP has not been verified. Validate OTP or request")
+                       
+        new_password = ""
+        confirm_password = ""
+        
+        if 'new_password' in request.data:
+            new_password = request.data['new_password']
+        else:
+            return api_error("No password entered.")
+        
+        if 'confirm_password' in request.data:
+            confirm_password = request.data['confirm_password']
+        else:
+            return api_error("No password confirmation entered.")
+
+        if new_password != confirm_password:
+            return api_error("Passwords do not match.")
+        
+        if new_password == target_user.password:
+            return api_error("Cannot set new password to current password.")
+        
+        try:
+            target_user.password = check_password(new_password)
+            target_user.save()
+            return api_success("Password Successfully Changed")
+        except WeakPasswordError:
+            return api_error("New password is too weak.")
