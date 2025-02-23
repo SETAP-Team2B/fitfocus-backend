@@ -240,7 +240,7 @@ class ResetPasswordView(generics.CreateAPIView):
         target_user: User | None = get_user_by_email_username(request)
 
         # checks if the user has verified their OTP before continuing
-        if not (OTP.objects.get(user=target_user).objects.first().verified):
+        if not (OTP.objects.get(user=target_user).verified):
             return api_error("OTP not verified. Validate or request another.")
                        
         new_password = ""
