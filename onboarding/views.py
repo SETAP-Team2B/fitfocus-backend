@@ -31,7 +31,7 @@ class CreateAccountView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
-            return api_error("Invalid request type")
+            return api_error("Invalid request type.")
         try:
             if validate_email(request.data['email']) \
                     and validate_username(request.data['username']):
@@ -53,11 +53,11 @@ class CreateAccountView(generics.CreateAPIView):
                     "acct_type": user.acct_type
                 })
             else:
-                return api_error("Invalid email or username")
+                return api_error("Invalid email or username.")
         except IntegrityError:
-            return api_error("Username already exist. Please try again")
+            return api_error("Username already exists. Please try again.")
         except KeyError as keyErr:
-            return api_error('{} is missing'.format(keyErr.__str__()))
+            return api_error('{} is missing.'.format(keyErr.__str__()))
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
 
@@ -79,15 +79,15 @@ def get_user_by_email_username(request):
     if "email" in request.data:
         try:
             target_user = User.objects.get(email=request.data["email"])
-        except User.DoesNotExist as notExistErr:
-            return api_error(f"Could not find User. {notExistErr.__str__()}")
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
     elif "username" in request.data:        
         try:
             target_user = User.objects.get(username=request.data["username"])
-        except User.DoesNotExist as notExistErr:
-            return api_error(f"Could not find User. {notExistErr.__str__()}")
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
     else:
-        return api_error("No valid email or username was provided.")
+        return api_error("No email or username was provided.")
     
     return target_user
 
@@ -122,7 +122,7 @@ class LoginView(APIView):
                 "refresh_token": tokens['refresh'],  # Refresh token for re-authentication
             })
 
-        return api_error("Invalid username/email or password")
+        return api_error("Invalid username/email or password.")
 
 
 class GenerateOTPView(generics.CreateAPIView):
@@ -132,6 +132,7 @@ class GenerateOTPView(generics.CreateAPIView):
 
     # input should be:
     # - valid username/email
+    # - a custom OTP (optional, probably never useful)
 
     # output should be (no actual values are necessary to be returned, only for debug purposes):
     # - SUCCESS if the following conditions are met:
@@ -139,21 +140,7 @@ class GenerateOTPView(generics.CreateAPIView):
     # ----- the email is succesfully sent
     # - FAIL if any of the above conditions are not met
     def post(self, request, custom_otp: str = None, *args, **kwargs):
-        target_user: User | None = None
-
-        # following if/elif/else statements find the user based on the inputted email/username
-        if "username" in request.data:
-            try:
-                target_user = User.objects.get(username=request.data['username'])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-        elif "email" in request.data:
-            try:
-                target_user = User.objects.get(email=request.data['email'])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-        else:
-            return api_error("No valid email or username was provided.")
+        target_user: User | None = get_user_by_email_username(request)
 
         # generates OTP and send to user, contains 6 digits from 0-9
         otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
@@ -161,7 +148,7 @@ class GenerateOTPView(generics.CreateAPIView):
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
             SENDER_EMAIL = 'fitfocus.noreply@gmail.com'  # The email you setup to send the email using app password
-            SENDER_EMAIL_APP_PASSWORD = 'akuy mdii dbdg empt'  # The app password you generated
+            SENDER_EMAIL_APP_PASSWORD = 'akuymdiidbdgempt'  # The app password you generated
 
             # Construct SMTP server
             smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -215,15 +202,9 @@ class GenerateOTPView(generics.CreateAPIView):
 
             # returns all the data from the OTP.
             # "user" displays the username as User objects will not be displayed in a JSON format for security reasons, 
-            return api_success({
-                "user": new_otp.user.username,
-                "otp": new_otp.otp,
-                "created_at": new_otp.created_at,
-                "expiry_time": new_otp.expiry_time,
-                "verified": new_otp.verified
-            })
-        except smtplib.SMTPException as smtpErr:
-            return api_error(f"Email failed to send: {smtpErr.__str__()}")
+            return api_success("OTP sent.")
+        except smtplib.SMTPException:
+            return api_error("Email failed to send.")
 
 
 class ValidateOTPView(generics.CreateAPIView):
@@ -240,21 +221,7 @@ class ValidateOTPView(generics.CreateAPIView):
     # ----- attempted OTP = stored OTP
     # - "fail" OR an error description if any of the above conditions are not met
     def post(self, request, *args, **kwargs):
-        target_user: User | None = None
-
-        # following if/elif/else statements find the user based on the inputted email/username
-        if "email" in request.data:
-            try:
-                target_user = User.objects.get(email=request.data["email"])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-        elif "username" in request.data:
-            try:
-                target_user = User.objects.get(username=request.data["username"])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-        else:
-            return api_error("No valid email or username was provided.")
+        target_user: User | None = get_user_by_email_username(request)
 
         # determines if an OTP was included
         if "otp" not in request.data:
@@ -263,9 +230,14 @@ class ValidateOTPView(generics.CreateAPIView):
         # gathers the OTP data for the user
         stored_otp = OTP.objects.get(user=target_user)
 
+        # converts the OTP to a string if the type is numeric/integer
+        # should never happen but extra check
+        if type(request.data["otp"]) == int:
+            request.data["otp"] = str(request.data["otp"])
+
         # checks if the OTP has passed expiry
         if timezone.now() > stored_otp.expiry_time:
-            return api_error(f"The OTP has expired. Request a new OTP.")
+            return api_error(f"The OTP has expired. Please request a new OTP.")
 
         if request.data["otp"].strip() == stored_otp.otp:
             # checks if the OTP has already been entered before
@@ -275,70 +247,48 @@ class ValidateOTPView(generics.CreateAPIView):
             stored_otp.save()
             return api_success("success")
         else:
-            return api_error("The OTP is incorrect.")
+            return api_error("The OTP you entered is incorrect.")
         
 class ResetPasswordView(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
+        target_user: User | None = get_user_by_email_username(request)
 
-        if "username" in request.data: #Checks if user entered email or password
-            try:
-                target_user = User.objects.get(username=request.data["username"])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-
-            if validate_username("username"):
-                target_user = get_user_by_email_username(request)
-            else:
-                return api_error("Invalid Username")
-
-        elif "email" in request.data:
-            try:
-                target_user = User.objects.get(email=request.data["email"])
-            except User.DoesNotExist as notExistErr:
-                return api_error(f"Could not find User. {notExistErr.__str__()}")
-            
-            if not validate_email("email"):
-                return api_error("Invalid Email")
-        
-        else:
-            return api_error("No email/username entered")
-
-
-        # TODO: add check for within verification date if we are going ahead with adding that too (uncomment commented line below)
-        valid_otp = (OTP.objects.get(user=target_user).verified)
-        ## valid_otp = (OTP.objects.get(user=target_user).verified and timezone.now() <= OTP.objects.get(user=target_user).verified_expiry)
-
-
-
-        if valid_otp:
+        # checks if the user has verified their OTP before continuing
+        if not (OTP.objects.get(user=target_user).verified):
+            return api_error("OTP not verified. Validate or request another.")
                        
-            new_password: str = ""
-            confirm_password: str = ""
-            
-            if 'new_password' in request.data:
-                new_password = request.data['new_password']
-            else:
-                return api_error("No password entered.")
-            
-            if 'confirm_password' in request.data:
-                confirm_password = request.data['confirm_password']
-            else:
-                return api_error("No password confirmation entered.")
-
-            if new_password != confirm_password:
-                return api_error("Passwords do not match.")
-            
-            if new_password == target_user.password:
-                return api_error("Cannot set new password to current password.")
-            
-            try:
-                target_user.password = check_password(new_password)
-                target_user.save()
-                return api_success("Password Successfully Changed")
-            except WeakPasswordError:
-                return api_error("New password is too weak.")
-            
+        new_password = ""
+        confirm_password = ""
+        
+        if 'new_password' in request.data:
+            new_password = request.data['new_password']
         else:
-            return api_error("OTP has not been verified. Validate OTP or request")
+            return api_error("No password entered.")
+        
+        if 'confirm_password' in request.data:
+            confirm_password = request.data['confirm_password']
+        else:
+            return api_error("No password confirmation entered.")
+
+        if new_password != confirm_password:
+            return api_error("Passwords do not match.")
+        
+        if new_password == target_user.password:
+            return api_error("Cannot set new password to current password.")
+        
+        try:
+            target_user.password = check_password(new_password)
+            target_user.save()
+
+            # sets the current OTP to become invalid, otherwise this would make the user able to change their password an unlimited amount of times through the API
+            # while not possible in the app as changing the password redirects the user to the login/home screen
+            # very rare scenario but good for security
+            currentOTP: OTP = OTP.objects.get(user=target_user)
+            currentOTP.verified = False
+            currentOTP.save()
+
+            return api_success("Password Successfully Changed")
+        except WeakPasswordError:
+            return api_error("New password is too weak.")

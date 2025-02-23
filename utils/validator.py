@@ -30,12 +30,11 @@ def validate_email(email: str):
             is_valid = (1 < len(domain_seg) < 4) and domain_seg[0].isalpha() and domain_seg[1].isalpha()
     return is_valid
 
-
+# a valid username should start with a letter, and only contain letters/numbers
 def validate_username(username: str):
     if len(username) < 1:
         return False
     return username[0].isalpha() and username.isalnum()
-
 
 def check_name(name: str):
     if 1 < len(name) < 50 and name.isalpha():

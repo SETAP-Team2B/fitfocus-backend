@@ -69,7 +69,7 @@ We welcome contributions from the community. However, to maintain a consistent a
 ```json
 {
     "code": 400,
-    "message": "Invalid username or password"
+    "message": "Invalid username or password."
 }
 ```
 - Error Response (Missing Fields):
@@ -98,26 +98,28 @@ We welcome contributions from the community. However, to maintain a consistent a
 - Success Response:
 ```json
 {
-    "data": {
-        "user": "spearmintage",
-        "otp": "623688",
-        "created_at": "2025-02-14T01:01:25.681676Z",
-        "expiry_time": "2025-02-14T01:06:25.681676Z"
-    }
+    "data": "OTP sent."
 }
 ```
 - Error Response (Invalid Username or Invalid Email):
 ```json
 {
     "code": 400,
-    "message": "Could not find User. User matching query does not exist."
+    "message": "Could not find associated user."
 }
 ```
 - Error Response (No Username/Password Entered):
 ```json
 {
     "code": 400,
-    "message": "No valid email or username was provided."
+    "message": "No email or username was provided."
+}
+```
+- Error Response (Email Failed to Send):
+```json
+{
+    "code": 400,
+    "message": "Email failed to send."
 }
 ```
 
@@ -149,28 +151,28 @@ We welcome contributions from the community. However, to maintain a consistent a
 ```json
 {
     "code": 400,
-    "message": "The OTP is incorrect."
+    "message": "The OTP you entered is incorrect."
 }
 ```
 - Error Response (Expired OTP):
 ```json
 {
     "code": 400,
-    "message": "The OTP has expired. Request a new OTP."
+    "message": "The OTP has expired. Please request a new OTP."
 }
 ```
 - Error Response (Invalid Username/Password Entered):
 ```json
 {
     "code": 400,
-    "message": "Could not find User. User matching query does not exist."
+    "message": "Could not find associated user."
 }
 ```
 - Error Response (No Username/Password Entered):
 ```json
 {
     "code": 400,
-    "message": "No valid email or username was provided."
+    "message": "No email or username was provided."
 }
 ```
 - Error Response (No OTP Entered):
@@ -178,6 +180,13 @@ We welcome contributions from the community. However, to maintain a consistent a
 {
     "code": 400,
     "message": "No OTP was provided."
+}
+```
+- Error Response (OTP Already Entered Before):
+```json
+{
+    "code": 400,
+    "message": "This OTP has already been entered before."
 }
 ```
 
@@ -211,14 +220,14 @@ We welcome contributions from the community. However, to maintain a consistent a
 ```json
 {
     "code": 400,
-    "message": "Could not find User. User matching query does not exist."
+    "message": "Could not find associated user."
 }
 ```
 - Error Response (No Email/Username Entered):
 ```json
 {
     "code": 400,
-    "message": "No email/username entered"
+    "message": "No email or username was provided."
 }
 ```
 - Error Response (No Password Entered):
@@ -260,6 +269,6 @@ We welcome contributions from the community. However, to maintain a consistent a
 ```json
 {
     "code": 400,
-    "message": "OTP has not been verified. Validate OTP or request"
+    "message": "OTP not verified. Validate or request another."
 }
 ```
