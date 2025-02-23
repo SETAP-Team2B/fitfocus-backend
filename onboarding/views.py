@@ -265,6 +265,14 @@ class ResetPasswordView(generics.CreateAPIView):
         try:
             target_user.password = check_password(new_password)
             target_user.save()
+
+            # sets the current OTP to become invalid, otherwise this would make the user able to change their password an unlimited amount of times through the API
+            # while not possible in the app as changing the password redirects the user to the login/home screen
+            # very rare scenario but good for security
+            currentOTP: OTP = OTP.objects.get(user=target_user)
+            currentOTP.verified = False
+            currentOTP.save()
+
             return api_success("Password Successfully Changed")
         except WeakPasswordError:
             return api_error("New password is too weak.")
