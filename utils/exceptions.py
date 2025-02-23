@@ -9,4 +9,4 @@ class WeakPasswordError(BaseException):
 class InvalidNameException(BaseException):
 
     def __str__(self):
-        return "Name can only contain alphabetical characters"
+        return "Name cannot exceed 50 or contain less than 2 characters."
