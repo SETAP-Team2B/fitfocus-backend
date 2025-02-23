@@ -219,6 +219,11 @@ class ValidateOTPView(generics.CreateAPIView):
         # gathers the OTP data for the user
         stored_otp = OTP.objects.get(user=target_user)
 
+        # converts the OTP to a string if the type is numeric/integer
+        # should never happen but extra check
+        if type(request.data["otp"]) == int:
+            request.data["otp"] = str(request.data["otp"])
+
         # checks if the OTP has passed expiry
         if timezone.now() > stored_otp.expiry_time:
             return api_error(f"The OTP has expired. Please request a new OTP.")
