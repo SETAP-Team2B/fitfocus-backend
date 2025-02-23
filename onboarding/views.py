@@ -94,14 +94,24 @@ def get_user_by_email_username(request):
 
 class LoginView(APIView):
     def post(self, request):
-        username = request.data.get('username')
+        identifier = request.data.get('username') or request.data.get('email')  # Check if username or email is provided
         password = request.data.get('password')
 
-        if not username or not password:
-            return api_error("Username and password are required.")
+        if not identifier or not password:
+            return api_error("Username/Email and password are required")
 
-        user = authenticate(username=username, password=password)
-        if user:
+        # Try to find the user by username or email
+        user = None
+        if '@' in identifier:  # Check if the identifier is an email
+            try:
+                user = User.objects.get(email=identifier)
+            except User.DoesNotExist:
+                return api_error("Invalid email or password")
+        else:  # Otherwise, assume it's a username
+            user = authenticate(username=identifier, password=password)
+
+        # If user found and authenticated
+        if user and user.check_password(password):
             tokens = get_tokens_for_user(user)  # Generate JWT tokens
             return api_success({
                 "username": user.username,
@@ -111,7 +121,8 @@ class LoginView(APIView):
                 "token": tokens['access'],  # Return access token for authentication
                 "refresh_token": tokens['refresh'],  # Refresh token for re-authentication
             })
-        return api_error("Invalid username or password.")
+
+        return api_error("Invalid username/email or password.")
 
 
 class GenerateOTPView(generics.CreateAPIView):
