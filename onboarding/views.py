@@ -23,6 +23,7 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 from .acct_type import AccountType
+import json
 
 
 # Create your views here.
@@ -298,6 +299,7 @@ class CreateExerciseView(generics.CreateAPIView):
     serializer_class = CreateExerciseSerializer
 
     def post(self, request, *args, **kwargs):
+        exercise: Exercise
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equiptment_needed' not in request.data:
             return api_error("Neccessary Field(s) are empty")
         
@@ -316,6 +318,7 @@ class CreateExerciseView(generics.CreateAPIView):
                             ex_secondary_muscle
                             )
         exercise.save()
-        
+
+        return Response(exercise)
     def get(self):
-       pass
+       pass    
