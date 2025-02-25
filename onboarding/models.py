@@ -69,7 +69,8 @@ class Exercise(models.Model):
             "serratus anterior": "Serratus Anterior"
         }
     }
-
+    
+    ex_id = models.IntegerField(db_default=1, db_comment="Id of each exercise")
     ex_name = models.CharField(max_length=80, default="", null=False, db_comment="The name of the exercise")
     ex_type = models.CharField(max_length=100, choices=exercise_type, null=False, db_comment="Type of exercise, Cardio, Muscle etc")
     ex_body_area = models.CharField(max_length=15, choices=body_area_choices, null=False, db_comment="What body part the exercise is working on: Legs, back, chest etc")
