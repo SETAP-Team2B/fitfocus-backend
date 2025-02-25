@@ -321,14 +321,23 @@ class CreateExerciseView(generics.CreateAPIView):
         print(request.data)
 
         exercise = Exercise(#ex_id,
-                            ex_name,
-                            ex_type,
-                            ex_body_area,
-                            equipment_needed,
-                            ex_target_muscle,
-                            ex_secondary_muscle
+                            ex_name=ex_name,
+                            ex_type=ex_type,
+                            ex_body_area=ex_body_area,
+                            equipment_needed=equipment_needed,
+                            ex_target_muscle=ex_target_muscle,
+                            ex_secondary_muscle=ex_secondary_muscle
                             )
         exercise.save()
+
+        return api_success({
+            "ex_name": exercise.ex_name,
+            "ex_type": exercise.ex_type,
+            "ex_body_area": exercise.ex_body_area,
+            "equipment_needed": exercise.equipment_needed,
+            "ex_target_muscle": exercise.ex_target_muscle,
+            "ex_secondary_muscle": exercise.ex_secondary_muscle,
+        })
 
         #return Response(exercise)
     #def get(self, request):
