@@ -299,11 +299,10 @@ class CreateExerciseView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
-        if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
+        if 'ex_id' not in request.data or 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
             return api_error("Neccessary Field(s) are empty")
 
-#'ex_id' not in request.data or
-        #ex_id = request.data['ex_id']        
+        ex_id = request.data['ex_id']        
         ex_name = request.data['ex_name']        
         ex_type = request.data['ex_type']
         ex_body_area = request.data['ex_body_area']
@@ -317,10 +316,14 @@ class CreateExerciseView(generics.CreateAPIView):
             ex_secondary_muscle = request.data['ex_secondary_muscle']   
         else:
             ex_secondary_muscle = "none"    
+                
+        if ex_type == "muscle" and ex_target_muscle == "none":
+            return api_error("Strength exercises must have atleast 1 target muscle")
+        
+        if Exercise.objects.filter(ex_id=ex_id).exists():
+            return api_error("Exercise ID is not unique")
 
-        print(request.data)
-
-        exercise = Exercise(#ex_id,
+        exercise = Exercise(ex_id=ex_id,
                             ex_name=ex_name,
                             ex_type=ex_type,
                             ex_body_area=ex_body_area,
@@ -331,6 +334,7 @@ class CreateExerciseView(generics.CreateAPIView):
         exercise.save()
 
         return api_success({
+            "ex_id": exercise.ex_id,
             "ex_name": exercise.ex_name,
             "ex_type": exercise.ex_type,
             "ex_body_area": exercise.ex_body_area,
@@ -339,15 +343,5 @@ class CreateExerciseView(generics.CreateAPIView):
             "ex_secondary_muscle": exercise.ex_secondary_muscle,
         })
 
-        #return Response(exercise)
     #def get(self, request):
     #   return Response(CreateExerciseSerializer({'ex_id': request['ex_id']}).data)    
-
-
-#{'ex_id': 1, 
- #'ex_name': 'Bench Press', 
- #'ex_type': 'muscle', 
- #'ex_body_area': 'chest', 
- #'equipment_needed': 'barbell, bench', 
- #'ex_target_muscle': 'pectorals', 
- #'ex_secondary_muscle': 'biceps'}
