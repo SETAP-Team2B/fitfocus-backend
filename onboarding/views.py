@@ -299,15 +299,15 @@ class CreateExerciseView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
-        if 'ex_id' not in request.data or'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equiptment_needed' not in request.data:
+        if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
             return api_error("Neccessary Field(s) are empty")
 
-
-        ex_id = request.data['ex_id']        
+#'ex_id' not in request.data or
+        #ex_id = request.data['ex_id']        
         ex_name = request.data['ex_name']        
         ex_type = request.data['ex_type']
         ex_body_area = request.data['ex_body_area']
-        equiptment_needed = request.data['equiptment_needed']
+        equipment_needed = request.data['equipment_needed']
 
         if 'ex_target_muscle' in request.data:
             ex_target_muscle = request.data['ex_target_muscle']
@@ -320,25 +320,25 @@ class CreateExerciseView(generics.CreateAPIView):
 
         print(request.data)
 
-        exercise = Exercise(ex_id,
+        exercise = Exercise(#ex_id,
                             ex_name,
                             ex_type,
                             ex_body_area,
-                            equiptment_needed,
+                            equipment_needed,
                             ex_target_muscle,
                             ex_secondary_muscle
                             )
         exercise.save()
 
         #return Response(exercise)
-    def get(self, request):
-       return Response(CreateExerciseSerializer({'ex_id': request['ex_id']}).data)    
+    #def get(self, request):
+    #   return Response(CreateExerciseSerializer({'ex_id': request['ex_id']}).data)    
 
 
-{'ex_id': 1, 
- 'ex_name': 'Bench Press', 
- 'ex_type': 'muscle', 
- 'ex_body_area': 'chest', 
- 'equiptment_needed': 'barbell, bench', 
- 'ex_target_muscle': 'pectorals', 
- 'ex_secondary_muscle': 'biceps'}
+#{'ex_id': 1, 
+ #'ex_name': 'Bench Press', 
+ #'ex_type': 'muscle', 
+ #'ex_body_area': 'chest', 
+ #'equipment_needed': 'barbell, bench', 
+ #'ex_target_muscle': 'pectorals', 
+ #'ex_secondary_muscle': 'biceps'}

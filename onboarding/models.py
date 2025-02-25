@@ -70,10 +70,10 @@ class Exercise(models.Model):
         }
     }
     
-    ex_id = models.IntegerField(db_default=1, db_comment="Id of each exercise")
+    #ex_id = models.IntegerField(db_default=1, db_comment="Id of each exercise")
     ex_name = models.CharField(max_length=80, default="", null=False, db_comment="The name of the exercise")
     ex_type = models.CharField(max_length=100, choices=exercise_type, null=False, db_comment="Type of exercise, Cardio, Muscle etc")
     ex_body_area = models.CharField(max_length=15, choices=body_area_choices, null=False, db_comment="What body part the exercise is working on: Legs, back, chest etc")
-    equiptment_needed = models.CharField(max_length=80, default="none", null=False, db_comment="Equptment needed for exercise")
+    equipment_needed = models.CharField(max_length=80, default="none", null=False, db_comment="Equipment needed for exercise")
     ex_target_muscle = models.CharField(max_length=20, choices=muscle_choices, null=True, db_comment="Target Muscle - can be null for cardio")
     ex_secondary_muscle = models.CharField(max_length=30, choices=muscle_choices, null=True, db_comment= "Secondary muscle targeted")
