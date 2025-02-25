@@ -13,8 +13,8 @@ from django.contrib.auth import authenticate
 import json
 
 from django.contrib.auth.models import User
-from .models import OTP
-from .serializers import CreateUserSerializer, CreateOTPSerializer
+from .models import OTP, Exercise
+from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer
 
 from random import randint
 import smtplib
@@ -292,3 +292,30 @@ class ResetPasswordView(generics.CreateAPIView):
             return api_success("Password Successfully Changed")
         except WeakPasswordError:
             return api_error("New password is too weak.")
+
+
+class CreateExerciseView(generics.CreateAPIView):
+    serializer_class = CreateExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equiptment_needed' not in request.data:
+            return api_error("Neccessary Field(s) are empty")
+        
+        ex_name = request.data['ex_name']        
+        ex_type = request.data['ex_type']
+        ex_body_area = request.data['ex_body_area']
+        equiptment_needed = request.data['equiptment_needed']
+        ex_target_muscle = request.data['ex_target_muscle']
+        ex_secondary_muscle = request.data['ex_secondary_muscle']       
+
+        exercise = Exercise(ex_name,
+                            ex_type,
+                            ex_body_area,
+                            equiptment_needed,
+                            ex_target_muscle,
+                            ex_secondary_muscle
+                            )
+        exercise.save()
+        
+    def get(self):
+       pass
