@@ -12,8 +12,8 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise
-from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer, GetExerciseSerializer
+from .models import OTP, Exercise, LoggedExercise
+from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
 
 from random import randint
 import smtplib
@@ -22,13 +22,59 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 from .acct_type import AccountType
-import json
 from django.http import JsonResponse
+import json
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),  # Refresh token (Used to get a new access token)
+        'access': str(refresh.access_token),  # Main token used for authentication
+    }
+
+
+# given a request with an email/password, finds the user associated with the account
+# used multiple times by several functions
+# should either return a User object or call an api_error.
+def get_user_by_email_username(request):
+    target_user: User | None = None
+
+    # following if/elif/else statements find the user based on the inputted email/username
+    if "email" in request.data:
+        try:
+            target_user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    elif "username" in request.data:        
+        try:
+            target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    else:
+        return api_error("No email or username was provided.")
+    
+    return target_user
+
+def get_exercise_by_name(request):
+    target_exercise: Exercise | None = None
+
+    if "ex_name" in request.data:
+        try:
+            target_exercise = Exercise.objects.get(ex_name=request.data["ex_name"])
+        except Exercise.DoesNotExist:
+            return api_error("Could not find exercise with given name.")
+        except Exercise.MultipleObjectsReturned:
+            return api_error("Multiple exercises found.")
+    else:
+        return api_error("No exercise name found.")
+    
+    return target_exercise
 
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
@@ -61,36 +107,6 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error('{} is missing.'.format(keyErr.__str__()))
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
-
-
-def get_tokens_for_user(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        'refresh': str(refresh),  # Refresh token (Used to get a new access token)
-        'access': str(refresh.access_token),  # Main token used for authentication
-    }
-
-# given a request with an email/password, finds the user associated with the account
-# used multiple times by several functions
-# should either return a User object or call an api_error.
-def get_user_by_email_username(request):
-    target_user: User | None = None
-
-    # following if/elif/else statements find the user based on the inputted email/username
-    if "email" in request.data:
-        try:
-            target_user = User.objects.get(email=request.data["email"])
-        except User.DoesNotExist:
-            return api_error("Could not find associated user.")
-    elif "username" in request.data:        
-        try:
-            target_user = User.objects.get(username=request.data["username"])
-        except User.DoesNotExist:
-            return api_error("Could not find associated user.")
-    else:
-        return api_error("No email or username was provided.")
-    
-    return target_user
 
 
 class LoginView(APIView):
@@ -127,7 +143,7 @@ class LoginView(APIView):
 
 
 class GenerateOTPView(generics.CreateAPIView):
-    serializer_class = CreateOTPSerializer
+    serializer_class = OTPSerializer
 
     # function which uses the OTP model
 
@@ -209,7 +225,7 @@ class GenerateOTPView(generics.CreateAPIView):
 
 
 class ValidateOTPView(generics.CreateAPIView):
-    serializer_class = CreateOTPSerializer
+    serializer_class = OTPSerializer
 
     # post should include:
     # - username/email to the account
@@ -251,7 +267,7 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_error("The OTP you entered is incorrect.")
         
 class ResetPasswordView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
         target_user: User | None = get_user_by_email_username(request)
@@ -296,7 +312,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
 
 class ExerciseView(generics.CreateAPIView):
-    serializer_class = CreateExerciseSerializer
+    serializer_class = ExerciseSerializer
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
     muscle_types = ["Biceps", "Triceps", "Forearms", "Lats", "Lower Back", "Traps", "Upper Back", "Calves", "Hamstrings",
@@ -306,7 +322,7 @@ class ExerciseView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         exercise: Exercise
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
-            return api_error("Neccessary Field(s) are empty")   
+            return api_error("Necessary Field(s) are empty")   
         
         ex_name = request.data['ex_name']        
         ex_type = request.data['ex_type']
@@ -382,3 +398,93 @@ class ExerciseView(generics.CreateAPIView):
         # return filtered queryset
         return JsonResponse(list(query_set), safe=False)
         
+class LogExerciseView(generics.CreateAPIView):
+    serializer_class = LoggedExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+        target_exercise = get_exercise_by_name(request)
+        if type(target_exercise) == Response: return target_exercise
+
+        logged_exercise = LoggedExercise(
+            user=target_user,
+            exercise=target_exercise,
+            date_logged=request.data.get('date_logged'),
+            time_logged=request.data.get('time_logged', None),
+            sets=request.data.get('sets', None),
+            reps=request.data.get('reps', None),
+            distance=request.data.get('distance', None),
+            distance_units=request.data.get('distance_units', None),
+            duration=request.data.get('duration', None),
+            equipment_weight=request.data.get('equipment_weight', None),
+            equipment_weight_units=request.data.get('equipment_weight_units', None)
+        )
+
+        if logged_exercise.date_logged is None:
+            return api_error("A date for the exercise log must be provided.")
+
+        postable = False
+        for attribute in ['sets', 'reps', 'distance', 'duration', 'equipment_weight']:
+            if request.data.get(attribute) is not None:
+                postable = True
+                break
+        if not postable:
+            return api_error("Exercise log must contain some exercise information.")
+        
+        logged_exercise.save()
+
+        return api_success("Exercised Logged!")
+    
+    def get(self, request, *args, **kwargs):
+        # every single LoggedExercise object
+        query_set = LoggedExercise.objects.values()
+    
+        # returns an error if there are any filter attributes not known
+        # while unknown attributes could just be ignored, best to not have them altogether
+        # needed for filtering by a certain username
+        all_fields = [f.name for f in LoggedExercise._meta.get_fields()] + ["username", "email", "ex_name"]
+        for attribute in request.data.keys():
+            if attribute not in all_fields:
+                return api_error("Unexpected filter name encountered.")
+            
+        # makes appropriate filters based on exercise attributes
+        for attribute in all_fields:
+            if attribute in request.data.keys():
+                match(attribute):
+                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.data["username"]))
+                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.data["email"]))
+                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.data["ex_name"]))
+                    case "date_logged": query_set = query_set.filter(date_logged=request.data["date_logged"])
+                    case "time_logged": query_set = query_set.filter(time_logged=request.data["time_logged"])
+                    case "sets": query_set = query_set.filter(sets=request.data["sets"])
+                    case "reps": query_set = query_set.filter(reps=request.data["reps"])
+                    case "distance": query_set = query_set.filter(distance=request.data["distance"])
+                    case "distance_units": query_set = query_set.filter(distance_units=request.data["distance_units"])
+                    case "duration": query_set = query_set.filter(duration=request.data["duration"])
+                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.data["equipment_weight"])
+                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.data["equipment_weight_units"])
+                    case _:
+                        return api_error("Attribute not accounted for in filter.")
+
+        # return filtered queryset
+        # TODO: format to make it a normal display:
+        # -- dont post any null values
+        # -- don't display user or exercise id, just exercise name and username
+        raw_response = JsonResponse(list(query_set), safe=False)
+        filtered_response = []
+
+        # only adds any non-null values
+        for log in json.loads(raw_response.content.decode('utf8').replace("'", '"')):
+            response = {}
+            for key, value in log.items():
+                if value != None and key != "id":
+                    if key == "user_id":
+                        response["username"] = User.objects.get(id=value).username
+                    elif key == "exercise_id":
+                        response["exercise"] = Exercise.objects.get(id=value).ex_name
+                    else:
+                        response[key] = value
+            filtered_response.append(response)
+
+        return JsonResponse(filtered_response, safe=False)
