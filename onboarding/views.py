@@ -295,7 +295,7 @@ class ResetPasswordView(generics.CreateAPIView):
             return api_error("New password is too weak.")
 
 
-class CreateExerciseView(generics.CreateAPIView):
+class ExerciseView(generics.CreateAPIView):
     serializer_class = CreateExerciseSerializer
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
