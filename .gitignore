@@ -3,3 +3,6 @@ env/
 .idea/
 utils/secrets.py
 **/__pycache__/
+onboarding/migrations/__pycache__/
+onboarding/__pycache__/
+utils/__pycache__/

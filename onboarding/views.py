@@ -10,11 +10,10 @@ from utils.validator import Messages, validate_email, \
     validate_username, check_password, check_name
 from django.core import serializers
 from django.contrib.auth import authenticate
-import json
 
 from django.contrib.auth.models import User
-from .models import OTP
-from .serializers import CreateUserSerializer, CreateOTPSerializer
+from .models import OTP, Exercise
+from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer, GetExerciseSerializer
 
 from random import randint
 import smtplib
@@ -23,6 +22,8 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 from .acct_type import AccountType
+import json
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -292,3 +293,92 @@ class ResetPasswordView(generics.CreateAPIView):
             return api_success("Password Successfully Changed")
         except WeakPasswordError:
             return api_error("New password is too weak.")
+
+
+class ExerciseView(generics.CreateAPIView):
+    serializer_class = CreateExerciseSerializer
+    exercise_type = ["Muscle" ,"Cardio","Flexibility"]
+    body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
+    muscle_types = ["Biceps", "Triceps", "Forearms", "Lats", "Lower Back", "Traps", "Upper Back", "Calves", "Hamstrings",
+                    "Quadriceps", "Adductors", "Glutes", "Abdominals", "Abductors", "Levator Scapulae", "Delts", "Pectorals",
+                    "Serratus Anterior"]
+
+    def post(self, request, *args, **kwargs):
+        exercise: Exercise
+        if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
+            return api_error("Neccessary Field(s) are empty")   
+        
+        ex_name = request.data['ex_name']        
+        ex_type = request.data['ex_type']
+        ex_body_area = request.data['ex_body_area']
+        equipment_needed = request.data['equipment_needed']
+
+        if 'ex_target_muscle' in request.data:
+            ex_target_muscle = request.data['ex_target_muscle']
+        else:
+            ex_target_muscle = "none"
+        if 'ex_secondary_muscle' in request.data:
+            ex_secondary_muscle = request.data['ex_secondary_muscle']   
+        else:
+            ex_secondary_muscle = "none"    
+                
+        if ex_type == "Muscle":
+            if ex_target_muscle == "none":
+                return api_error("Strength exercises must have atleast 1 target muscle")
+            if ex_target_muscle not in self.muscle_types or ex_secondary_muscle not in self.muscle_types:
+                return api_error("Inavlid Muscle Type")
+        
+        if ex_type not in self.exercise_type:
+            return api_error("Invalid Exercise Type")
+        
+        if ex_body_area not in self.body_area_types:
+            return api_error("Inavlid Body Area Type")
+        
+
+        exercise = Exercise(
+            ex_name=ex_name,
+            ex_type=ex_type,
+            ex_body_area=ex_body_area,
+            equipment_needed=equipment_needed,
+            ex_target_muscle=ex_target_muscle,
+            ex_secondary_muscle=ex_secondary_muscle
+        )
+        exercise.save()
+
+        return api_success({
+            "ex_name": exercise.ex_name,
+            "ex_type": exercise.ex_type,
+            "ex_body_area": exercise.ex_body_area,
+            "equipment_needed": exercise.equipment_needed,
+            "ex_target_muscle": exercise.ex_target_muscle,
+            "ex_secondary_muscle": exercise.ex_secondary_muscle,
+        })
+
+
+    # given parameters equal to ex_type, filters all exercises for values
+    def get(self, request, *args, **kwargs):
+        # every single Exercise object
+        query_set = Exercise.objects.values()
+    
+        # returns an error if there are any filter attributes not known
+        # while unknown attributes could just be ignored, best to not have them altogether
+        all_exercise_fields = [f.name for f in Exercise._meta.get_fields()]
+        for attribute in request.data.keys():
+            if attribute not in all_exercise_fields:
+                return api_error("Unexpected filter name encountered.")
+            
+        # makes appropriate filters based on exercise attributes
+        for attribute in all_exercise_fields:
+            if attribute in request.data.keys():
+                match(attribute):
+                    case "ex_name": query_set = query_set.filter(ex_name=request.data[attribute])
+                    case "ex_type": query_set = query_set.filter(ex_type=request.data[attribute])
+                    case "ex_body_area": query_set = query_set.filter(ex_body_area=request.data[attribute])
+                    case "equipment_needed": query_set = query_set.filter(equipment_needed=request.data[attribute])
+                    case "ex_target_muscle": query_set = query_set.filter(ex_target_muscle=request.data[attribute])
+                    case _:
+                        return api_error("Attribute not accounted for in filter.")
+
+        # return filtered queryset
+        return JsonResponse(list(query_set), safe=False)
+        
