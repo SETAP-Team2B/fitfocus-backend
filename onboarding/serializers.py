@@ -17,3 +17,14 @@ class CreateExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = '__all__'
+
+class GetExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Exercise
+        fields = (
+            'ex_name',
+            'ex_type',
+            'ex_body_area',
+            'equipment_needed',
+            'ex_target_muscle'
+        )

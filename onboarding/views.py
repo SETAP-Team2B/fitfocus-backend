@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
 from .models import OTP, Exercise
-from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer
+from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer, GetExerciseSerializer
 
 from random import randint
 import smtplib
@@ -296,13 +296,17 @@ class ResetPasswordView(generics.CreateAPIView):
 
 class CreateExerciseView(generics.CreateAPIView):
     serializer_class = CreateExerciseSerializer
+    exercise_type = ["Muscle" ,"Cardio","Flexibility"]
+    body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
+    muscle_types = ["Biceps", "Triceps", "Forearms", "Lats", "Lower Back", "Traps", "Upper Back", "Calves", "Hamstrings",
+                    "Quadriceps", "Adductors", "Glutes", "Abdominals", "Abductors", "Levator Scapulae", "Delts", "Pectorals",
+                    "Serratus Anterior"]
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
-        if 'ex_id' not in request.data or 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
-            return api_error("Neccessary Field(s) are empty")
-
-        ex_id = request.data['ex_id']        
+        if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
+            return api_error("Neccessary Field(s) are empty")   
+        
         ex_name = request.data['ex_name']        
         ex_type = request.data['ex_type']
         ex_body_area = request.data['ex_body_area']
@@ -317,14 +321,20 @@ class CreateExerciseView(generics.CreateAPIView):
         else:
             ex_secondary_muscle = "none"    
                 
-        if ex_type == "muscle" and ex_target_muscle == "none":
-            return api_error("Strength exercises must have atleast 1 target muscle")
+        if ex_type == "Muscle":
+            if ex_target_muscle == "none":
+                return api_error("Strength exercises must have atleast 1 target muscle")
+            if ex_target_muscle not in self.muscle_types or ex_secondary_muscle not in self.muscle_types:
+                return api_error("Inavlid Muscle Type")
         
-        if Exercise.objects.filter(ex_id=ex_id).exists():
-            return api_error("Exercise ID is not unique")
+        if ex_type not in self.exercise_type:
+            return api_error("Invalid Exercise Type")
+        
+        if ex_body_area not in self.body_area_types:
+            return api_error("Inavlid Body Area Type")
+        
 
-        exercise = Exercise(ex_id=ex_id,
-                            ex_name=ex_name,
+        exercise = Exercise(ex_name=ex_name,
                             ex_type=ex_type,
                             ex_body_area=ex_body_area,
                             equipment_needed=equipment_needed,
@@ -334,7 +344,6 @@ class CreateExerciseView(generics.CreateAPIView):
         exercise.save()
 
         return api_success({
-            "ex_id": exercise.ex_id,
             "ex_name": exercise.ex_name,
             "ex_type": exercise.ex_type,
             "ex_body_area": exercise.ex_body_area,
@@ -343,5 +352,24 @@ class CreateExerciseView(generics.CreateAPIView):
             "ex_secondary_muscle": exercise.ex_secondary_muscle,
         })
 
-    #def get(self, request):
-    #   return Response(CreateExerciseSerializer({'ex_id': request['ex_id']}).data)    
+    def get(self, request):
+        exercises = Exercise.objects.all()
+
+        if 'ex_name' not in request.data and 'ex_type' not in request.data and 'ex_body_area' not in request.data and 'equipment_needed' not in request.data:
+            return api_error("Please enter atleast 1 filter")    
+        
+        if 'ex_name' in request.data:
+            ex_name = request.data['ex_name']
+
+        serializer = GetExerciseSerializer({
+            'ex_name': exercises.filter(ex_name=ex_name),
+            'ex_target_muscle': exercises.filter(ex_name=ex_name),
+            "ex_body_area": exercises.filter(ex_name=ex_name),
+            "equipment_needed": exercises.filter(ex_name=ex_name)#,
+            #"ex_target_muscle": exercises.filter(ex_name=ex_name),
+            #"ex_secondary_muscle": exercises.filter(ex_name=ex_name)
+            })
+        return Response(serializer.data)
+        
+
+        
