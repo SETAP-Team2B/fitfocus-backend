@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
 from .models import OTP, Exercise
-from .serializers import CreateUserSerializer, CreateOTPSerializer, CreateExerciseSerializer, GetExerciseSerializer
+from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
 
 from random import randint
 import smtplib
@@ -28,7 +28,7 @@ from django.http import JsonResponse
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
@@ -127,7 +127,7 @@ class LoginView(APIView):
 
 
 class GenerateOTPView(generics.CreateAPIView):
-    serializer_class = CreateOTPSerializer
+    serializer_class = OTPSerializer
 
     # function which uses the OTP model
 
@@ -209,7 +209,7 @@ class GenerateOTPView(generics.CreateAPIView):
 
 
 class ValidateOTPView(generics.CreateAPIView):
-    serializer_class = CreateOTPSerializer
+    serializer_class = OTPSerializer
 
     # post should include:
     # - username/email to the account
@@ -251,7 +251,7 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_error("The OTP you entered is incorrect.")
         
 class ResetPasswordView(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
         target_user: User | None = get_user_by_email_username(request)
@@ -296,7 +296,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
 
 class ExerciseView(generics.CreateAPIView):
-    serializer_class = CreateExerciseSerializer
+    serializer_class = ExerciseSerializer
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
     muscle_types = ["Biceps", "Triceps", "Forearms", "Lats", "Lower Back", "Traps", "Upper Back", "Calves", "Hamstrings",
