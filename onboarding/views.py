@@ -335,13 +335,14 @@ class ExerciseView(generics.CreateAPIView):
             return api_error("Inavlid Body Area Type")
         
 
-        exercise = Exercise(ex_name=ex_name,
-                            ex_type=ex_type,
-                            ex_body_area=ex_body_area,
-                            equipment_needed=equipment_needed,
-                            ex_target_muscle=ex_target_muscle,
-                            ex_secondary_muscle=ex_secondary_muscle
-                            )
+        exercise = Exercise(
+            ex_name=ex_name,
+            ex_type=ex_type,
+            ex_body_area=ex_body_area,
+            equipment_needed=equipment_needed,
+            ex_target_muscle=ex_target_muscle,
+            ex_secondary_muscle=ex_secondary_muscle
+        )
         exercise.save()
 
         return api_success({
@@ -353,29 +354,31 @@ class ExerciseView(generics.CreateAPIView):
             "ex_secondary_muscle": exercise.ex_secondary_muscle,
         })
 
-    def get(self, request):
-        if 'ex_name' not in request.data and 'ex_type' not in request.data and 'ex_body_area' not in request.data and 'equipment_needed' not in request.data and 'ex_target_muscle' not in request.data:
-            return api_error("Please enter atleast 1 filter") 
 
-        if 'ex_name' in request.data:
-            ex_name = request.data['ex_name'] 
-            return JsonResponse(list(Exercise.objects.values().filter(ex_name=ex_name)), safe=False)   
-        
-        if 'ex_type' in request.data:
-            ex_type = request.data['ex_type'] 
-            return JsonResponse(list(Exercise.objects.values().filter(ex_type=ex_type)), safe=False)
-        
-        if 'ex_body_area' in request.data:
-            ex_body_area = request.data['ex_body_area'] 
-            return JsonResponse(list(Exercise.objects.values().filter(ex_body_area=ex_body_area)), safe=False)
-        
-        if 'equipment_needed' in request.data:
-            equipment_needed = request.data['equipment_needed'] 
-            return JsonResponse(list(Exercise.objects.values().filter(equipment_needed=equipment_needed)), safe=False)
-        
-        if 'ex_target_muscle' in request.data:
-            ex_target_muscle = request.data['ex_target_muscle'] 
-            return JsonResponse(list(Exercise.objects.values().filter(ex_target_muscle=ex_target_muscle)), safe=False)
-        
-        else: return api_error("Invalid Filter")
+    # given parameters equal to ex_type, filters all exercises for values
+    def get(self, request, *args, **kwargs):
+        # every single Exercise object
+        query_set = Exercise.objects.values()
+    
+        # returns an error if there are any filter attributes not known
+        # while unknown attributes could just be ignored, best to not have them altogether
+        all_exercise_fields = [f.name for f in Exercise._meta.get_fields()]
+        for attribute in request.data.keys():
+            if attribute not in all_exercise_fields:
+                return api_error("Unexpected filter name encountered.")
+            
+        # makes appropriate filters based on exercise attributes
+        for attribute in all_exercise_fields:
+            if attribute in request.data.keys():
+                match(attribute):
+                    case "ex_name": query_set = query_set.filter(ex_name=request.data[attribute])
+                    case "ex_type": query_set = query_set.filter(ex_type=request.data[attribute])
+                    case "ex_body_area": query_set = query_set.filter(ex_body_area=request.data[attribute])
+                    case "equipment_needed": query_set = query_set.filter(equipment_needed=request.data[attribute])
+                    case "ex_target_muscle": query_set = query_set.filter(ex_target_muscle=request.data[attribute])
+                    case _:
+                        return api_error("Attribute not accounted for in filter.")
+
+        # return filtered queryset
+        return JsonResponse(list(query_set), safe=False)
         
