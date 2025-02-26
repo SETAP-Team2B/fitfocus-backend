@@ -23,12 +23,12 @@ class Exercise(models.Model):
 class LoggedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=False)
-    date_logged = models.DateField(default=timezone.now().date(), null=False)
-    time_logged = models.TimeField(default=timezone.now().time())
-    sets = models.PositiveSmallIntegerField(default=0)
-    reps = models.PositiveSmallIntegerField(default=0)
-    distance = models.FloatField(default=0.0)
-    distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")])
-    duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0))
-    equipment_weight = models.JSONField(default=list) # a list of integers for varying weights if multiple were used
-    equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")])
+    date_logged = models.DateField(default=timezone.now().date())
+    time_logged = models.TimeField(default=timezone.now().time(), null=True)
+    sets = models.PositiveSmallIntegerField(default=0, null=True)
+    reps = models.PositiveSmallIntegerField(default=0, null=True)
+    distance = models.FloatField(default=0.0, null=True)
+    distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")], null=True)
+    duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
+    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
+    equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)

@@ -12,7 +12,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise
+from .models import OTP, Exercise, LoggedExercise
 from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
 
 from random import randint
@@ -24,6 +24,52 @@ from django.utils import timezone
 from .acct_type import AccountType
 import json
 from django.http import JsonResponse
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),  # Refresh token (Used to get a new access token)
+        'access': str(refresh.access_token),  # Main token used for authentication
+    }
+
+
+# given a request with an email/password, finds the user associated with the account
+# used multiple times by several functions
+# should either return a User object or call an api_error.
+def get_user_by_email_username(request):
+    target_user: User | None = None
+
+    # following if/elif/else statements find the user based on the inputted email/username
+    if "email" in request.data:
+        try:
+            target_user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    elif "username" in request.data:        
+        try:
+            target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    else:
+        return api_error("No email or username was provided.")
+    
+    return target_user
+
+def get_exercise_by_name(request):
+    target_exercise: Exercise | None = None
+
+    if "ex_name" in request.data:
+        try:
+            target_exercise = Exercise.objects.get(ex_name=request.data["ex_name"])
+        except Exercise.DoesNotExist:
+            return api_error("Could not find exercise with given name.")
+        except Exercise.MultipleObjectsReturned:
+            return api_error("Multiple exercises found.")
+    else:
+        return api_error("No exercise name found.")
+    
+    return target_exercise
 
 
 # Create your views here.
@@ -61,36 +107,6 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error('{} is missing.'.format(keyErr.__str__()))
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
-
-
-def get_tokens_for_user(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        'refresh': str(refresh),  # Refresh token (Used to get a new access token)
-        'access': str(refresh.access_token),  # Main token used for authentication
-    }
-
-# given a request with an email/password, finds the user associated with the account
-# used multiple times by several functions
-# should either return a User object or call an api_error.
-def get_user_by_email_username(request):
-    target_user: User | None = None
-
-    # following if/elif/else statements find the user based on the inputted email/username
-    if "email" in request.data:
-        try:
-            target_user = User.objects.get(email=request.data["email"])
-        except User.DoesNotExist:
-            return api_error("Could not find associated user.")
-    elif "username" in request.data:        
-        try:
-            target_user = User.objects.get(username=request.data["username"])
-        except User.DoesNotExist:
-            return api_error("Could not find associated user.")
-    else:
-        return api_error("No email or username was provided.")
-    
-    return target_user
 
 
 class LoginView(APIView):
@@ -306,7 +322,7 @@ class ExerciseView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         exercise: Exercise
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
-            return api_error("Neccessary Field(s) are empty")   
+            return api_error("Necessary Field(s) are empty")   
         
         ex_name = request.data['ex_name']        
         ex_type = request.data['ex_type']
@@ -382,3 +398,43 @@ class ExerciseView(generics.CreateAPIView):
         # return filtered queryset
         return JsonResponse(list(query_set), safe=False)
         
+class LogExerciseView(generics.CreateAPIView):
+    serializer_class = LoggedExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+        target_exercise = get_exercise_by_name(request)
+        if type(target_exercise) == Response: return target_exercise
+
+        logged_exercise = LoggedExercise(
+            user=target_user,
+            exercise=target_exercise,
+            date_logged=request.data.get('date_logged'),
+            time_logged=request.data.get('time_logged', None),
+            sets=request.data.get('sets', None),
+            reps=request.data.get('reps', None),
+            distance=request.data.get('distance', None),
+            distance_units=request.data.get('distance_units', None),
+            duration=request.data.get('duration', None),
+            equipment_weight=request.data.get('equipment_weight', None),
+            equipment_weight_units=request.data.get('equipment_weight_units', None)
+        )
+
+        if logged_exercise.date_logged is None:
+            return api_error("A date for the exercise log must be provided.")
+
+        postable = False
+        for attribute in ['sets', 'reps', 'distance', 'duration', 'equipment_weight']:
+            if request.data.get(attribute) is not None:
+                postable = True
+                break
+        if not postable:
+            return api_error("Exercise log must contain some exercise information.")
+        
+        logged_exercise.save()
+
+        return api_success("Exercised Logged!")
+    
+    def get(self, request, *args, **kwargs):
+        return api_success()
