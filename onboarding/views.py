@@ -22,8 +22,8 @@ from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
 from .acct_type import AccountType
-import json
 from django.http import JsonResponse
+import json
 
 
 def get_tokens_for_user(user):
@@ -437,4 +437,54 @@ class LogExerciseView(generics.CreateAPIView):
         return api_success("Exercised Logged!")
     
     def get(self, request, *args, **kwargs):
-        return api_success()
+        # every single LoggedExercise object
+        query_set = LoggedExercise.objects.values()
+    
+        # returns an error if there are any filter attributes not known
+        # while unknown attributes could just be ignored, best to not have them altogether
+        # needed for filtering by a certain username
+        all_fields = [f.name for f in LoggedExercise._meta.get_fields()] + ["username", "email", "ex_name"]
+        for attribute in request.data.keys():
+            if attribute not in all_fields:
+                return api_error("Unexpected filter name encountered.")
+            
+        # makes appropriate filters based on exercise attributes
+        for attribute in all_fields:
+            if attribute in request.data.keys():
+                match(attribute):
+                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.data["username"]))
+                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.data["email"]))
+                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.data["ex_name"]))
+                    case "date_logged": query_set = query_set.filter(date_logged=request.data["date_logged"])
+                    case "time_logged": query_set = query_set.filter(time_logged=request.data["time_logged"])
+                    case "sets": query_set = query_set.filter(sets=request.data["sets"])
+                    case "reps": query_set = query_set.filter(reps=request.data["reps"])
+                    case "distance": query_set = query_set.filter(distance=request.data["distance"])
+                    case "distance_units": query_set = query_set.filter(distance_units=request.data["distance_units"])
+                    case "duration": query_set = query_set.filter(duration=request.data["duration"])
+                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.data["equipment_weight"])
+                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.data["equipment_weight_units"])
+                    case _:
+                        return api_error("Attribute not accounted for in filter.")
+
+        # return filtered queryset
+        # TODO: format to make it a normal display:
+        # -- dont post any null values
+        # -- don't display user or exercise id, just exercise name and username
+        raw_response = JsonResponse(list(query_set), safe=False)
+        filtered_response = []
+
+        # only adds any non-null values
+        for log in json.loads(raw_response.content.decode('utf8').replace("'", '"')):
+            response = {}
+            for key, value in log.items():
+                if value != None and key != "id":
+                    if key == "user_id":
+                        response["username"] = User.objects.get(id=value).username
+                    elif key == "exercise_id":
+                        response["exercise"] = Exercise.objects.get(id=value).ex_name
+                    else:
+                        response[key] = value
+            filtered_response.append(response)
+
+        return JsonResponse(filtered_response, safe=False)
