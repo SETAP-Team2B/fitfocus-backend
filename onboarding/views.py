@@ -23,6 +23,7 @@ from datetime import timedelta
 from django.utils import timezone
 from .acct_type import AccountType
 import json
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -353,23 +354,28 @@ class CreateExerciseView(generics.CreateAPIView):
         })
 
     def get(self, request):
-        exercises = Exercise.objects.all()
+        if 'ex_name' not in request.data and 'ex_type' not in request.data and 'ex_body_area' not in request.data and 'equipment_needed' not in request.data and 'ex_target_muscle' not in request.data:
+            return api_error("Please enter atleast 1 filter") 
 
-        if 'ex_name' not in request.data and 'ex_type' not in request.data and 'ex_body_area' not in request.data and 'equipment_needed' not in request.data:
-            return api_error("Please enter atleast 1 filter")    
-        
         if 'ex_name' in request.data:
-            ex_name = request.data['ex_name']
-
-        serializer = GetExerciseSerializer({
-            'ex_name': exercises.filter(ex_name=ex_name),
-            'ex_target_muscle': exercises.filter(ex_name=ex_name),
-            "ex_body_area": exercises.filter(ex_name=ex_name),
-            "equipment_needed": exercises.filter(ex_name=ex_name)#,
-            #"ex_target_muscle": exercises.filter(ex_name=ex_name),
-            #"ex_secondary_muscle": exercises.filter(ex_name=ex_name)
-            })
-        return Response(serializer.data)
+            ex_name = request.data['ex_name'] 
+            return JsonResponse(list(Exercise.objects.values().filter(ex_name=ex_name)), safe=False)   
         
-
+        if 'ex_type' in request.data:
+            ex_type = request.data['ex_type'] 
+            return JsonResponse(list(Exercise.objects.values().filter(ex_type=ex_type)), safe=False)
+        
+        if 'ex_body_area' in request.data:
+            ex_body_area = request.data['ex_body_area'] 
+            return JsonResponse(list(Exercise.objects.values().filter(ex_body_area=ex_body_area)), safe=False)
+        
+        if 'equipment_needed' in request.data:
+            equipment_needed = request.data['equipment_needed'] 
+            return JsonResponse(list(Exercise.objects.values().filter(equipment_needed=equipment_needed)), safe=False)
+        
+        if 'ex_target_muscle' in request.data:
+            ex_target_muscle = request.data['ex_target_muscle'] 
+            return JsonResponse(list(Exercise.objects.values().filter(ex_target_muscle=ex_target_muscle)), safe=False)
+        
+        else: return api_error("Invalid Filter")
         
