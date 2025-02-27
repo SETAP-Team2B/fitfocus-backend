@@ -1,0 +1,1325 @@
+ex_type,ex_name,ex_body_area,target_muscle,secondary_muscle_1,secondary_muscle_2,equipment
+Muscle,3/4 Sit-Up,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,45° Side Bend,Core,Abs,Obliques,,None
+Muscle,Air Bike,Core,Abs,Hip Flexors,,None
+Muscle,All Fours Squad Stretch,Upper Legs,Quads,Hamstrings,Glutes,None
+Muscle,Alternate Heel Touchers,Core,Abs,Obliques,,None
+Muscle,Alternate Lateral Pulldown,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Ankle Circles,Lower Legs,Calves,Ankle Stabilizers,,None
+Muscle,Archer Pull Up,Back,Lats,Biceps,Forearms,None
+Muscle,Archer Push Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Arm Slingers Hanging Bent Knee Legs,Core,Abs,Shoulders,Back,None
+Muscle,Arm Slingers Hanging Straight Legs,Core,Abs,Shoulders,Back,None
+Muscle,Arms Apart Circular Toe Touch (Male),Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Arms Overhead Full Sit-Up (Male),Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Assisted Chest Dip (Kneeling),Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,Assisted Hanging Knee Raise,Core,Abs,Hip Flexors,,Assisted
+Muscle,Assisted Hanging Knee Raise With Throw Down,Core,Abs,Hip Flexors,Lower Back,Assisted
+Muscle,Assisted Lying Calves Stretch,Lower Legs,Calves,Hamstrings,,Assisted
+Muscle,Assisted Lying Glutes Stretch,Upper Legs,Glutes,Hamstrings,,Assisted
+Muscle,Assisted Lying Gluteus And Piriformis Stretch,Upper Legs,Glutes,Hamstrings,,Assisted
+Muscle,Assisted Lying Leg Raise With Lateral Throw Down,Core,Abs,Hip Flexors,Obliques,Assisted
+Muscle,Assisted Lying Leg Raise With Throw Down,Core,Abs,Hip Flexors,Quadriceps,Assisted
+Muscle,Assisted Motion Russian Twist,Core,Abs,Obliques,Lower Back,Medicine Ball
+Muscle,Assisted Parallel Close Grip Pull-Up,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Assisted Prone Hamstring,Upper Legs,Hamstrings,Glutes,Lower Back,Assisted
+Muscle,Assisted Prone Lying Quads Stretch,Upper Legs,Quads,Hamstrings,Glutes,Assisted
+Muscle,Assisted Prone Rectus Femoris Stretch,Core,Abs,Quadriceps,,Assisted
+Muscle,Assisted Pull-Up,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Assisted Seated Pectoralis Major Stretch With Stability Ball,Chest,Pectorals,Shoulders,Triceps,Assisted
+Muscle,Assisted Side Lying Adductor Stretch,Upper Legs,Adductors,Hamstrings,Glutes,Assisted
+Muscle,Assisted Sit-Up,Core,Abs,Hip Flexors,,Assisted
+Muscle,Assisted Standing Chin-Up,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Assisted Standing Pull-Up,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Assisted Standing Triceps Extension (With Towel),Upper Arms,Triceps,Shoulders,,Assisted
+Muscle,Assisted Triceps Dip (Kneeling),Upper Arms,Triceps,Chest,Shoulders,Leverage Machine
+Muscle,Assisted Wide-Grip Chest Dip (Kneeling),Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Cardio,Astride Jumps (Male),Cardio,Cardio,Quadriceps,Hamstrings,None
+Cardio,Back And Forth Step,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Back Extension On Exercise Ball,Back,Spine,Glutes,Hamstrings,Stability Ball
+Muscle,Back Lever,Back,Upper Back,Biceps,Forearms,None
+Muscle,Back Pec Stretch,Back,Lats,Shoulders,Chest,None
+Muscle,Backward Jump,Upper Legs,Quads,Hamstrings,Glutes,None
+Muscle,Balance Board,Upper Legs,Quads,Calves,Hamstrings,None
+Muscle,Band Alternating Biceps Curl,Upper Arms,Biceps,Forearms,,Band
+Muscle,Band Alternating V-Up,Core,Abs,Hip Flexors,,Band
+Muscle,Band Assisted Pull-Up,Back,Lats,Biceps,Forearms,Band
+Muscle,Band Assisted Wheel Rollerout,Core,Abs,Lower Back,,Band
+Muscle,Band Bench Press,Chest,Pectorals,Triceps,Shoulders,Band
+Muscle,Band Bent-Over Hip Extension,Upper Legs,Glutes,Hamstrings,Lower Back,Band
+Muscle,Band Bicycle Crunch,Core,Abs,Hip Flexors,Obliques,Band
+Muscle,Band Close-Grip Pulldown,Back,Lats,Biceps,Forearms,Band
+Muscle,Band Close-Grip Push-Up,Upper Arms,Triceps,Chest,Shoulders,Band
+Muscle,Band Concentration Curl,Upper Arms,Biceps,Forearms,,Band
+Muscle,Band Fixed Back Close Grip Pulldown,Back,Lats,Biceps,Forearms,Band
+Muscle,Band Fixed Back Underhand Pulldown,Back,Lats,Biceps,Rhomboids,Band
+Muscle,Band Front Lateral Raise,Shoulders,Delts,Traps,Upper Back,Band
+Muscle,Band Front Raise,Shoulders,Delts,Triceps,Upper Back,Band
+Muscle,Band Hip Lift,Upper Legs,Glutes,Hamstrings,Quadriceps,Band
+Muscle,Band Horizontal Pallof Press,Core,Abs,Obliques,Glutes,Band
+Muscle,Band Jack Knife Sit-Up,Core,Abs,Hip Flexors,,Band
+Muscle,Band Kneeling One Arm Pulldown,Back,Lats,Biceps,Rhomboids,Band
+Muscle,Band Kneeling Twisting Crunch,Core,Abs,Obliques,,Band
+Muscle,Band Lying Hip Internal Rotation,Upper Legs,Glutes,Hamstrings,Quadriceps,Band
+Muscle,Band Lying Straight Leg Raise,Core,Abs,Hip Flexors,,Band
+Muscle,Band One Arm Overhead Biceps Curl,Upper Arms,Biceps,Forearms,Shoulders,Band
+Muscle,Band One Arm Single Leg Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Band
+Muscle,Band One Arm Standing Low Row,Back,Upper Back,Biceps,Shoulders,Band
+Muscle,Band One Arm Twisting Chest Press,Chest,Pectorals,Shoulders,Triceps,Band
+Muscle,Band One Arm Twisting Seated Row,Back,Upper Back,Biceps,Shoulders,Band
+Muscle,Band Pull Through,Upper Legs,Glutes,Hamstrings,Lower Back,Band
+Muscle,Band Push Sit-Up,Core,Abs,Shoulders,Chest,Band
+Muscle,Band Reverse Fly,Shoulders,Delts,Upper Back,Trapezius,Band
+Muscle,Band Reverse Wrist Curl,Lower Arms,Forearms,Forearms,,Band
+Muscle,Band Seated Hip Internal Rotation,Upper Legs,Glutes,Hamstrings,Quadriceps,Band
+Muscle,Band Seated Twist,Core,Abs,Obliques,,Band
+Muscle,Band Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Band
+Muscle,Band Shrug,Back,Traps,Shoulders,,Band
+Muscle,Band Side Triceps Extension,Upper Arms,Triceps,Shoulders,,Band
+Muscle,Band Single Leg Calf Raise,Lower Legs,Calves,Ankles,Feet,Band
+Muscle,Band Single Leg Reverse Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Band
+Muscle,Band Single Leg Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Band
+Muscle,Band Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Band
+Muscle,Band Squat Row,Upper Legs,Glutes,Hamstrings,Quadriceps,Band
+Muscle,Band Standing Crunch,Core,Abs,Obliques,,Band
+Muscle,Band Standing Rear Delt Row,Shoulders,Delts,Trapezius,Rhomboids,Band
+Muscle,Band Standing Twisting Crunch,Core,Abs,Obliques,,Band
+Muscle,Band Step-Up,Upper Legs,Glutes,Quadriceps,Hamstrings,Band
+Muscle,Band Stiff Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Band
+Muscle,Band Straight Back Stiff Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Band
+Muscle,Band Straight Leg Deadlift,Back,Spine,Hamstrings,Glutes,Band
+Muscle,Band Twisting Overhead Press,Shoulders,Delts,Triceps,Upper Back,Band
+Muscle,Band Two Legs Calf Raise - (Band Under Both Legs) V. 2,Lower Legs,Calves,Ankles,Feet,Band
+Muscle,Band Underhand Pulldown,Back,Lats,Biceps,Forearms,Band
+Muscle,Band V-Up,Core,Abs,Hip Flexors,,Band
+Muscle,Band Vertical Pallof Press,Core,Abs,Obliques,Glutes,Band
+Muscle,Band Wrist Curl,Lower Arms,Forearms,Biceps,Triceps,Band
+Muscle,Band Y-Raise,Shoulders,Delts,Traps,Rhomboids,Band
+Muscle,Barbell Alternate Biceps Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Bench Front Squat,Upper Legs,Quads,Hamstrings,Glutes,Barbell
+Muscle,Barbell Bench Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Bench Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Bent Arm Pullover,Back,Lats,Triceps,Chest,Barbell
+Muscle,Barbell Bent Over Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell Biceps Curl (With Arm Blaster),Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Clean And Press,Upper Legs,Quads,Hamstrings,Glutes,Barbell
+Muscle,Barbell Clean-Grip Front Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Close-Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Decline Bench Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Decline Bent Arm Pullover,Back,Lats,Triceps,Chest,Barbell
+Muscle,Barbell Decline Close Grip To Skull Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Decline Pullover,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Decline Wide-Grip Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Decline Wide-Grip Pullover,Back,Lats,Triceps,Chest,Barbell
+Muscle,Barbell Drag Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Floor Calf Raise,Lower Legs,Calves,Hamstrings,,Barbell
+Muscle,Barbell Front Chest Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Front Raise,Shoulders,Delts,Biceps,Triceps,Barbell
+Muscle,Barbell Front Raise And Pullover,Chest,Pectorals,Deltoids,Triceps,Barbell
+Muscle,Barbell Front Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Full Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Full Squat (Back Pov),Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Full Squat (Side Pov),Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Full Zercher Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Glute Bridge,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Glute Bridge Two Legs On Bench (Male),Upper Legs,Glutes,Hamstrings,Core,Barbell
+Muscle,Barbell Good Morning,Upper Legs,Hamstrings,Lower Back,,Barbell
+Muscle,Barbell Guillotine Bench Press,Chest,Pectorals,Shoulders,Triceps,Barbell
+Muscle,Barbell Hack Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell High Bar Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Incline Bench Press,Chest,Pectorals,Shoulders,Triceps,Barbell
+Muscle,Barbell Incline Close Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Incline Reverse-Grip Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Incline Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell Incline Shoulder Raise,Chest,Serratus Anterior,Deltoids,Trapezius,Barbell
+Muscle,Barbell Jefferson Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Jm Bench Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Jump Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Lateral Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Low Bar Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Lying Back Of The Head Tricep Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Lying Close-Grip Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Lying Close-Grip Triceps Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Lying Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Lying Lifting (On Hip),Upper Legs,Glutes,Hamstrings,Quadriceps,Barbell
+Muscle,Barbell Lying Preacher Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Lying Triceps Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Lying Triceps Extension Skull Crusher,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Narrow Stance Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell One Arm Bent Over Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell One Arm Floor Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell One Arm Side Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Barbell
+Muscle,Barbell One Arm Snatch,Shoulders,Delts,Traps,Forearms,Barbell
+Muscle,Barbell One Leg Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Overhead Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Palms Down Wrist Curl Over A Bench,Lower Arms,Forearms,Biceps,Brachialis,Barbell
+Muscle,Barbell Palms Up Wrist Curl Over A Bench,Lower Arms,Forearms,Biceps,Shoulders,Barbell
+Muscle,Barbell Pendlay Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell Pin Presses,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Preacher Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Press Sit-Up,Core,Abs,Shoulders,Chest,Barbell
+Muscle,Barbell Prone Incline Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Pullover,Back,Lats,Chest,Triceps,Barbell
+Muscle,Barbell Pullover To Press,Back,Lats,Triceps,Chest,Barbell
+Muscle,Barbell Rack Pull,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Rear Delt Raise,Shoulders,Delts,Traps,Rhomboids,Barbell
+Muscle,Barbell Rear Delt Row,Shoulders,Delts,Trapezius,Rhomboids,Barbell
+Muscle,Barbell Rear Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Rear Lunge V. 2,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Revers Wrist Curl V. 2,Lower Arms,Forearms,Biceps,Brachialis,Barbell
+Muscle,Barbell Reverse Close-Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Barbell
+Muscle,Barbell Reverse Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Reverse Grip Bent Over Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell Reverse Grip Decline Bench Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Reverse Grip Incline Bench Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Reverse Grip Incline Bench Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Barbell Reverse Grip Skullcrusher,Upper Arms,Triceps,Forearms,,Barbell
+Muscle,Barbell Reverse Preacher Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Reverse Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Barbell
+Muscle,Barbell Rollerout,Core,Abs,Lower Back,,Barbell
+Muscle,Barbell Rollerout From Bench,Core,Abs,Shoulders,Triceps,Barbell
+Muscle,Barbell Romanian Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Seated Behind Head Military Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Seated Bradford Rocky Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Seated Calf Raise,Lower Legs,Calves,Hamstrings,Quadriceps,Barbell
+Muscle,Barbell Seated Calf Raise,Lower Legs,Calves,Hamstrings,,Barbell
+Muscle,Barbell Seated Close Grip Behind Neck Triceps Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Seated Close-Grip Concentration Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Seated Good Morning,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Seated Overhead Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Seated Overhead Triceps Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Seated Twist,Core,Abs,Obliques,Lower Back,Barbell
+Muscle,Barbell Shrug,Back,Traps,Shoulders,,Barbell
+Muscle,Barbell Side Bent V. 2,Core,Abs,Obliques,Lower Back,Barbell
+Muscle,Barbell Side Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Side Split Squat V. 2,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Single Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Single Leg Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Sitted Alternate Leg Raise,Core,Abs,Hip Flexors,,Barbell
+Muscle,Barbell Sitted Alternate Leg Raise (Female),Core,Abs,Hip Flexors,Quadriceps,Barbell
+Muscle,Barbell Skier,Shoulders,Delts,Triceps,Core,Barbell
+Muscle,Barbell Speed Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Split Squat V. 2,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Squat (On Knees),Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Squat Jump Step Rear Lunge,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Standing Ab Rollerout,Core,Abs,Shoulders,Lower Back,Barbell
+Muscle,Barbell Standing Back Wrist Curl,Lower Arms,Forearms,Biceps,Shoulders,Barbell
+Muscle,Barbell Standing Bradford Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Standing Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Barbell
+Muscle,Barbell Standing Close Grip Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Standing Close Grip Military Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Standing Concentration Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Standing Front Raise Over Head,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Standing Leg Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Barbell
+Muscle,Barbell Standing Overhead Triceps Extension,Upper Arms,Triceps,Shoulders,,Barbell
+Muscle,Barbell Standing Reverse Grip Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Standing Rocking Leg Calf Raise,Lower Legs,Calves,Hamstrings,Quadriceps,Barbell
+Muscle,Barbell Standing Twist,Core,Abs,Obliques,Lower Back,Barbell
+Muscle,Barbell Standing Wide Grip Biceps Curl,Upper Arms,Biceps,Forearms,,Barbell
+Muscle,Barbell Standing Wide Military Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Barbell Standing Wide-Grip Curl,Upper Arms,Biceps,Forearms,Shoulders,Barbell
+Muscle,Barbell Step-Up,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Barbell Stiff Leg Good Morning,Upper Legs,Glutes,Hamstrings,Lower Back,Barbell
+Muscle,Barbell Straight Leg Deadlift,Upper Legs,Hamstrings,Glutes,Lower Back,Barbell
+Muscle,Barbell Sumo Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Barbell
+Muscle,Barbell Thruster,Shoulders,Delts,Quadriceps,Glutes,Barbell
+Muscle,Barbell Upright Row,Shoulders,Delts,Traps,Biceps,Barbell
+Muscle,Barbell Upright Row V. 2,Shoulders,Delts,Traps,Biceps,Barbell
+Muscle,Barbell Upright Row V. 3,Shoulders,Delts,Traps,Biceps,Barbell
+Muscle,Barbell Wide Bench Press,Chest,Pectorals,Shoulders,Triceps,Barbell
+Muscle,Barbell Wide Reverse Grip Bench Press,Chest,Pectorals,Triceps,Shoulders,Barbell
+Muscle,Barbell Wide Squat,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Barbell Wide-Grip Upright Row,Shoulders,Delts,Traps,Biceps,Barbell
+Muscle,Barbell Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Barbell
+Muscle,Barbell Wrist Curl V. 2,Lower Arms,Forearms,Biceps,Brachialis,Barbell
+Muscle,Barbell Zercher Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Basic Toe Touch (Male),Upper Legs,Glutes,Hamstrings,Calves,None
+Muscle,Battling Ropes,Shoulders,Delts,Forearms,Core,Rope
+Cardio,Bear Crawl,Cardio,Cardio,Core,Shoulders,None
+Muscle,Behind Head Chest Stretch,Chest,Pectorals,Shoulders,Triceps,Assisted
+Muscle,Bench Dip (Knees Bent),Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Bench Dip On Floor,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Bench Hip Extension,Upper Legs,Glutes,Hamstrings,,None
+Muscle,Bench Pull-Ups,Back,Lats,Biceps,Forearms,None
+Muscle,Bent Knee Lying Twist (Male),Upper Legs,Glutes,Obliques,Hip Flexors,None
+Muscle,Biceps Leg Concentration Curl,Upper Arms,Biceps,Forearms,,None
+Muscle,Biceps Narrow Pull-Ups,Upper Arms,Biceps,Forearms,Shoulders,None
+Muscle,Biceps Pull-Up,Upper Arms,Biceps,Forearms,Shoulders,None
+Muscle,Body-Up,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Bodyweight Drop Jump Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Bodyweight Incline Side Plank,Core,Abs,Obliques,Shoulders,None
+Muscle,Bodyweight Kneeling Triceps Extension,Upper Arms,Triceps,Shoulders,Chest,None
+Muscle,Bodyweight Side Lying Biceps Curl,Upper Arms,Biceps,Forearms,,None
+Muscle,Bodyweight Squatting Row,Back,Upper Back,Biceps,Shoulders,None
+Muscle,Bodyweight Squatting Row (With Towel),Back,Upper Back,Biceps,Shoulders,None
+Muscle,Bodyweight Standing Calf Raise,Lower Legs,Calves,Ankles,Feet,None
+Muscle,Bodyweight Standing Close-Grip One Arm Row,Back,Upper Back,Biceps,Forearms,None
+Muscle,Bodyweight Standing Close-Grip Row,Back,Upper Back,Biceps,Forearms,None
+Muscle,Bodyweight Standing One Arm Row,Back,Upper Back,Biceps,Forearms,None
+Muscle,Bodyweight Standing One Arm Row (With Towel),Back,Upper Back,Biceps,Forearms,None
+Muscle,Bodyweight Standing Row,Back,Upper Back,Biceps,Shoulders,None
+Muscle,Bodyweight Standing Row (With Towel),Back,Upper Back,Biceps,Shoulders,None
+Muscle,Bottoms-Up,Core,Abs,Obliques,Hip Flexors,None
+Muscle,Box Jump Down With One Leg Stabilization,Lower Legs,Calves,Quadriceps,Hamstrings,None
+Muscle,Bridge - Mountain Climber (Cross Body),Core,Abs,Glutes,Quadriceps,None
+Cardio,Burpee,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Butt-Ups,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Butterfly Yoga Pose,Upper Legs,Adductors,Hamstrings,Groin,None
+Muscle,Cable Alternate Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Cable
+Muscle,Cable Alternate Triceps Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Assisted Inverse Leg Curl,Upper Legs,Hamstrings,Glutes,Calves,Cable
+Muscle,Cable Bar Lateral Pulldown,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Bench Press,Chest,Pectorals,Triceps,Shoulders,Cable
+Muscle,Cable Close Grip Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Concentration Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Concentration Extension (On Knee),Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Cross-Over Lateral Pulldown,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Cross-Over Revers Fly,Shoulders,Delts,Rhomboids,Trapezius,Cable
+Muscle,Cable Cross-Over Variation,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Cable
+Muscle,Cable Decline Fly,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable Decline One Arm Press,Chest,Pectorals,Triceps,Shoulders,Cable
+Muscle,Cable Decline Press,Chest,Pectorals,Triceps,Shoulders,Cable
+Muscle,Cable Decline Seated Wide-Grip Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Drag Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Floor Seated Wide-Grip Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Forward Raise,Shoulders,Delts,Triceps,Forearms,Cable
+Muscle,Cable Front Raise,Shoulders,Delts,Triceps,Forearms,Cable
+Muscle,Cable Front Shoulder Raise,Shoulders,Delts,Trapezius,Biceps,Cable
+Muscle,Cable Hammer Curl (With Rope),Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable High Pulley Overhead Tricep Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable High Row (Kneeling),Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable Hip Adduction,Upper Legs,Adductors,Glutes,Quadriceps,Cable
+Muscle,Cable Incline Bench Press,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Incline Bench Row,Back,Upper Back,Biceps,Rear Deltoids,Cable
+Muscle,Cable Incline Fly,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Incline Fly (On Stability Ball),Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Incline Pushdown,Back,Lats,Triceps,Shoulders,Cable
+Muscle,Cable Incline Triceps Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Judo Flip,Core,Abs,Obliques,Shoulders,Cable
+Muscle,Cable Kickback,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Kneeling Crunch,Core,Abs,Obliques,,Cable
+Muscle,Cable Kneeling Rear Delt Row (With Rope) (Male),Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Kneeling Triceps Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Lat Pulldown Full Range Of Motion,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Lateral Pulldown (With Rope Attachment),Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Lateral Pulldown With V-Bar,Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Lateral Raise,Shoulders,Delts,Traps,Triceps,Cable
+Muscle,Cable Low Fly,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Low Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Lying Bicep Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Lying Close-Grip Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Lying Extension Pullover (With Rope Attachment),Back,Lats,Triceps,Shoulders,Cable
+Muscle,Cable Lying Fly,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Lying Triceps Extension V. 2,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Middle Fly,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable One Arm Bent Over Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable One Arm Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable One Arm Decline Chest Fly,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable One Arm Fly On Exercise Ball,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable One Arm Incline Fly On Exercise Ball,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable One Arm Incline Press,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable One Arm Incline Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable One Arm Lateral Bent-Over,Chest,Pectorals,Deltoids,Trapezius,Cable
+Muscle,Cable One Arm Lateral Raise,Shoulders,Delts,Traps,Triceps,Cable
+Muscle,Cable One Arm Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable One Arm Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable One Arm Pulldown,Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable One Arm Reverse Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable One Arm Straight Back High Row (Kneeling),Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable One Arm Tricep Pushdown,Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Overhead Curl,Upper Arms,Biceps,Forearms,Shoulders,Cable
+Muscle,Cable Overhead Curl On Exercise Ball,Upper Arms,Biceps,Forearms,Shoulders,Cable
+Muscle,Cable Overhead Triceps Extension (Rope Attachment),Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Palm Rotational Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable Pull Through (With Rope),Upper Legs,Glutes,Hamstrings,Lower Back,Cable
+Muscle,Cable Pulldown,Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Pulldown (Pro Lat Bar),Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Pulldown Bicep Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Pushdown,Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Pushdown (Straight Arm) V. 2,Back,Lats,Triceps,Shoulders,Cable
+Muscle,Cable Pushdown (With Rope Attachment),Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Rear Delt Row (Stirrups),Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Rear Delt Row (With Rope),Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Rear Drive,Upper Arms,Triceps,Shoulders,Back,Cable
+Muscle,Cable Rear Pulldown,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Reverse Crunch,Core,Abs,Hip Flexors,,Cable
+Muscle,Cable Reverse Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Reverse Grip Triceps Pushdown (Sz-Bar) (With Arm Blaster),Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Reverse One Arm Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Reverse Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Reverse Wrist Curl,Lower Arms,Forearms,Forearms,Wrists,Cable
+Muscle,Cable Reverse-Grip Pushdown,Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Reverse-Grip Straight Back Seated High Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Rope Crossover Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Rope Elevated Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Rope Extension Incline Bench Row,Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable Rope Hammer Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Rope High Pulley Overhead Tricep Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Rope Incline Tricep Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Rope Lying On Floor Tricep Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Rope One Arm Hammer Preacher Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Rope Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Russian Twists (On Stability Ball),Core,Abs,Obliques,Lower Back,Cable
+Muscle,Cable Seated Chest Press,Chest,Pectorals,Shoulders,Triceps,Cable
+Muscle,Cable Seated Crunch,Core,Abs,Obliques,,Cable
+Muscle,Cable Seated Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Seated High Row (V-Bar),Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Seated One Arm Alternate Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Seated One Arm Concentration Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Seated Overhead Curl,Upper Arms,Biceps,Forearms,Shoulders,Cable
+Muscle,Cable Seated Rear Lateral Raise,Shoulders,Delts,Traps,Rhomboids,Cable
+Muscle,Cable Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Seated Shoulder Internal Rotation,Shoulders,Delts,Rotator Cuff,Triceps,Cable
+Muscle,Cable Seated Twist,Core,Abs,Obliques,,Cable
+Muscle,Cable Seated Wide-Grip Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Cable
+Muscle,Cable Shrug,Back,Traps,Shoulders,,Cable
+Muscle,Cable Side Bend,Core,Abs,Obliques,,Cable
+Muscle,Cable Side Bend Crunch (Bosu Ball),Core,Abs,Obliques,,Cable
+Muscle,Cable Side Crunch,Core,Abs,Obliques,,Cable
+Muscle,Cable Squat Row (With Rope Attachment),Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Squatting Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Standing Back Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Cable
+Muscle,Cable Standing Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Cable
+Muscle,Cable Standing Cross-Over High Reverse Fly,Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Standing Crunch,Core,Abs,Obliques,,Cable
+Muscle,Cable Standing Crunch (With Rope Attachment),Core,Abs,Obliques,,Cable
+Muscle,Cable Standing Fly,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Standing Hip Extension,Upper Legs,Glutes,Hamstrings,Quadriceps,Cable
+Muscle,Cable Standing Inner Curl,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Standing Lift,Core,Abs,Obliques,Lower Back,Cable
+Muscle,Cable Standing One Arm Triceps Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Standing One Leg Calf Raise,Lower Legs,Calves,Ankles,Feet,Cable
+Muscle,Cable Standing Pulldown (With Rope),Upper Arms,Biceps,Forearms,Shoulders,Cable
+Muscle,Cable Standing Rear Delt Row (With Rope),Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Standing Reverse Grip One Arm Overhead Tricep Extension,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Standing Row (V-Bar),Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable Standing Shoulder External Rotation,Shoulders,Delts,Rotator Cuff,Trapezius,Cable
+Muscle,Cable Standing Twist Row (V-Bar),Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable Standing Up Straight Crossovers,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Straight Arm Pulldown,Back,Lats,Shoulders,Biceps,Cable
+Muscle,Cable Straight Arm Pulldown (With Rope),Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Straight Back Seated Row,Back,Upper Back,Biceps,Forearms,Cable
+Muscle,Cable Supine Reverse Fly,Shoulders,Delts,Trapezius,Rhomboids,Cable
+Muscle,Cable Thibaudeau Kayak Row,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Triceps Pushdown (V-Bar),Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Triceps Pushdown (V-Bar) (With Arm Blaster),Upper Arms,Triceps,Forearms,,Cable
+Muscle,Cable Tuck Reverse Crunch,Core,Abs,Hip Flexors,,Cable
+Muscle,Cable Twist,Core,Abs,Obliques,,Cable
+Muscle,Cable Twist (Up-Down),Core,Abs,Obliques,Lower Back,Cable
+Muscle,Cable Twisting Pull,Back,Lats,Shoulders,Biceps,Cable
+Muscle,Cable Two Arm Curl On Incline Bench,Upper Arms,Biceps,Forearms,,Cable
+Muscle,Cable Two Arm Tricep Kickback,Upper Arms,Triceps,Shoulders,,Cable
+Muscle,Cable Underhand Pulldown,Back,Lats,Biceps,Forearms,Cable
+Muscle,Cable Upper Chest Crossovers,Chest,Pectorals,Deltoids,Triceps,Cable
+Muscle,Cable Upper Row,Back,Upper Back,Biceps,Shoulders,Cable
+Muscle,Cable Upright Row,Shoulders,Delts,Traps,Biceps,Cable
+Muscle,Cable Wide Grip Rear Pulldown Behind Neck,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Cable Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Cable
+Muscle,Calf Push Stretch With Hands Against Wall,Lower Legs,Calves,Hamstrings,,None
+Muscle,Calf Stretch With Hands Against Wall,Lower Legs,Calves,Hamstrings,,None
+Muscle,Calf Stretch With Rope,Lower Legs,Calves,Hamstrings,,Rope
+Muscle,Cambered Bar Lying Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Captains Chair Straight Leg Raise,Core,Abs,Hip Flexors,,None
+Muscle,Chair Leg Extended Stretch,Upper Legs,Quads,Hamstrings,Calves,None
+Muscle,Chest And Front Of Shoulder Stretch,Chest,Pectorals,Deltoids,,None
+Muscle,Chest Dip,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Chest Dip (On Dip-Pull-Up Cage),Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Chest Dip On Straight Bar,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Chest Stretch With Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Stability Ball
+Muscle,Chest Tap Push-Up (Male),Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Chin-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Chin-Ups (Narrow Parallel Grip),Back,Upper Back,Biceps,Forearms,None
+Muscle,Circles Knee Stretch,Lower Legs,Calves,Hamstrings,Quadriceps,None
+Muscle,Clap Push Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Clock Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Close Grip Chin-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Close-Grip Push-Up,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Close-Grip Push-Up (On Knees),Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Cocoons,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Crab Twist Toe Touch,Core,Abs,Obliques,Hip Flexors,None
+Muscle,Cross Body Crunch,Core,Abs,Obliques,,None
+Muscle,Crunch (Hands Overhead),Core,Abs,Hip Flexors,,None
+Muscle,Crunch (On Stability Ball),Core,Abs,Hip Flexors,,Stability Ball
+Muscle,"Crunch (On Stability Ball, Arms Straight)",Core,Abs,Hip Flexors,,Stability Ball
+Muscle,Crunch Floor,Core,Abs,Hip Flexors,,None
+Muscle,Curl-Up,Core,Abs,Hip Flexors,,None
+Muscle,Curtsey Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Cardio,Cycle Cross Trainer,Cardio,Cardio,Quadriceps,Hamstrings,Leverage Machine
+Muscle,Dead Bug,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Decline Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Decline Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Decline Sit-Up,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Deep Push Up,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Diamond Push-Up,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Donkey Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,None
+Muscle,Drop Push Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Dumbbell Alternate Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Alternate Biceps Curl (With Arm Blaster),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Alternate Hammer Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Alternate Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Alternate Seated Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Alternate Side Press,Shoulders,Delts,Triceps,Core,Dumbbell
+Muscle,Dumbbell Alternating Bicep Curl With Leg Raised On Exercise Ball,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell Alternating Seated Bicep Curl On Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Arnold Press,Shoulders,Delts,Triceps,Upper Chest,Dumbbell
+Muscle,Dumbbell Arnold Press V. 2,Shoulders,Delts,Triceps,Upper Chest,Dumbbell
+Muscle,Dumbbell Around Pullover,Chest,Pectorals,Triceps,Latissimus Dorsi,Dumbbell
+Muscle,Dumbbell Bench Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Bench Seated Press,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Bench Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Bent Over Row,Back,Upper Back,Biceps,Forearms,Dumbbell
+Muscle,Dumbbell Bicep Curl Lunge With Bowling Motion,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell Bicep Curl On Exercise Ball With Leg Raised,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell Bicep Curl With Stork Stance,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Biceps Curl (With Arm Blaster),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Biceps Curl Reverse,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Biceps Curl Squat,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Biceps Curl V Sit On Bosu Ball,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Cardio,Dumbbell Burpee,Cardio,Cardio,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Clean,Upper Legs,Glutes,Hamstrings,Quadriceps,Dumbbell
+Muscle,Dumbbell Close Grip Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Close-Grip Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Concentration Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Contralateral Forward Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Cross Body Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Cross Body Hammer Curl V. 2,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Cuban Press,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Cuban Press V. 2,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Decline Bench Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Decline Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Decline Hammer Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Decline One Arm Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Decline One Arm Hammer Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Decline Shrug,Back,Traps,Shoulders,Rhomboids,Dumbbell
+Muscle,Dumbbell Decline Shrug V. 2,Back,Traps,Shoulders,Rhomboids,Dumbbell
+Muscle,Dumbbell Decline Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Decline Twist Fly,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Finger Curls,Lower Arms,Forearms,Wrist Flexors,Wrist Extensors,Dumbbell
+Muscle,Dumbbell Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Fly On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Forward Lunge Triceps Extension,Upper Arms,Triceps,Shoulders,Core,Dumbbell
+Muscle,Dumbbell Front Raise,Shoulders,Delts,Biceps,Trapezius,Dumbbell
+Muscle,Dumbbell Front Raise V. 2,Shoulders,Delts,Trapezius,Biceps,Dumbbell
+Muscle,Dumbbell Full Can Lateral Raise,Shoulders,Delts,Traps,Rotator Cuff,Dumbbell
+Muscle,Dumbbell Goblet Squat,Upper Legs,Quads,Glutes,Hamstrings,Dumbbell
+Muscle,Dumbbell Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Hammer Curl On Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Hammer Curl V. 2,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Hammer Curls (With Arm Blaster),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell High Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline Alternate Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Bench Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline Breeding,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline Curl V. 2,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline Fly On Exercise Ball,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline Hammer Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Hammer Press On Exercise Ball,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Incline Inner Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Incline One Arm Fly,Chest,Pectorals,Deltoids,Triceps,Dumbbell
+Muscle,Dumbbell Incline One Arm Fly On Exercise Ball,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline One Arm Hammer Press,Upper Arms,Triceps,Shoulders,Chest,Dumbbell
+Muscle,Dumbbell Incline One Arm Hammer Press On Exercise Ball,Upper Arms,Triceps,Shoulders,Chest,Dumbbell
+Muscle,Dumbbell Incline One Arm Lateral Raise,Shoulders,Delts,Trapezius,Triceps,Dumbbell
+Muscle,Dumbbell Incline One Arm Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline One Arm Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Palm-In Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Raise,Shoulders,Delts,Trapezius,Triceps,Dumbbell
+Muscle,Dumbbell Incline Rear Lateral Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Incline Row,Back,Upper Back,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Incline Shoulder Raise,Chest,Serratus Anterior,Deltoids,Trapezius,Dumbbell
+Muscle,Dumbbell Incline Shrug,Back,Traps,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline T-Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Incline Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline Twisted Flyes,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Incline Two Arm Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Incline Y-Raise,Back,Upper Back,Shoulders,Rear Deltoids,Dumbbell
+Muscle,Dumbbell Iron Cross,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Kickbacks On Exercise Ball,Upper Arms,Triceps,Shoulders,Back,Dumbbell
+Muscle,Dumbbell Kneeling Bicep Curl Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Lateral Raise,Shoulders,Delts,Traps,,Dumbbell
+Muscle,Dumbbell Lateral To Front Raise,Shoulders,Delts,Trapezius,Biceps,Dumbbell
+Muscle,Dumbbell Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Lunge With Bicep Curl,Upper Arms,Biceps,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Lying Extension (Across Face),Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Lying Alternate Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Lying Elbow Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Lying External Shoulder Rotation,Shoulders,Delts,Rotator Cuff,Triceps,Dumbbell
+Muscle,Dumbbell Lying Femoral,Upper Legs,Hamstrings,Glutes,,Dumbbell
+Muscle,Dumbbell Lying Hammer Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying On Floor Rear Delt Raise,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Lying One Arm Deltoid Rear,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Lying One Arm Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying One Arm Press V. 2,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying One Arm Pronated Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Lying One Arm Rear Lateral Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Lying One Arm Supinated Triceps Extension,Upper Arms,Triceps,Forearms,,Dumbbell
+Muscle,Dumbbell Lying Pronation,Lower Arms,Forearms,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying Pronation On Floor,Lower Arms,Forearms,Biceps,Triceps,Dumbbell
+Muscle,Dumbbell Lying Pullover On Exercise Ball,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying Rear Delt Row,Back,Upper Back,Shoulders,Biceps,Dumbbell
+Muscle,Dumbbell Lying Rear Lateral Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Lying Single Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Lying Supination,Lower Arms,Forearms,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying Supination On Floor,Lower Arms,Forearms,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Lying Supine Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Lying Supine Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Lying Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Lying Wide Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Neutral Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell One Arm Bench Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Dumbbell One Arm Bent-Over Row,Back,Upper Back,Biceps,Forearms,Dumbbell
+Muscle,Dumbbell One Arm Chest Fly On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell One Arm Concentration Curl (On Stability Ball),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Decline Chest Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell One Arm Fly On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell One Arm French Press On Exercise Ball,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell One Arm Hammer Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Hammer Press On Exercise Ball,Upper Arms,Triceps,Shoulders,Chest,Dumbbell
+Muscle,Dumbbell One Arm Incline Chest Press,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell One Arm Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell One Arm Lateral Raise,Shoulders,Delts,Trapezius,Triceps,Dumbbell
+Muscle,Dumbbell One Arm Lateral Raise With Support,Shoulders,Delts,Trapezius,Rotator Cuff,Dumbbell
+Muscle,Dumbbell One Arm Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell One Arm Prone Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Prone Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Pullover On Exercise Ball,Chest,Pectorals,Triceps,Latissimus Dorsi,Dumbbell
+Muscle,Dumbbell One Arm Reverse Wrist Curl,Lower Arms,Forearms,Wrist Extensors,,Dumbbell
+Muscle,Dumbbell One Arm Reverse Fly (With Support),Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell One Arm Reverse Grip Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell One Arm Reverse Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Reverse Spider Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Seated Bicep Curl On Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Seated Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Seated Neutral Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell One Arm Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell One Arm Shoulder Press V. 2,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell One Arm Snatch,Upper Legs,Glutes,Hamstrings,Quadriceps,Dumbbell
+Muscle,Dumbbell One Arm Standing Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Standing Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Arm Triceps Extension (On Bench),Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell One Arm Upright Row,Shoulders,Delts,Traps,Biceps,Dumbbell
+Muscle,Dumbbell One Arm Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell One Arm Zottman Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell One Leg Fly On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Over Bench Neutral Wrist Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Over Bench One Arm Neutral Wrist Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Over Bench One Arm Reverse Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell Over Bench One Arm Wrist Curl,Lower Arms,Forearms,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Over Bench Revers Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell Over Bench Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell Palm Rotational Bent Over Row,Back,Upper Back,Biceps,Forearms,Dumbbell
+Muscle,Dumbbell Palms In Incline Bench Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Peacher Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Plyo Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Preacher Curl Over Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Press On Exercise Ball,Chest,Pectorals,Shoulders,Triceps,Dumbbell
+Muscle,Dumbbell Pronate-Grip Triceps Extension,Upper Arms,Triceps,Forearms,,Dumbbell
+Muscle,Dumbbell Prone Incline Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Prone Incline Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Pullover,Chest,Pectorals,Latissimus Dorsi,Triceps,Dumbbell
+Muscle,Dumbbell Pullover Hip Extension On Exercise Ball,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Pullover On Exercise Ball,Chest,Pectorals,Triceps,Latissimus Dorsi,Dumbbell
+Muscle,Dumbbell Push Press,Shoulders,Delts,Triceps,Core,Dumbbell
+Muscle,Dumbbell Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Delt Raise,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Delt Row_Shoulder,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Fly,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Lateral Raise,Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Lateral Raise (Support Head),Shoulders,Delts,Traps,Rhomboids,Dumbbell
+Muscle,Dumbbell Rear Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Revers Grip Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Reverse Bench Press,Chest,Pectorals,Triceps,Shoulders,Dumbbell
+Muscle,Dumbbell Reverse Fly,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Reverse Grip Incline Bench One Arm Row,Back,Upper Back,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Reverse Grip Incline Bench Two Arm Row,Back,Upper Back,Biceps,Forearms,Dumbbell
+Muscle,Dumbbell Reverse Grip Row (Female),Back,Upper Back,Biceps,Forearms,Dumbbell
+Muscle,Dumbbell Reverse Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Reverse Spider Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Reverse Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Dumbbell
+Muscle,Dumbbell Romanian Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Rotation Reverse Fly,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Scott Press,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Seated Alternate Front Raise,Shoulders,Delts,Trapezius,Biceps,Dumbbell
+Muscle,Dumbbell Seated Alternate Hammer Curl On Exercise Ball,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Alternate Press,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Seated Alternate Shoulder,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Seated Bench Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Seated Bent Arm Lateral Raise,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Seated Bent Over Alternate Kickback,Upper Arms,Triceps,Shoulders,Back,Dumbbell
+Muscle,Dumbbell Seated Bent Over Triceps Extension,Upper Arms,Triceps,Shoulders,Back,Dumbbell
+Muscle,Dumbbell Seated Bicep Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Biceps Curl (On Stability Ball),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Biceps Curl To Shoulder Press,Upper Arms,Biceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Seated Calf Raise,Lower Legs,Calves,Hamstrings,,Dumbbell
+Muscle,Dumbbell Seated Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Front Raise,Shoulders,Delts,Trapezius,Biceps,Dumbbell
+Muscle,Dumbbell Seated Hammer Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Inner Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Seated Lateral Raise,Shoulders,Delts,Traps,Upper Back,Dumbbell
+Muscle,Dumbbell Seated Lateral Raise V. 2,Shoulders,Delts,Traps,Triceps,Dumbbell
+Muscle,Dumbbell Seated Neutral Wrist Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated One Arm Bicep Curl On Exercise Ball With Leg Raised,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell Seated One Arm Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Seated One Arm Rotate,Lower Arms,Forearms,Shoulders,Biceps,Dumbbell
+Muscle,Dumbbell Seated One Leg Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Dumbbell
+Muscle,Dumbbell Seated One Leg Calf Raise - Hammer Grip,Lower Legs,Calves,Hamstrings,Glutes,Dumbbell
+Muscle,Dumbbell Seated One Leg Calf Raise - Palm Up,Lower Legs,Calves,Hamstrings,Glutes,Dumbbell
+Muscle,Dumbbell Seated Palms Up Wrist Curl,Lower Arms,Forearms,Biceps,Shoulders,Dumbbell
+Muscle,Dumbbell Seated Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Revers Grip Concentration Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Seated Reverse Grip One Arm Overhead Tricep Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Seated Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Seated Shoulder Press (Parallel Grip),Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Seated Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Shrug,Back,Traps,Shoulders,,Dumbbell
+Muscle,Dumbbell Side Bend,Core,Abs,Obliques,,Dumbbell
+Muscle,Dumbbell Side Lying One Hand Raise,Shoulders,Delts,Trapezius,Rhomboids,Dumbbell
+Muscle,Dumbbell Side Plank With Rear Fly,Back,Upper Back,Shoulders,Core,Dumbbell
+Muscle,Dumbbell Single Arm Overhead Carry,Shoulders,Delts,Traps,Core,Dumbbell
+Muscle,Dumbbell Single Leg Calf Raise,Lower Legs,Calves,Ankles,,Dumbbell
+Muscle,Dumbbell Single Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Single Leg Deadlift With Stepbox Support,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Single Leg Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Dumbbell
+Muscle,Dumbbell Single Leg Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Standing Alternate Hammer Curl And Press,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell Standing Alternate Overhead Press,Shoulders,Delts,Triceps,Core,Dumbbell
+Muscle,Dumbbell Standing Alternate Raise,Shoulders,Delts,Traps,Forearms,Dumbbell
+Muscle,Dumbbell Standing Alternating Tricep Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Standing Around World,Shoulders,Delts,Triceps,Forearms,Dumbbell
+Muscle,Dumbbell Standing Bent Over One Arm Triceps Extension,Upper Arms,Triceps,Shoulders,Back,Dumbbell
+Muscle,Dumbbell Standing Bent Over Two Arm Triceps Extension,Upper Arms,Triceps,Shoulders,Back,Dumbbell
+Muscle,Dumbbell Standing Biceps Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Calf Raise,Lower Legs,Calves,Ankles,,Dumbbell
+Muscle,Dumbbell Standing Concentration Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Front Raise Above Head,Shoulders,Delts,Trapezius,Biceps,Dumbbell
+Muscle,Dumbbell Standing Inner Biceps Curl V. 2,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Kickback,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Standing One Arm Concentration Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing One Arm Curl (Over Incline Bench),Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing One Arm Curl Over Incline Bench,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing One Arm Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Standing One Arm Palm In Press,Shoulders,Delts,Triceps,Core,Dumbbell
+Muscle,Dumbbell Standing One Arm Reverse Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Overhead Press,Shoulders,Delts,Triceps,Upper Back,Dumbbell
+Muscle,Dumbbell Standing Palms In Press,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Standing Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Reverse Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Standing Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Standing Zottman Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Step Up Single Leg Balance With Bicep Curl,Upper Arms,Biceps,Quadriceps,Glutes,Dumbbell
+Muscle,Dumbbell Step-Up,Upper Legs,Glutes,Quadriceps,Hamstrings,Dumbbell
+Muscle,Dumbbell Step-Up Lunge,Upper Legs,Quads,Glutes,Hamstrings,Dumbbell
+Muscle,Dumbbell Step-Up Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Dumbbell
+Muscle,Dumbbell Stiff Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Straight Arm Pullover,Chest,Pectorals,Latissimus Dorsi,Triceps,Dumbbell
+Muscle,Dumbbell Straight Leg Deadlift,Upper Legs,Glutes,Hamstrings,Lower Back,Dumbbell
+Muscle,Dumbbell Sumo Pull Through,Upper Legs,Glutes,Hamstrings,Quadriceps,Dumbbell
+Muscle,Dumbbell Supported Squat,Upper Legs,Quads,Glutes,Hamstrings,Dumbbell
+Muscle,Dumbbell Tate Press,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Tricep Kickback With Stork Stance,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dumbbell Twisting Bench Press,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Dumbbell Upright Row,Shoulders,Delts,Traps,Biceps,Dumbbell
+Muscle,Dumbbell Upright Row (Back Pov),Shoulders,Delts,Traps,Biceps,Dumbbell
+Muscle,Dumbbell Upright Shoulder External Rotation,Shoulders,Delts,Rotator Cuff,Trapezius,Dumbbell
+Muscle,Dumbbell Waiter Biceps Curl,Upper Arms,Biceps,Forearms,Shoulders,Dumbbell
+Muscle,Dumbbell W-Press,Shoulders,Delts,Triceps,Chest,Dumbbell
+Muscle,Dumbbell Zottman Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbell Zottman Preacher Curl,Upper Arms,Biceps,Forearms,,Dumbbell
+Muscle,Dumbbells Seated Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Dynamic Chest Stretch (Male),Chest,Pectorals,Shoulders,Triceps,None
+Muscle,Elbow Dips,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Elbow Lift - Reverse Push-Up,Back,Upper Back,Triceps,Shoulders,None
+Muscle,Elbow-To-Knee,Core,Abs,Obliques,,None
+Muscle,Elevator,Back,Upper Back,Shoulders,Trapezius,None
+Muscle,Exercise Ball Alternating Arm Ups,Back,Lats,Shoulders,Core,Stability Ball
+Muscle,Exercise Ball Back Extension With Arms Extended,Back,Spine,Glutes,Hamstrings,Stability Ball
+Muscle,Exercise Ball Back Extension With Hands Behind Head,Back,Spine,Glutes,Hamstrings,Stability Ball
+Muscle,Exercise Ball Back Extension With Knees Off Ground,Back,Spine,Glutes,Hamstrings,Stability Ball
+Muscle,Exercise Ball Back Extension With Rotation,Back,Spine,Glutes,Hamstrings,Stability Ball
+Muscle,Exercise Ball Dip,Upper Arms,Triceps,Chest,Shoulders,Stability Ball
+Muscle,Exercise Ball Hip Flexor Stretch,Upper Legs,Glutes,Quadriceps,Hamstrings,Stability Ball
+Muscle,Exercise Ball Hug,Back,Spine,Shoulders,Chest,Stability Ball
+Muscle,Exercise Ball Lat Stretch,Back,Lats,Shoulders,Triceps,Stability Ball
+Muscle,Exercise Ball Lower Back Stretch (Pyramid),Back,Lats,Glutes,Hamstrings,Stability Ball
+Muscle,Exercise Ball Lying Side Lat Stretch,Back,Lats,Shoulders,Triceps,Stability Ball
+Muscle,Exercise Ball On The Wall Calf Raise,Lower Legs,Calves,Hamstrings,Quadriceps,Dumbbell
+Muscle,Exercise Ball On The Wall Calf Raise (Tennis Ball Between Ankles),Lower Legs,Calves,Hamstrings,Quadriceps,Dumbbell
+Muscle,Exercise Ball On The Wall Calf Raise (Tennis Ball Between Knees),Lower Legs,Calves,Quadriceps,Hamstrings,Dumbbell
+Muscle,Exercise Ball One Leg Prone Lower Body Rotation,Upper Legs,Glutes,Hamstrings,Quadriceps,Stability Ball
+Muscle,Exercise Ball One Legged Diagonal Kick Hamstring Curl,Upper Legs,Glutes,Hamstrings,Calves,Stability Ball
+Muscle,Exercise Ball Pike Push Up,Chest,Pectorals,Shoulders,Triceps,Stability Ball
+Muscle,Exercise Ball Prone Leg Raise,Back,Spine,Abdominals,Glutes,Stability Ball
+Muscle,Exercise Ball Seated Hamstring Stretch,Upper Legs,Hamstrings,Glutes,Lower Back,Stability Ball
+Muscle,Exercise Ball Seated Triceps Stretch,Upper Arms,Triceps,Shoulders,,Stability Ball
+Muscle,Exercise Ball Supine Triceps Extension,Upper Arms,Triceps,Shoulders,,Dumbbell
+Muscle,Ez Bar French Press On Exercise Ball,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Bar Lying Bent Arms Pullover,Back,Lats,Triceps,Chest,Ez Barbell
+Muscle,Ez Bar Lying Close Grip Triceps Extension Behind Head,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Bar Reverse Grip Bent Over Row,Back,Upper Back,Biceps,Forearms,Ez Barbell
+Muscle,Ez Bar Seated Close Grip Concentration Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Bar Standing French Press,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Barbell Anti Gravity Press,Shoulders,Delts,Triceps,Chest,Ez Barbell
+Muscle,Ez Barbell Close Grip Preacher Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Close-Grip Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Decline Close Grip Face Press,Upper Arms,Triceps,Chest,Shoulders,Ez Barbell
+Muscle,Ez Barbell Decline Triceps Extension,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Barbell Incline Triceps Extension,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Barbell Jm Bench Press,Upper Arms,Triceps,Chest,Shoulders,Ez Barbell
+Muscle,Ez Barbell Reverse Grip Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Reverse Grip Preacher Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Seated Curls,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Seated Triceps Extension,Upper Arms,Triceps,Shoulders,,Ez Barbell
+Muscle,Ez Barbell Spider Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez Barbell Spider Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez-Bar Biceps Curl (With Arm Blaster),Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Ez-Bar Close-Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Ez Barbell
+Muscle,Ez-Barbell Standing Wide Grip Biceps Curl,Upper Arms,Biceps,Forearms,,Ez Barbell
+Muscle,Farmers Walk,Upper Legs,Quads,Calves,Forearms,Dumbbell
+Muscle,Finger Curls,Lower Arms,Forearms,Wrist Flexors,Grip Muscles,Barbell
+Muscle,Flag,Core,Abs,Obliques,Shoulders,None
+Muscle,Flexion Leg Sit Up (Bent Knee),Core,Abs,Hip Flexors,,None
+Muscle,Flexion Leg Sit Up (Straight Arm),Core,Abs,Hip Flexors,Quadriceps,None
+Muscle,Floor Fly (With Barbell),Chest,Pectorals,Deltoids,Triceps,Barbell
+Muscle,Flutter Kicks,Upper Legs,Glutes,Hip Flexors,Lower Abs,None
+Muscle,Forward Jump,Upper Legs,Quads,Calves,Hamstrings,None
+Muscle,Forward Lunge (Male),Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Frankenstein Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Frog Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Frog Planche,Core,Abs,Shoulders,Chest,None
+Muscle,Front Lever,Core,Abs,Lats,Shoulders,None
+Muscle,Front Lever Reps,Back,Upper Back,Core,Shoulders,None
+Muscle,Front Plank With Twist,Core,Abs,Obliques,Shoulders,None
+Muscle,Full Maltese,Core,Abs,Shoulders,Chest,None
+Muscle,Full Planche,Core,Abs,Shoulders,Chest,None
+Muscle,Full Planche Push-Up,Chest,Pectorals,Shoulders,Triceps,None
+Muscle,Gironda Sternum Chin,Back,Lats,Biceps,Rhomboids,None
+Muscle,Glute Bridge March,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Glute Bridge Two Legs On Bench (Male),Upper Legs,Glutes,Hamstrings,Core,None
+Muscle,Glute-Ham Raise,Upper Legs,Hamstrings,Glutes,Lower Back,None
+Muscle,Gorilla Chin,Core,Abs,Forearms,Biceps,None
+Muscle,Groin Crunch,Core,Abs,Hip Flexors,Inner Thighs,None
+Muscle,Hack Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Sled Machine
+Muscle,Hack One Leg Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Sled Machine
+Cardio,Half Knee Bends (Male),Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Half Sit-Up (Male),Core,Abs,Hip Flexors,,None
+Muscle,Hamstring Stretch,Upper Legs,Hamstrings,Glutes,,None
+Muscle,Hands Bike,Chest,Pectorals,Triceps,Shoulders,Upper Body Ergometer
+Muscle,Hands Clasped Circular Toe Touch (Male),Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Hands Reversed Clasped Circular Toe Touch (Male),Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Handstand,Upper Arms,Triceps,Shoulders,Core,None
+Muscle,Handstand Push-Up,Upper Arms,Triceps,Shoulders,Chest,None
+Muscle,Hanging Leg Hip Raise,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Hanging Leg Raise,Core,Abs,Hip Flexors,,None
+Muscle,Hanging Oblique Knee Raise,Core,Abs,Obliques,,None
+Muscle,Hanging Pike,Core,Abs,Hip Flexors,Shoulders,None
+Muscle,Hanging Straight Leg Hip Raise,Core,Abs,Hip Flexors,,None
+Muscle,Hanging Straight Leg Raise,Core,Abs,Hip Flexors,,None
+Muscle,Hanging Straight Twisting Leg Hip Raise,Core,Abs,Obliques,Hip Flexors,None
+Cardio,High Knee Against Wall,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Hip Raise (Bent Knee),Core,Abs,Glutes,Hamstrings,None
+Muscle,Hug Keens To Chest,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Hyght Dumbbell Fly,Chest,Pectorals,Shoulders,,Dumbbell
+Muscle,Hyperextension,Back,Spine,Glutes,Hamstrings,None
+Muscle,Hyperextension (On Bench),Back,Spine,Glutes,Hamstrings,None
+Muscle,Impossible Dips,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Inchworm,Core,Abs,Shoulders,Hamstrings,None
+Muscle,Inchworm V. 2,Core,Abs,Shoulders,Hamstrings,None
+Muscle,Incline Close-Grip Push-Up,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Incline Leg Hip Raise (Leg Straight),Core,Abs,Hip Flexors,,None
+Muscle,Incline Push Up Depth Jump,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Incline Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Incline Push-Up (On Box),Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Incline Reverse Grip Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Incline Scapula Push Up,Chest,Serratus Anterior,Triceps,Shoulders,None
+Muscle,Incline Twisting Sit-Up,Core,Abs,Obliques,,None
+Muscle,Intermediate Hip Flexor And Quad Stretch,Upper Legs,Quads,Hamstrings,Glutes,Rope
+Muscle,Inverse Leg Curl (Bench Support),Upper Legs,Hamstrings,Glutes,Calves,None
+Muscle,Inverse Leg Curl (On Pull-Up Cable Machine),Upper Legs,Hamstrings,Glutes,Calves,None
+Muscle,Inverted Row,Back,Upper Back,Biceps,Forearms,None
+Muscle,Inverted Row Bent Knees,Back,Upper Back,Biceps,Forearms,None
+Muscle,Inverted Row On Bench,Back,Upper Back,Biceps,Forearms,None
+Muscle,Inverted Row V. 2,Back,Upper Back,Biceps,Forearms,None
+Muscle,Inverted Row With Straps,Back,Upper Back,Biceps,Forearms,None
+Muscle,Iron Cross Stretch,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Isometric Chest Squeeze,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Isometric Wipers,Chest,Pectorals,Shoulders,Triceps,None
+Cardio,Jack Burpee,Cardio,Cardio,Quadriceps,Hamstrings,None
+Cardio,Jack Jump (Male),Cardio,Cardio,Quadriceps,Calves,None
+Muscle,Jackknife Sit-Up,Core,Abs,Hip Flexors,,None
+Muscle,Janda Sit-Up,Core,Abs,Hip Flexors,Lower Back,None
+Cardio,Jump Rope,Cardio,Cardio,Calves,Quadriceps,Rope
+Muscle,Jump Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Jump Squat V. 2,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Kettlebell Advanced Windmill,Core,Abs,Obliques,Shoulders,Kettlebell
+Muscle,Kettlebell Alternating Hang Clean,Lower Arms,Forearms,Shoulders,Traps,Kettlebell
+Muscle,Kettlebell Alternating Press,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell Alternating Press On Floor,Chest,Pectorals,Shoulders,Triceps,Kettlebell
+Muscle,Kettlebell Alternating Renegade Row,Back,Upper Back,Core,Shoulders,Kettlebell
+Muscle,Kettlebell Alternating Row,Back,Upper Back,Biceps,Forearms,Kettlebell
+Muscle,Kettlebell Arnold Press,Shoulders,Delts,Triceps,Upper Back,Kettlebell
+Muscle,Kettlebell Bent Press,Core,Abs,Shoulders,Triceps,Kettlebell
+Muscle,Kettlebell Bottoms Up Clean From The Hang Position,Upper Arms,Biceps,Forearms,Shoulders,Kettlebell
+Muscle,Kettlebell Double Alternating Hang Clean,Upper Arms,Biceps,Forearms,Shoulders,Kettlebell
+Muscle,Kettlebell Double Jerk,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell Double Push Press,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell Double Snatch,Shoulders,Delts,Trapezius,Forearms,Kettlebell
+Muscle,Kettlebell Double Windmill,Core,Abs,Shoulders,Hamstrings,Kettlebell
+Muscle,Kettlebell Extended Range One Arm Press On Floor,Chest,Pectorals,Triceps,Shoulders,Kettlebell
+Muscle,Kettlebell Figure 8,Core,Abs,Shoulders,Forearms,Kettlebell
+Muscle,Kettlebell Front Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Kettlebell
+Muscle,Kettlebell Goblet Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Kettlebell
+Muscle,Kettlebell Hang Clean,Upper Legs,Hamstrings,Glutes,Quadriceps,Kettlebell
+Muscle,Kettlebell Lunge Pass Through,Upper Legs,Glutes,Quadriceps,Hamstrings,Kettlebell
+Muscle,Kettlebell One Arm Clean And Jerk,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell One Arm Floor Press,Chest,Pectorals,Triceps,Shoulders,Kettlebell
+Muscle,Kettlebell One Arm Jerk,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell One Arm Military Press To The Side,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell One Arm Push Press,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell One Arm Row,Back,Upper Back,Biceps,Forearms,Kettlebell
+Muscle,Kettlebell One Arm Snatch,Shoulders,Delts,Trapezius,Forearms,Kettlebell
+Muscle,Kettlebell Pirate Supper Legs,Shoulders,Delts,Triceps,Forearms,Kettlebell
+Muscle,Kettlebell Pistol Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Kettlebell
+Muscle,Kettlebell Plyo Push-Up,Chest,Pectorals,Triceps,Shoulders,Kettlebell
+Muscle,Kettlebell Seated Press,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell Seated Two Arm Military Press,Shoulders,Delts,Triceps,Upper Back,Kettlebell
+Muscle,Kettlebell Seesaw Press,Shoulders,Delts,Triceps,Core,Kettlebell
+Muscle,Kettlebell Sumo High Pull,Back,Traps,Shoulders,Glutes,Kettlebell
+Muscle,Kettlebell Swing,Upper Legs,Glutes,Hamstrings,Core,Kettlebell
+Muscle,Kettlebell Thruster,Shoulders,Delts,Quadriceps,Glutes,Kettlebell
+Muscle,Kettlebell Turkish Get Up (Squat Style),Upper Legs,Glutes,Quadriceps,Hamstrings,Kettlebell
+Muscle,Kettlebell Two Arm Clean,Shoulders,Delts,Traps,Forearms,Kettlebell
+Muscle,Kettlebell Two Arm Military Press,Shoulders,Delts,Triceps,Upper Back,Kettlebell
+Muscle,Kettlebell Two Arm Row,Back,Upper Back,Biceps,Forearms,Kettlebell
+Muscle,Kettlebell Windmill,Core,Abs,Obliques,Shoulders,Kettlebell
+Muscle,Kick Out Sit,Upper Legs,Hamstrings,Quadriceps,Glutes,None
+Muscle,Kipping Muscle Up,Back,Lats,Biceps,Triceps,None
+Muscle,Knee Touch Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Kneeling Jump Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Barbell
+Muscle,Kneeling Lat Stretch,Back,Lats,Shoulders,Triceps,None
+Muscle,Kneeling Plank Tap Shoulder (Male),Core,Abs,Shoulders,Triceps,None
+Muscle,Kneeling Push-Up (Male),Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Korean Dips,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,L-Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,L-Sit On Floor,Core,Abs,Hip Flexors,,None
+Muscle,Landmine 180,Core,Abs,Obliques,Quadriceps,Barbell
+Muscle,Landmine Lateral Raise,Shoulders,Delts,Traps,Upper Back,Barbell
+Muscle,Lean Planche,Core,Abs,Shoulders,Chest,None
+Muscle,Left Hook. Boxing,Shoulders,Delts,Biceps,Triceps,None
+Muscle,Leg Pull In Flat Bench,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Leg Up Hamstring Stretch,Upper Legs,Hamstrings,Glutes,,None
+Muscle,Lever Alternate Leg Press,Upper Legs,Quads,Hamstrings,Glutes,Leverage Machine
+Muscle,Lever Alternating Narrow Grip Seated Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Assisted Chin-Up,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Lever Back Extension,Back,Spine,Glutes,Hamstrings,Leverage Machine
+Muscle,Lever Bent Over Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Lever Bent-Over Row With V-Bar,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Bicep Curl,Upper Arms,Biceps,Forearms,,Leverage Machine
+Muscle,Lever Calf Press,Lower Legs,Calves,Hamstrings,,Leverage Machine
+Muscle,Lever Chest Press,Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,Lever Chest Press,Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,Lever Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Leverage Machine
+Muscle,Lever Decline Chest Press,Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,Lever Donkey Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Leverage Machine
+Muscle,Lever Front Pulldown,Back,Lats,Biceps,Rhomboids,Leverage Machine
+Muscle,Lever Gripless Shrug,Back,Traps,Shoulders,Forearms,Leverage Machine
+Muscle,Lever Gripless Shrug V. 2,Back,Traps,Shoulders,Forearms,Leverage Machine
+Muscle,Lever Gripper Hands,Lower Arms,Forearms,Biceps,Triceps,Leverage Machine
+Muscle,Lever Hammer Grip Preacher Curl,Upper Arms,Biceps,Forearms,,Leverage Machine
+Muscle,Lever High Row,Back,Upper Back,Biceps,Rear Deltoids,Leverage Machine
+Muscle,Lever Hip Extension V. 2,Upper Legs,Glutes,Hamstrings,,Leverage Machine
+Muscle,Lever Horizontal One Leg Press,Upper Legs,Glutes,Quadriceps,Hamstrings,Leverage Machine
+Muscle,Lever Incline Chest Press,Chest,Pectorals,Shoulders,Triceps,Leverage Machine
+Muscle,Lever Incline Chest Press V. 2,Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,Lever Kneeling Leg Curl,Upper Legs,Hamstrings,Glutes,,Leverage Machine
+Muscle,Lever Kneeling Twist,Core,Abs,Obliques,Lower Back,Leverage Machine
+Muscle,Lever Lateral Raise,Shoulders,Delts,Traps,Upper Back,Leverage Machine
+Muscle,Lever Leg Extension,Upper Legs,Quads,Hamstrings,,Leverage Machine
+Muscle,Lever Lying Leg Curl,Upper Legs,Hamstrings,Calves,,Leverage Machine
+Muscle,Lever Lying Two-One Leg Curl,Upper Legs,Hamstrings,Glutes,,Leverage Machine
+Muscle,Lever Military Press,Shoulders,Delts,Triceps,Upper Chest,Leverage Machine
+Muscle,Lever Narrow Grip Seated Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever One Arm Bent Over Row,Back,Upper Back,Biceps,Forearms,Barbell
+Muscle,Lever One Arm Lateral High Row,Back,Upper Back,Biceps,Shoulders,Leverage Machine
+Muscle,Lever One Arm Lateral Wide Pulldown,Back,Lats,Biceps,Rhomboids,Leverage Machine
+Muscle,Lever One Arm Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Leverage Machine
+Muscle,Lever Overhand Triceps Dip,Upper Arms,Triceps,Chest,Shoulders,Leverage Machine
+Muscle,Lever Preacher Curl,Upper Arms,Biceps,Forearms,,Leverage Machine
+Muscle,Lever Preacher Curl V. 2,Upper Arms,Biceps,Forearms,,Leverage Machine
+Muscle,Lever Pullover,Back,Lats,Triceps,Shoulders,Leverage Machine
+Muscle,Lever Reverse Grip Lateral Pulldown,Back,Lats,Biceps,Rhomboids,Leverage Machine
+Muscle,Lever Reverse Grip Preacher Curl,Upper Arms,Biceps,Forearms,,Leverage Machine
+Muscle,Lever Reverse Grip Vertical Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Reverse Hyperextension,Upper Legs,Glutes,Hamstrings,Lower Back,Leverage Machine
+Muscle,Lever Reverse T-Bar Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Rotary Calf,Lower Legs,Calves,Soleus,Ankle Stabilizers,Leverage Machine
+Muscle,Lever Seated Calf Press,Lower Legs,Calves,Soleus,Hamstrings,Leverage Machine
+Muscle,Lever Seated Calf Raise,Lower Legs,Calves,Soleus,Ankle Stabilizers,Leverage Machine
+Muscle,Lever Seated Crunch,Core,Abs,Obliques,,Leverage Machine
+Muscle,Lever Seated Crunch (Chest Pad),Core,Abs,Obliques,,Leverage Machine
+Muscle,Lever Seated Crunch V. 2,Core,Abs,Obliques,Hip Flexors,Leverage Machine
+Muscle,Lever Seated Dip,Upper Arms,Triceps,Chest,Shoulders,Leverage Machine
+Muscle,Lever Seated Fly,Chest,Pectorals,Deltoids,Trapezius,Leverage Machine
+Muscle,Lever Seated Good Morning,Upper Legs,Glutes,Hamstrings,Lower Back,Leverage Machine
+Muscle,Lever Seated Hip Abduction,Upper Legs,Abductors,Glutes,Hamstrings,Leverage Machine
+Muscle,Lever Seated Hip Adduction,Upper Legs,Adductors,Hamstrings,Glutes,Leverage Machine
+Muscle,Lever Seated Leg Curl,Upper Legs,Hamstrings,Calves,,Leverage Machine
+Muscle,Lever Seated Leg Raise Crunch,Core,Abs,Hip Flexors,,Leverage Machine
+Muscle,Lever Seated Reverse Fly,Shoulders,Delts,Trapezius,Rhomboids,Leverage Machine
+Muscle,Lever Seated Reverse Fly (Parallel Grip),Shoulders,Delts,Trapezius,Rhomboids,Leverage Machine
+Muscle,Lever Seated Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Seated Squat Calf Raise On Leg Press Machine,Lower Legs,Calves,Quadriceps,Hamstrings,Leverage Machine
+Muscle,Lever Shoulder Press,Shoulders,Delts,Triceps,Chest,Leverage Machine
+Muscle,Lever Shoulder Press V. 2,Shoulders,Delts,Triceps,Chest,Leverage Machine
+Muscle,Lever Shoulder Press V. 3,Shoulders,Delts,Triceps,Chest,Leverage Machine
+Muscle,Lever Shrug,Back,Traps,Shoulders,,Leverage Machine
+Muscle,Lever Standing Calf Raise,Lower Legs,Calves,Soleus,Ankle Stabilizers,Leverage Machine
+Muscle,Lever Standing Chest Press,Chest,Pectorals,Shoulders,Triceps,Leverage Machine
+Muscle,Lever T Bar Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever T-Bar Reverse Grip Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,Lever Triceps Extension,Upper Arms,Triceps,Shoulders,,Leverage Machine
+Muscle,Lever Unilateral Row,Back,Upper Back,Biceps,Forearms,Leverage Machine
+Muscle,London Bridge,Back,Upper Back,Shoulders,Biceps,Rope
+Muscle,Low Glute Bridge On Floor,Upper Legs,Glutes,Hamstrings,Core,None
+Muscle,Lower Back Curl,Back,Spine,Glutes,Hamstrings,None
+Muscle,Lunge With Jump,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Lunge With Twist,Core,Abs,Quadriceps,Glutes,None
+Muscle,Lying (Side) Quads Stretch,Upper Legs,Quads,Hamstrings,,None
+Muscle,Lying Elbow To Knee,Core,Abs,Hip Flexors,Lower Back,None
+Muscle,Lying Leg Raise Flat Bench,Core,Abs,Hip Flexors,,None
+Muscle,Lying Leg-Hip Raise,Core,Abs,Hip Flexors,,None
+Muscle,Machine Inner Chest Press,Chest,Pectorals,Triceps,Shoulders,Leverage Machine
+Muscle,March Sit (Wall),Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Medicine Ball Catch And Overhead Throw,Back,Lats,Shoulders,Core,Medicine Ball
+Muscle,Medicine Ball Chest Pass,Chest,Pectorals,Shoulders,Triceps,Medicine Ball
+Muscle,Medicine Ball Chest Push From 3 Point Stance,Chest,Pectorals,Shoulders,Triceps,Medicine Ball
+Muscle,Medicine Ball Chest Push Multiple Response,Chest,Pectorals,Triceps,Shoulders,Medicine Ball
+Muscle,Medicine Ball Chest Push Single Response,Chest,Pectorals,Triceps,Shoulders,Medicine Ball
+Muscle,Medicine Ball Chest Push With Run Release,Chest,Pectorals,Triceps,Shoulders,Medicine Ball
+Muscle,Medicine Ball Close Grip Push Up,Upper Arms,Triceps,Chest,Shoulders,Medicine Ball
+Muscle,Medicine Ball Overhead Slam,Back,Upper Back,Shoulders,Core,Medicine Ball
+Muscle,Medicine Ball Supine Chest Throw,Upper Arms,Triceps,Chest,Shoulders,Medicine Ball
+Muscle,Mixed Grip Chin-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Modified Hindu Push-Up (Male),Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Modified Push Up To Lower Arms,Lower Arms,Forearms,Triceps,Chest,None
+Muscle,Monster Walk,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Cardio,Mountain Climber,Cardio,Cardio,Core,Shoulders,None
+Muscle,Muscle Up,Back,Lats,Biceps,Triceps,None
+Muscle,Muscle-Up (On Vertical Bar),Back,Lats,Biceps,Triceps,None
+Muscle,Narrow Push-Up On Exercise Ball,Upper Arms,Triceps,Chest,Shoulders,Stability Ball
+Muscle,Neck Side Stretch,Neck,Levator Scapulae,Trapezius,Sternocleidomastoid,None
+Muscle,Negative Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Oblique Crunch V. 2,Core,Abs,Obliques,,None
+Muscle,Oblique Crunches Floor,Core,Abs,Obliques,,None
+Muscle,Olympic Barbell Hammer Curl,Upper Arms,Biceps,Forearms,,Olympic Barbell
+Muscle,Olympic Barbell Triceps Extension,Upper Arms,Triceps,Shoulders,,Olympic Barbell
+Muscle,One Arm Against Wall,Back,Lats,Shoulders,Triceps,None
+Muscle,One Arm Chin-Up,Back,Lats,Biceps,Forearms,None
+Muscle,One Arm Dip,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,One Arm Slam (With Medicine Ball),Core,Abs,Shoulders,Back,Medicine Ball
+Muscle,One Arm Towel Row,Back,Upper Back,Biceps,Forearms,None
+Muscle,One Leg Donkey Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,None
+Muscle,One Leg Floor Calf Raise,Lower Legs,Calves,Ankles,Feet,None
+Muscle,One Leg Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Otis Up,Core,Abs,Hip Flexors,Lower Back,Weighted
+Muscle,Outside Leg Kick Push-Up,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Overhead Triceps Stretch,Upper Arms,Triceps,Shoulders,,None
+Muscle,Pelvic Tilt,Core,Abs,Lower Back,,None
+Muscle,Pelvic Tilt Into Bridge,Upper Legs,Glutes,Hamstrings,Core,None
+Muscle,Peroneals Stretch,Lower Legs,Calves,Ankles,Feet,Rope
+Muscle,Pike-To-Cobra Push-Up,Upper Legs,Glutes,Core,Shoulders,None
+Muscle,Plyo Push Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Posterior Step To Overhead Reach,Core,Abs,Glutes,Hamstrings,None
+Muscle,Posterior Tibialis Stretch,Lower Legs,Calves,Hamstrings,Quadriceps,Rope
+Muscle,Potty Squat,Core,Abs,Quadriceps,Glutes,None
+Muscle,Potty Squat With Support,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Power Clean,Upper Legs,Hamstrings,Glutes,Quadriceps,Barbell
+Muscle,Power Point Plank,Core,Abs,Shoulders,Triceps,None
+Muscle,Prisoner Half Sit-Up (Male),Core,Abs,Hip Flexors,,None
+Muscle,Prone Twist On Stability Ball,Core,Abs,Obliques,Lower Back,Stability Ball
+Muscle,Pull Up (Neutral Grip),Back,Lats,Biceps,Forearms,None
+Muscle,Pull-In (On Stability Ball),Core,Abs,Hip Flexors,,Stability Ball
+Muscle,Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Push And Pull Bodyweight,Chest,Pectorals,Triceps,Deltoids,None
+Cardio,Push To Run,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Push Up On Bosu Ball,Chest,Pectorals,Triceps,Shoulders,Bosu Ball
+Muscle,Push-Up,Chest,Pectorals,Triceps,Deltoids,None
+Muscle,Push-Up (Bosu Ball),Chest,Pectorals,Triceps,Shoulders,Bosu Ball
+Muscle,Push-Up (On Stability Ball),Chest,Pectorals,Triceps,Shoulders,Stability Ball
+Muscle,Push-Up (On Stability Ball),Chest,Pectorals,Triceps,Shoulders,Stability Ball
+Muscle,Push-Up (Wall),Chest,Pectorals,Triceps,Deltoids,None
+Muscle,Push-Up (Wall) V. 2,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Push-Up Close-Grip Off Dumbbell,Upper Arms,Triceps,Chest,Shoulders,Dumbbell
+Muscle,Push-Up Inside Leg Kick,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Push-Up Medicine Ball,Chest,Pectorals,Triceps,Shoulders,Medicine Ball
+Muscle,Push-Up On Lower Arms,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Push-Up Plus,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Push-Up To Side Plank,Core,Abs,Shoulders,Chest,None
+Muscle,Quads,Upper Legs,Quads,Hamstrings,Glutes,None
+Muscle,Quarter Sit-Up,Core,Abs,Hip Flexors,,None
+Muscle,Quick Feet V. 2,Upper Legs,Quads,Calves,Hamstrings,None
+Muscle,Raise Single Arm Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Rear Decline Bridge,Upper Legs,Glutes,Hamstrings,Lower Back,None
+Muscle,Rear Deltoid Stretch,Shoulders,Delts,Trapezius,Rhomboids,None
+Muscle,Rear Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Reclining Big Toe Pose With Rope,Upper Legs,Hamstrings,Calves,Glutes,Rope
+Muscle,Resistance Band Hip Thrusts On Knees (Female),Upper Legs,Glutes,Hamstrings,Quadriceps,Resistance Band
+Muscle,Resistance Band Leg Extension,Upper Legs,Quads,Hamstrings,,Resistance Band
+Muscle,Resistance Band Seated Biceps Curl,Upper Arms,Biceps,Forearms,,Resistance Band
+Muscle,Resistance Band Seated Chest Press,Chest,Pectorals,Shoulders,Triceps,Resistance Band
+Muscle,Resistance Band Seated Hip Abduction,Upper Legs,Abductors,Glutes,Hamstrings,Resistance Band
+Muscle,Resistance Band Seated Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Resistance Band
+Muscle,Resistance Band Seated Straight Back Row,Back,Upper Back,Biceps,Shoulders,Resistance Band
+Muscle,Reverse Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Reverse Dip,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Reverse Grip Machine Lat Pulldown,Back,Lats,Biceps,Forearms,Leverage Machine
+Muscle,Reverse Grip Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Reverse Hyper Extension (On Stability Ball),Upper Legs,Glutes,Hamstrings,Lower Back,Stability Ball
+Muscle,Reverse Hyper On Flat Bench,Upper Legs,Glutes,Hamstrings,Lower Back,None
+Muscle,Reverse Plank With Leg Lift,Core,Abs,Glutes,Hamstrings,None
+Muscle,Ring Dips,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Rocking Frog Stretch,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Rocky Pull-Up Pulldown,Back,Lats,Biceps,Forearms,None
+Muscle,Roller Back Stretch,Back,Spine,Hamstrings,Glutes,Roller
+Muscle,Roller Body Saw,Core,Abs,Shoulders,Triceps,Roller
+Muscle,Roller Hip Lat Stretch,Upper Legs,Glutes,Hamstrings,Quadriceps,Roller
+Muscle,Roller Hip Stretch,Upper Legs,Glutes,Hamstrings,Quadriceps,Roller
+Muscle,Roller Reverse Crunch,Core,Abs,Hip Flexors,,Roller
+Muscle,Roller Seated Shoulder Flexor Depresor Retractor,Chest,Pectorals,Deltoids,Triceps,Roller
+Muscle,Roller Seated Single Leg Shoulder Flexor Depresor Retractor,Chest,Pectorals,Deltoids,Triceps,Roller
+Muscle,Roller Side Lat Stretch,Back,Lats,Shoulders,Triceps,Roller
+Muscle,Rope Climb,Back,Upper Back,Forearms,Biceps,Rope
+Cardio,Run,Cardio,Cardio,Quadriceps,Hamstrings,None
+Cardio,Run (Equipment),Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Runners Stretch,Upper Legs,Hamstrings,Calves,Quadriceps,None
+Muscle,Russian Twist,Core,Abs,Obliques,,None
+Muscle,Scapula Dips,Back,Traps,Rhomboids,Deltoids,None
+Muscle,Scapula Push-Up,Chest,Serratus Anterior,Triceps,Shoulders,None
+Muscle,Scapular Pull-Up,Back,Traps,Biceps,Rhomboids,None
+Cardio,Scissor Jumps (Male),Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Seated Calf Stretch (Male),Lower Legs,Calves,Hamstrings,,None
+Muscle,Seated Glute Stretch,Upper Legs,Glutes,Hamstrings,,None
+Muscle,Seated Leg Raise,Core,Abs,Hip Flexors,,None
+Muscle,Seated Lower Back Stretch,Back,Lats,Glutes,Hamstrings,None
+Muscle,Seated Piriformis Stretch,Upper Legs,Glutes,Hamstrings,,None
+Muscle,Seated Side Crunch (Wall),Core,Abs,Obliques,,None
+Muscle,Seated Wide Angle Pose Sequence,Upper Legs,Hamstrings,Quadriceps,Calves,None
+Muscle,Self Assisted Inverse Leg Curl,Upper Legs,Hamstrings,Glutes,Calves,None
+Muscle,Self Assisted Inverse Leg Curl,Upper Legs,Hamstrings,Glutes,Calves,None
+Muscle,Self Assisted Inverse Leg Curl (On Floor),Upper Legs,Hamstrings,Glutes,Calves,None
+Cardio,Semi Squat Jump (Male),Cardio,Cardio,Quadriceps,Hamstrings,None
+Cardio,Short Stride Run,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Shoulder Grip Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Shoulder Tap,Core,Abs,Shoulders,Triceps,None
+Muscle,Shoulder Tap Push-Up,Chest,Pectorals,Triceps,Core,None
+Muscle,Side Bridge Hip Abduction,Upper Legs,Abductors,Glutes,Obliques,None
+Muscle,Side Bridge V. 2,Core,Abs,Obliques,Glutes,None
+Muscle,Side Hip (On Parallel Bars),Core,Abs,Obliques,Hip Flexors,None
+Muscle,Side Hip Abduction,Upper Legs,Abductors,Glutes,Quadriceps,None
+Muscle,Side Lying Floor Stretch,Back,Lats,Obliques,Glutes,None
+Muscle,Side Lying Hip Adduction (Male),Upper Legs,Adductors,Glutes,Hamstrings,None
+Muscle,Side Plank Hip Adduction,Upper Legs,Adductors,Obliques,Glutes,None
+Muscle,Side Push Neck Stretch,Neck,Levator Scapulae,Trapezius,Sternocleidomastoid,None
+Muscle,Side Push-Up,Upper Arms,Triceps,Shoulders,Chest,None
+Muscle,Side Wrist Pull Stretch,Lower Arms,Forearms,Wrists,Hands,None
+Muscle,Side-To-Side Chin,Back,Lats,Biceps,Forearms,None
+Muscle,Side-To-Side Toe Touch (Male),Core,Abs,Obliques,Hip Flexors,None
+Muscle,Single Arm Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Single Leg Bridge With Outstretched Leg,Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Muscle,Single Leg Calf Raise (On A Dumbbell),Lower Legs,Calves,Ankles,Feet,Dumbbell
+Muscle,Single Leg Platform Slide,Upper Legs,Hamstrings,Glutes,Quadriceps,None
+Muscle,Single Leg Squat (Pistol) Male,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Muscle,Sissy Squat,Upper Legs,Quads,Calves,Glutes,None
+Muscle,Sit-Up V. 2,Core,Abs,Hip Flexors,,None
+Muscle,Sit-Up With Arms On Chest,Core,Abs,Hip Flexors,,None
+Cardio,Skater Hops,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Ski Ergometer,Upper Arms,Triceps,Shoulders,Forearms,Skierg Machine
+Cardio,Ski Step,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Skin The Cat,Back,Upper Back,Shoulders,Core,None
+Muscle,Sled 45 Degrees One Leg Press,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled 45В° Calf Press,Lower Legs,Calves,Hamstrings,,Sled Machine
+Muscle,Sled 45В° Leg Press,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled 45В° Leg Press (Back Pov),Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled 45° Leg Press (Side Pov),Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled 45В° Leg Wide Press,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled Calf Press On Leg Press,Lower Legs,Calves,Hamstrings,Quadriceps,Sled Machine
+Muscle,Sled Closer Hack Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled Forward Angled Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Sled Machine
+Muscle,Sled Hack Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled Lying Calf Press,Lower Legs,Calves,Hamstrings,Glutes,Sled Machine
+Muscle,Sled Lying Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Sled Machine
+Muscle,Sled One Leg Calf Press On Leg Press,Lower Legs,Calves,Hamstrings,Glutes,Sled Machine
+Muscle,Sledge Hammer,Core,Abs,Forearms,Shoulders,Hammer
+Muscle,Smith Back Shrug,Back,Traps,Shoulders,,Smith Machine
+Muscle,Smith Behind Neck Press,Shoulders,Delts,Triceps,Upper Back,Smith Machine
+Muscle,Smith Bench Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Bent Knee Good Morning,Upper Legs,Glutes,Hamstrings,Lower Back,Smith Machine
+Muscle,Smith Bent Over Row,Back,Upper Back,Biceps,Forearms,Smith Machine
+Muscle,Smith Chair Squat,Upper Legs,Quads,Glutes,Hamstrings,Smith Machine
+Muscle,Smith Close-Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Smith Machine
+Muscle,Smith Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Smith Machine
+Muscle,Smith Decline Bench Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Decline Reverse-Grip Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Front Squat (Clean Grip),Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Full Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Hack Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Hip Raise,Core,Abs,Glutes,Hamstrings,Smith Machine
+Muscle,Smith Incline Bench Press,Chest,Pectorals,Shoulders,Triceps,Smith Machine
+Muscle,Smith Incline Reverse-Grip Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Incline Shoulder Raises,Chest,Serratus Anterior,Deltoids,Trapezius,Smith Machine
+Muscle,Smith Leg Press,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Low Bar Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Machine Bicep Curl,Upper Arms,Biceps,Forearms,,Smith Machine
+Muscle,Smith Machine Decline Close Grip Bench Press,Upper Arms,Triceps,Chest,Shoulders,Smith Machine
+Muscle,Smith Machine Incline Tricep Extension,Upper Arms,Triceps,Shoulders,,Smith Machine
+Muscle,Smith Machine Reverse Decline Close Grip Bench Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Narrow Row,Back,Upper Back,Biceps,Rear Deltoids,Smith Machine
+Muscle,Smith One Arm Row,Back,Upper Back,Biceps,Forearms,Smith Machine
+Muscle,Smith One Leg Floor Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Smith Machine
+Muscle,Smith Rear Delt Row,Shoulders,Delts,Trapezius,Rhomboids,Smith Machine
+Muscle,Smith Reverse Calf Raises,Lower Legs,Calves,Hamstrings,,Smith Machine
+Muscle,Smith Reverse Calf Raises,Lower Legs,Calves,Hamstrings,,Smith Machine
+Muscle,Smith Reverse Grip Bent Over Row,Back,Upper Back,Biceps,Forearms,Smith Machine
+Muscle,Smith Reverse-Grip Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Seated One Leg Calf Raise,Lower Legs,Calves,Hamstrings,,Smith Machine
+Muscle,Smith Seated Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Smith Machine
+Muscle,Smith Seated Wrist Curl,Lower Arms,Forearms,Biceps,Brachialis,Smith Machine
+Muscle,Smith Shoulder Press,Shoulders,Delts,Triceps,Upper Back,Smith Machine
+Muscle,Smith Shrug,Back,Traps,Shoulders,,Smith Machine
+Muscle,Smith Single Leg Split Squat,Upper Legs,Quads,Glutes,Hamstrings,Smith Machine
+Muscle,Smith Sprint Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Standing Back Wrist Curl,Lower Arms,Forearms,Biceps,Triceps,Smith Machine
+Muscle,Smith Standing Behind Head Military Press,Shoulders,Delts,Triceps,Upper Back,Smith Machine
+Muscle,Smith Standing Leg Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Smith Machine
+Muscle,Smith Standing Military Press,Shoulders,Delts,Triceps,Upper Back,Smith Machine
+Muscle,Smith Sumo Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Smith Machine
+Muscle,Smith Toe Raise,Lower Legs,Calves,Ankles,Shins,Smith Machine
+Muscle,Smith Upright Row,Shoulders,Delts,Traps,Biceps,Smith Machine
+Muscle,Smith Wide Grip Bench Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Smith Wide Grip Decline Bench Press,Chest,Pectorals,Triceps,Shoulders,Smith Machine
+Muscle,Snatch Pull,Upper Legs,Quads,Hamstrings,Glutes,Barbell
+Muscle,Spell Caster,Core,Abs,Obliques,Lower Back,Dumbbell
+Muscle,Sphinx,Back,Spine,Glutes,Hamstrings,None
+Muscle,Spider Crawl Push Up,Upper Legs,Glutes,Core,Chest,None
+Muscle,Spine Stretch,Back,Spine,Hamstrings,Glutes,None
+Muscle,Spine Twist,Core,Abs,Obliques,Lower Back,None
+Muscle,Split Squats,Upper Legs,Quads,Glutes,Hamstrings,None
+Muscle,Squat Jerk,Upper Legs,Quads,Glutes,Hamstrings,Barbell
+Muscle,Squat On Bosu Ball,Upper Legs,Quads,Glutes,Hamstrings,Bosu Ball
+Muscle,Squat To Overhead Reach,Upper Legs,Quads,Glutes,Hamstrings,None
+Muscle,Squat To Overhead Reach With Twist,Upper Legs,Quads,Glutes,Hamstrings,None
+Muscle,Stability Ball Crunch (Full Range Hands Behind Head),Core,Abs,Hip Flexors,,Stability Ball
+Muscle,Stalder Press,Upper Arms,Triceps,Shoulders,Core,None
+Muscle,Standing Archer,Back,Upper Back,Shoulders,Biceps,None
+Muscle,Standing Behind Neck Press,Shoulders,Delts,Triceps,Upper Back,Barbell
+Muscle,Standing Calf Raise (On A Staircase),Lower Legs,Calves,Ankles,Feet,None
+Muscle,Standing Calves,Lower Legs,Calves,Hamstrings,Glutes,None
+Muscle,Standing Calves Calf Stretch,Lower Legs,Calves,Hamstrings,Glutes,None
+Muscle,Standing Hamstring And Calf Stretch With Strap,Upper Legs,Hamstrings,Calves,,Rope
+Muscle,Standing Lateral Stretch,Back,Lats,Shoulders,Obliques,None
+Muscle,Standing Pelvic Tilt,Back,Spine,Abdominals,,None
+Muscle,Standing Single Leg Curl,Upper Legs,Hamstrings,Glutes,,None
+Muscle,Standing Wheel Rollerout,Core,Abs,Lower Back,Shoulders,Wheel Roller
+Cardio,Star Jump (Male),Cardio,Cardio,Quadriceps,Hamstrings,None
+Cardio,Stationary Bike Run V. 3,Cardio,Cardio,Quadriceps,Hamstrings,Stationary Bike
+Cardio,Stationary Bike Walk,Cardio,Cardio,Quadriceps,Hamstrings,Leverage Machine
+Muscle,Straddle Maltese,Core,Abs,Shoulders,Chest,None
+Muscle,Straddle Planche,Core,Abs,Shoulders,Triceps,None
+Muscle,Straight Leg Outer Hip Abductor,Upper Legs,Abductors,Glutes,Hamstrings,None
+Muscle,Superman Push-Up,Chest,Pectorals,Core,Shoulders,None
+Muscle,Suspended Abdominal Fallout,Core,Abs,Obliques,Hip Flexors,None
+Muscle,Suspended Push-Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Suspended Reverse Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Suspended Row,Back,Upper Back,Biceps,Shoulders,None
+Muscle,Suspended Split Squat,Upper Legs,Quads,Glutes,Hamstrings,None
+Muscle,Swimmer Kicks V. 2 (Male),Upper Legs,Glutes,Hamstrings,Quadriceps,None
+Cardio,Swing 360,Cardio,Cardio,Shoulders,Core,None
+Muscle,Three Bench Dip,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Tire Flip,Upper Legs,Glutes,Hamstrings,Quadriceps,Tire
+Muscle,Trap Bar Deadlift,Upper Legs,Glutes,Hamstrings,Quadriceps,Trap Bar
+Muscle,Triceps Dip,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Triceps Dip (Bench Leg),Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Triceps Dip (Between Benches),Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Triceps Dips Floor,Upper Arms,Triceps,Chest,Shoulders,None
+Muscle,Triceps Press,Upper Arms,Triceps,Shoulders,,None
+Muscle,Triceps Stretch,Upper Arms,Triceps,Shoulders,,None
+Muscle,Tuck Crunch,Core,Abs,Hip Flexors,,None
+Muscle,Twin Handle Parallel Grip Lat Pulldown,Back,Lats,Biceps,Rhomboids,Cable
+Muscle,Twist Hip Lift,Upper Legs,Glutes,Obliques,Hamstrings,None
+Muscle,Twisted Leg Raise,Core,Abs,Obliques,Hip Flexors,None
+Muscle,Twisted Leg Raise (Female),Core,Abs,Obliques,Hip Flexors,None
+Muscle,Two Toe Touch (Male),Back,Spine,Hamstrings,Glutes,None
+Muscle,Upper Back Stretch,Back,Upper Back,Shoulders,,None
+Muscle,Upward Facing Dog,Back,Spine,Shoulders,Chest,None
+Muscle,V-Sit On Floor,Core,Abs,Hip Flexors,,None
+Muscle,Vertical Leg Raise (On Parallel Bars),Core,Abs,Hip Flexors,,None
+Cardio,Walk Elliptical Cross Trainer,Cardio,Cardio,Quadriceps,Hamstrings,Elliptical Machine
+Cardio,Walking High Knees Lunge,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Walking Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,None
+Cardio,Walking On Incline Treadmill,Cardio,Cardio,Quadriceps,Hamstrings,Leverage Machine
+Cardio,Walking On Stepmill,Cardio,Cardio,Quadriceps,Hamstrings,Stepmill Machine
+Muscle,Weighted Bench Dip,Upper Arms,Triceps,Chest,Shoulders,Weighted
+Muscle,Weighted Close Grip Chin-Up On Dip Cage,Back,Lats,Biceps,Forearms,Weighted
+Muscle,Weighted Cossack Squats (Male),Upper Legs,Glutes,Quadriceps,Hamstrings,Weighted
+Muscle,Weighted Crunch,Core,Abs,Obliques,,Weighted
+Muscle,Weighted Decline Sit-Up,Core,Abs,Hip Flexors,Lower Back,Weighted
+Muscle,Weighted Donkey Calf Raise,Lower Legs,Calves,Hamstrings,Glutes,Weighted
+Muscle,Weighted Drop Push Up,Chest,Pectorals,Triceps,Shoulders,Weighted
+Muscle,Weighted Front Plank,Core,Abs,Shoulders,Lower Back,Weighted
+Muscle,Weighted Front Raise,Shoulders,Delts,Biceps,Forearms,Weighted
+Muscle,Weighted Hanging Leg-Hip Raise,Core,Abs,Hip Flexors,Lower Back,Weighted
+Muscle,Weighted Hyperextension (On Stability Ball),Back,Spine,Glutes,Hamstrings,Weighted
+Muscle,Weighted Kneeling Step With Swing,Shoulders,Delts,Triceps,Core,Weighted
+Muscle,Weighted Lunge With Swing,Upper Legs,Glutes,Quadriceps,Hamstrings,Weighted
+Muscle,Weighted Muscle Up,Back,Lats,Biceps,Triceps,Weighted
+Muscle,Weighted Muscle Up (On Bar),Back,Lats,Biceps,Triceps,Weighted
+Muscle,Weighted One Hand Pull Up,Back,Lats,Biceps,Forearms,Weighted
+Muscle,Weighted Overhead Crunch (On Stability Ball),Core,Abs,Obliques,Lower Back,Weighted
+Muscle,Weighted Pull-Up,Back,Lats,Biceps,Forearms,Weighted
+Muscle,Weighted Round Arm,Shoulders,Delts,Triceps,Upper Back,Weighted
+Muscle,Weighted Russian Twist,Core,Abs,Obliques,Lower Back,Weighted
+Muscle,Weighted Russian Twist (Legs Up),Core,Abs,Obliques,Hip Flexors,Weighted
+Muscle,Weighted Russian Twist V. 2,Core,Abs,Obliques,Lower Back,Weighted
+Muscle,Weighted Seated Bicep Curl (On Stability Ball),Upper Arms,Biceps,Forearms,,Medicine Ball
+Muscle,Weighted Seated Twist (On Stability Ball),Core,Abs,Obliques,Lower Back,Weighted
+Muscle,Weighted Side Bend (On Stability Ball),Core,Abs,Obliques,Lower Back,Weighted
+Muscle,Weighted Sissy Squat,Upper Legs,Quads,Glutes,Hamstrings,Weighted
+Muscle,Weighted Squat,Upper Legs,Glutes,Quadriceps,Hamstrings,Weighted
+Muscle,Weighted Standing Curl,Upper Arms,Biceps,Forearms,,Weighted
+Muscle,Weighted Standing Hand Squeeze,Lower Arms,Forearms,Biceps,Triceps,Weighted
+Muscle,Weighted Straight Bar Dip,Chest,Pectorals,Triceps,Shoulders,Weighted
+Muscle,Weighted Stretch Lunge,Upper Legs,Glutes,Quadriceps,Hamstrings,Weighted
+Muscle,Weighted Svend Press,Chest,Pectorals,Shoulders,Triceps,Weighted
+Muscle,Weighted Three Bench Dips,Upper Arms,Triceps,Chest,Shoulders,Weighted
+Muscle,Weighted Tricep Dips,Upper Arms,Triceps,Chest,Shoulders,Weighted
+Muscle,Weighted Triceps Dip On High Parallel Bars,Upper Arms,Triceps,Chest,Shoulders,Weighted
+Muscle,Wheel Rollerout,Core,Abs,Lower Back,,Wheel Roller
+Cardio,Wheel Run,Cardio,Cardio,Quadriceps,Hamstrings,None
+Muscle,Wide Grip Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Wide Grip Rear Pull-Up,Back,Lats,Biceps,Forearms,None
+Muscle,Wide Hand Push Up,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Wide-Grip Chest Dip On High Parallel Bars,Chest,Pectorals,Triceps,Shoulders,None
+Muscle,Wind Sprints,Core,Abs,Quadriceps,Hamstrings,None
+Muscle,World Greatest Stretch,Upper Legs,Hamstrings,Glutes,Quadriceps,None
+Muscle,Wrist Circles,Lower Arms,Forearms,Hands,Wrists,None
+Muscle,Wrist Rollerer,Lower Arms,Forearms,Biceps,Triceps,Weighted
