@@ -314,10 +314,12 @@ class ResetPasswordView(generics.CreateAPIView):
 class ExerciseView(generics.CreateAPIView):
     serializer_class = ExerciseSerializer
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
-    body_area_types = ["Arms", "Back", "Legs", "Core", "Chest", "Shoulder", "Cardio", "Flexibility", "Neck"]
-    muscle_types = ["Biceps", "Triceps", "Forearms", "Lats", "Lower Back", "Traps", "Upper Back", "Calves", "Hamstrings",
-                    "Quadriceps", "Adductors", "Glutes", "Abdominals", "Abductors", "Levator Scapulae", "Delts", "Pectorals",
-                    "Serratus Anterior"]
+    body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]    
+    muscle_types = ["Abdominals", "Abductors", "Abs", "Adductors", "Ankle Stabilizers", "Ankles", "Back", "Biceps", "Brachialis", "Cavles", "Cardio",
+                    "Chest", "Core", "Deltoids", "Delts", "Feet", "Forearms", "Glutes", "Grip Muscles", "Groin", "Hamstrings", "Hands", "Hip Flexors",
+                    "Inner Thighs", "Latissimus Dorsi", "Lats", "Levator Scapulae", "Lower Abs", "Lower Back", "Obliques", "Pectorals", "Quadriceps", "Quads",
+                    "Rear Deltoids", "Rhomboids", "Rotator Cuff", "Serratus Anterior", "Shins", "Shoulders", "Soleus", "Spine", "Sternocleidomastoid",
+                    "Trapezius", "Traps", "Triceps", "Upper Back", "Upper Chest", "Wrist Extensors", "Wrist Flexors", "Wrists"]
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
