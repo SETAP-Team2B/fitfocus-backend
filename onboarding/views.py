@@ -336,14 +336,19 @@ class ExerciseView(generics.CreateAPIView):
         else:
             ex_target_muscle = "none"
         if 'ex_secondary_muscle' in request.data:
-            ex_secondary_muscle = request.data['ex_secondary_muscle']   
+            ex_secondary_muscle_1 = request.data['ex_secondary_muscle_1']   
         else:
-            ex_secondary_muscle = "none"    
+            ex_secondary_muscle_1 = "none"    
+        
+        if 'ex_secondary_muscle_2'in request.data:
+            ex_secondary_muscle_2 = request.data['ex_secondary_muscle_2']
+        else:
+            ex_secondary_muscle_2 = "none"
                 
         if ex_type == "Muscle":
             if ex_target_muscle == "none":
                 return api_error("Strength exercises must have atleast 1 target muscle")
-            if ex_target_muscle not in self.muscle_types or ex_secondary_muscle not in self.muscle_types:
+            if ex_target_muscle not in self.muscle_types or ex_secondary_muscle_1 not in self.muscle_types or ex_secondary_muscle_2 not in self.muscle_types:
                 return api_error("Inavlid Muscle Type")
         
         if ex_type not in self.exercise_type:
@@ -359,7 +364,8 @@ class ExerciseView(generics.CreateAPIView):
             ex_body_area=ex_body_area,
             equipment_needed=equipment_needed,
             ex_target_muscle=ex_target_muscle,
-            ex_secondary_muscle=ex_secondary_muscle
+            ex_secondary_muscle=ex_secondary_muscle_1,
+            ex_secondary_muscle_2=ex_secondary_muscle_2
         )
         exercise.save()
 
@@ -369,7 +375,8 @@ class ExerciseView(generics.CreateAPIView):
             "ex_body_area": exercise.ex_body_area,
             "equipment_needed": exercise.equipment_needed,
             "ex_target_muscle": exercise.ex_target_muscle,
-            "ex_secondary_muscle": exercise.ex_secondary_muscle,
+            "ex_secondary_muscle_1": exercise.ex_secondary_muscle_1,
+            "ex_secondary_muscle_2": exercise.ex_secondary_muscle_2
         })
 
 
