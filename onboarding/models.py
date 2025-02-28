@@ -33,3 +33,8 @@ class LoggedExercise(models.Model):
     duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
     equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
     equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
+
+# whether a user is verified or not
+class VerifiedUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    verified = models.BooleanField(default=False)
