@@ -25,7 +25,7 @@ from .acct_type import AccountType
 from django.http import JsonResponse
 import json
 
-
+# generates and returns token for user
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
@@ -59,6 +59,7 @@ def get_user_by_email_username(request):
 def get_exercise_by_name(request):
     target_exercise: Exercise | None = None
 
+    # checks exercise input against database
     if "ex_name" in request.data:
         try:
             target_exercise = Exercise.objects.get(ex_name=request.data["ex_name"])
@@ -76,6 +77,7 @@ def get_exercise_by_name(request):
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
+    # validates data inputed and saves user if valid
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
@@ -92,6 +94,7 @@ class CreateAccountView(generics.CreateAPIView):
                 user.acct_type = AccountType.unverify
                 user.save()
 
+                # responses for valid/invalid input of user
                 return api_success({
                     "username": user.username,
                     "first_name": user.first_name,
@@ -198,6 +201,7 @@ class GenerateOTPView(generics.CreateAPIView):
             # new_otp does not set itself exactly equal to 5 mins past created at,
             # so it must be manually set after creating the object
 
+            # retrieves OTP or creates a new one and deletes exsisting
             new_otp: OTP | None = None
             try:
                 new_otp = OTP.objects.get(user=target_user)
@@ -278,7 +282,8 @@ class ResetPasswordView(generics.CreateAPIView):
                        
         new_password = ""
         confirm_password = ""
-        
+
+        # checks new password for matching confirmation and different from current password
         if 'new_password' in request.data:
             new_password = request.data['new_password']
         else:
@@ -306,6 +311,7 @@ class ResetPasswordView(generics.CreateAPIView):
             currentOTP.verified = False
             currentOTP.save()
 
+            # response if password is too weak
             return api_success("Password Successfully Changed")
         except WeakPasswordError:
             return api_error("New password is too weak.")
@@ -313,6 +319,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
 class ExerciseView(generics.CreateAPIView):
     serializer_class = ExerciseSerializer
+    # valid inputs for different variables
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]    
     muscle_types = ["Abdominals", "Abductors", "Abs", "Adductors", "Ankle Stabilizers", "Ankles", "Back", "Biceps", "Brachialis", "Cavles", "Cardio",
@@ -323,6 +330,7 @@ class ExerciseView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
+        # response if one of fields empty
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
             return api_error("Necessary Field(s) are empty")   
         
@@ -331,6 +339,7 @@ class ExerciseView(generics.CreateAPIView):
         ex_body_area = request.data['ex_body_area']
         equipment_needed = request.data['equipment_needed']
 
+        # checks if target and secondary muscles are valid or returns none
         if 'ex_target_muscle' in request.data:
             ex_target_muscle = request.data['ex_target_muscle']
         else:
@@ -344,20 +353,23 @@ class ExerciseView(generics.CreateAPIView):
             ex_secondary_muscle_2 = request.data['ex_secondary_muscle_2']
         else:
             ex_secondary_muscle_2 = "none"
-                
+
+        # validates target muscle input
         if ex_type == "Muscle":
             if ex_target_muscle == "none":
-                return api_error("Strength exercises must have atleast 1 target muscle")
+                return api_error("Strength exercises must have at least 1 target muscle")
             if ex_target_muscle not in self.muscle_types or ex_secondary_muscle_1 not in self.muscle_types or ex_secondary_muscle_2 not in self.muscle_types:
                 return api_error("Inavlid Muscle Type")
-        
+
+        # validates exercise type input
         if ex_type not in self.exercise_type:
             return api_error("Invalid Exercise Type")
-        
+
+        # validates body area input
         if ex_body_area not in self.body_area_types:
             return api_error("Inavlid Body Area Type")
         
-
+        # creates Exercise instance and saves to database
         exercise = Exercise(
             ex_name=ex_name,
             ex_type=ex_type,
@@ -369,6 +381,7 @@ class ExerciseView(generics.CreateAPIView):
         )
         exercise.save()
 
+        # success response for created exercise
         return api_success({
             "ex_name": exercise.ex_name,
             "ex_type": exercise.ex_type,
@@ -409,13 +422,14 @@ class ExerciseView(generics.CreateAPIView):
         
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
-
+    # retrieves target user and target exercise
     def post(self, request, *args, **kwargs):
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
         target_exercise = get_exercise_by_name(request)
         if type(target_exercise) == Response: return target_exercise
 
+        # creates LoggedExercise instance to log exercise in database
         logged_exercise = LoggedExercise(
             user=target_user,
             exercise=target_exercise,
@@ -430,6 +444,7 @@ class LogExerciseView(generics.CreateAPIView):
             equipment_weight_units=request.data.get('equipment_weight_units', None)
         )
 
+        # validates inputs for logged exercise and saves if valid
         if logged_exercise.date_logged is None:
             return api_error("A date for the exercise log must be provided.")
 
