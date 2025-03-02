@@ -59,7 +59,7 @@ def get_user_by_email_username(request):
 def get_exercise_by_name(request):
     target_exercise: Exercise | None = None
 
-    # checks exercise input against database
+    # looks for an exercise with the given name within the database
     if "ex_name" in request.data:
         try:
             target_exercise = Exercise.objects.get(ex_name=request.data["ex_name"])
@@ -77,7 +77,7 @@ def get_exercise_by_name(request):
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
-    # validates data inputed and saves user if valid
+    # validates email and username, checks given name within database and saves user data as unverified if valid
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
@@ -283,7 +283,7 @@ class ResetPasswordView(generics.CreateAPIView):
         new_password = ""
         confirm_password = ""
 
-        # checks new password for matching confirmation and different from current password
+        # checks new password for matching confirmation and different from current password in database
         if 'new_password' in request.data:
             new_password = request.data['new_password']
         else:
@@ -319,7 +319,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
 class ExerciseView(generics.CreateAPIView):
     serializer_class = ExerciseSerializer
-    # valid inputs for different variables
+    # valid inputs for exercise variables stored in database
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]    
     muscle_types = ["Abdominals", "Abductors", "Abs", "Adductors", "Ankle Stabilizers", "Ankles", "Back", "Biceps", "Brachialis", "Cavles", "Cardio",
@@ -330,7 +330,7 @@ class ExerciseView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
-        # response if one of fields empty
+        # response if one of the exercise fields are empty
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
             return api_error("Necessary Field(s) are empty")   
         
@@ -381,7 +381,7 @@ class ExerciseView(generics.CreateAPIView):
         )
         exercise.save()
 
-        # success response for created exercise
+        # success response for created Exercise instance
         return api_success({
             "ex_name": exercise.ex_name,
             "ex_type": exercise.ex_type,
