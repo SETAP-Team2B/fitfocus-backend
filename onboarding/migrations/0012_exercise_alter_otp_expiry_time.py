@@ -20,7 +20,8 @@ class Migration(migrations.Migration):
                 ('ex_body_area', models.CharField(db_comment='What body part the exercise is working on: Legs, back, chest etc', default='', max_length=15)),
                 ('equiptment_needed', models.CharField(db_comment='Equptment needed for exercise', default='none', max_length=80)),
                 ('ex_target_muscle', models.CharField(db_comment='Target Muscle - can be null for cardio', max_length=20, null=True)),
-                ('ex_secondary_muscle', models.CharField(db_comment='Secondary muscle targeted', max_length=30, null=True)),
+                ('ex_secondary_muscle_1', models.CharField(db_comment='Secondary muscle targeted', max_length=30, null=True)),
+                ('ex_secondary_muscle_2', models.CharField(db_comment='Other Secondary muscle targeted', max_length=30, null=True))
             ],
         ),
         migrations.AlterField(

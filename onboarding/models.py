@@ -18,7 +18,7 @@ class Exercise(models.Model):
     equipment_needed = models.CharField(max_length=80, default="none", null=False, db_comment="Equipment needed for exercise")
     ex_target_muscle = models.CharField(max_length=20, default="", null=True, db_comment="Target Muscle - can be null for cardio")
     ex_secondary_muscle_1 = models.CharField(max_length=30, default="", null=True, db_comment= "Secondary muscle targeted")
-    ex_secondary_muscle_2 = models.CharField(max_length=30, default="", null=True, db_comment= "Any other secondary muscles")
+    ex_secondary_muscle_2 = models.CharField(max_length=30, default="", null=True, db_comment="Other Secondary Muscle Targeted")
 
 # subject to change with extra fields
 class LoggedExercise(models.Model):

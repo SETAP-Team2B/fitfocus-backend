@@ -24,6 +24,7 @@ from django.utils import timezone
 from .acct_type import AccountType
 from django.http import JsonResponse
 import json
+import csv
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -344,15 +345,13 @@ class ExerciseView(generics.CreateAPIView):
             ex_target_muscle = request.data['ex_target_muscle']
         else:
             ex_target_muscle = "none"
-        if 'ex_secondary_muscle' in request.data:
+        if 'ex_secondary_muscle_1' in request.data:
             ex_secondary_muscle_1 = request.data['ex_secondary_muscle_1']   
         else:
             ex_secondary_muscle_1 = "none"    
-        
-        if 'ex_secondary_muscle_2'in request.data:
+        if 'ex_secondary_muscle_2' in request.data:
             ex_secondary_muscle_2 = request.data['ex_secondary_muscle_2']
-        else:
-            ex_secondary_muscle_2 = "none"
+        
 
         # validates target muscle input
         if ex_type == "Muscle":
@@ -376,7 +375,7 @@ class ExerciseView(generics.CreateAPIView):
             ex_body_area=ex_body_area,
             equipment_needed=equipment_needed,
             ex_target_muscle=ex_target_muscle,
-            ex_secondary_muscle=ex_secondary_muscle_1,
+            ex_secondary_muscle_1=ex_secondary_muscle_1,
             ex_secondary_muscle_2=ex_secondary_muscle_2
         )
         exercise.save()
@@ -389,7 +388,7 @@ class ExerciseView(generics.CreateAPIView):
             "equipment_needed": exercise.equipment_needed,
             "ex_target_muscle": exercise.ex_target_muscle,
             "ex_secondary_muscle_1": exercise.ex_secondary_muscle_1,
-            "ex_secondary_muscle_2": exercise.ex_secondary_muscle_2
+            "ex_secondary_muscle_2": ex_secondary_muscle_2
         })
 
 
@@ -512,3 +511,25 @@ class LogExerciseView(generics.CreateAPIView):
             filtered_response.append(response)
 
         return JsonResponse(filtered_response, safe=False)
+
+
+class ExerciseFile(generics.CreateAPIView):
+    serializer_class = ExerciseSerializer
+    exercise: Exercise
+
+    exercise_list = open('fitfocus_exercise_list.csv')
+    csv_reader = csv.reader(exercise_list)
+    rows = list(csv_reader)
+
+    for i in range(1, len(rows)):
+        exercise = Exercise(
+            ex_name=rows[i][1],
+            ex_type=rows[i][0],
+            ex_body_area=rows[i][2],
+            equipment_needed=rows[i][6],
+            ex_target_muscle=rows[i][3],
+            ex_secondary_muscle_1=rows[i][4],
+            ex_secondary_muscle_2=rows[i][5]
+        )
+        exercise.save()
+    
