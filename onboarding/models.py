@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 
-# Create your models here.
+# Defines models and fields
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     otp = models.CharField(max_length=6, default="", null=False, db_comment="The OTP sent to the user.")
