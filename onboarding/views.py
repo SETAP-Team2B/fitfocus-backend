@@ -12,7 +12,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise, LoggedExercise
+from .models import OTP, Exercise, LoggedExercise, VerifiedUser
 from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
 
 from random import randint
@@ -21,7 +21,6 @@ from email.mime.multipart import MIMEMultipart  # for easy segregation of email 
 from email.mime.text import MIMEText
 from datetime import timedelta
 from django.utils import timezone
-from .acct_type import AccountType
 from django.http import JsonResponse
 import json
 import csv
@@ -60,7 +59,7 @@ def get_user_by_email_username(request):
 def get_exercise_by_name(request):
     target_exercise: Exercise | None = None
 
-    # checks exercise input against database
+    # looks for an exercise with the given name within the database
     if "ex_name" in request.data:
         try:
             target_exercise = Exercise.objects.get(ex_name=request.data["ex_name"])
@@ -78,7 +77,7 @@ def get_exercise_by_name(request):
 class CreateAccountView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
-    # validates data inputed and saves user if valid
+    # validates given email and username, checks given name within database and saves user data as unverified if valid
     def post(self, request, *args, **kwargs):
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
@@ -87,13 +86,23 @@ class CreateAccountView(generics.CreateAPIView):
                     and validate_username(request.data['username']):
                 first_name = check_name(request.data['first_name'])
                 last_name = check_name(request.data['last_name'])
+
+                # check to find a user with given email
+                if User.objects.filter(email=request.data['email']).__len__() > 0:
+                    return api_error("Email already exists on a user.")
+
                 user = User.objects.create_user(email=request.data['email'],
                                                 password=check_password(request.data['password']),
                                                 username=request.data['username'])
                 user.first_name = first_name
                 user.last_name = last_name
-                user.acct_type = AccountType.unverify
                 user.save()
+
+                # sets the users verification status to false
+                verified = VerifiedUser(
+                    user=user
+                )
+                verified.save()
 
                 # responses for valid/invalid input of user
                 return api_success({
@@ -101,7 +110,7 @@ class CreateAccountView(generics.CreateAPIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
-                    "acct_type": user.acct_type
+                    "verified": verified.verified
                 })
             else:
                 return api_error("Invalid email or username.")
@@ -122,28 +131,46 @@ class LoginView(APIView):
             return api_error("Username/Email and password are required")
 
         # Try to find the user by username or email
+        # cannot login with email for some reason so we have to get the username via
         user = None
         if '@' in identifier:  # Check if the identifier is an email
             try:
-                user = User.objects.get(email=identifier)
+                identifier = User.objects.get(email=identifier).username
             except User.DoesNotExist:
-                return api_error("Invalid email or password")
-        else:  # Otherwise, assume it's a username
-            user = authenticate(username=identifier, password=password)
+                return api_error("User not found with given email.")
+            except User.MultipleObjectsReturned:
+                return api_error("Multiple users found with given email.")
+            
+        user = authenticate(request=request, username=identifier, password=password)
 
         # If user found and authenticated
-        if user and user.check_password(password):
-            tokens = get_tokens_for_user(user)  # Generate JWT tokens
-            return api_success({
-                "username": user.username,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "email": user.email,
-                "token": tokens['access'],  # Return access token for authentication
-                "refresh_token": tokens['refresh'],  # Refresh token for re-authentication
-            })
+        if user:
+            # finds a verification object for the given user
+            # if a verification cannot be found, create a new one as false but still return same invalid error.
+            try:
+                if not VerifiedUser.objects.get(user=user).verified:            
+                    return api_error("User not verified.")
+            except VerifiedUser.DoesNotExist:
+                verified = VerifiedUser(
+                    user=user
+                )
+                verified.save()
+                return api_error("User not verified.")
 
-        return api_error("Invalid username/email or password.")
+            if user.check_password(password):
+                tokens = get_tokens_for_user(user)  # Generate JWT tokens
+                return api_success({
+                    "username": user.username,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "email": user.email,
+                    "token": tokens['access'],  # Return access token for authentication
+                    "refresh_token": tokens['refresh'],  # Refresh token for re-authentication
+                })
+            else:
+                return api_error("Incorrect password.")
+        else:
+            return api_error("Invalid username or password.")
 
 
 class GenerateOTPView(generics.CreateAPIView):
@@ -161,7 +188,10 @@ class GenerateOTPView(generics.CreateAPIView):
     # ----- the email is succesfully sent
     # - FAIL if any of the above conditions are not met
     def post(self, request, custom_otp: str = None, *args, **kwargs):
-        target_user: User | None = get_user_by_email_username(request)
+        target_user: User | Response = get_user_by_email_username(request)
+
+        if type(target_user) == Response:
+            return target_user
 
         # generates OTP and send to user, contains 6 digits from 0-9
         otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
@@ -243,7 +273,10 @@ class ValidateOTPView(generics.CreateAPIView):
     # ----- attempted OTP = stored OTP
     # - "fail" OR an error description if any of the above conditions are not met
     def post(self, request, *args, **kwargs):
-        target_user: User | None = get_user_by_email_username(request)
+        target_user: User | Response = get_user_by_email_username(request)
+
+        if type(target_user) == Response:
+            return target_user
 
         # determines if an OTP was included
         if "otp" not in request.data:
@@ -267,6 +300,19 @@ class ValidateOTPView(generics.CreateAPIView):
 
             stored_otp.verified = True
             stored_otp.save()
+
+            # set the user's account status to valid regardless of what the OTP was used for
+            try:
+                verified = VerifiedUser.objects.get(user=target_user)
+                verified.verified = True
+                verified.save()
+            except VerifiedUser.DoesNotExist:
+                verified = VerifiedUser(
+                    user=target_user,
+                    verified=True
+                )
+                verified.save()
+
             return api_success("success")
         else:
             return api_error("The OTP you entered is incorrect.")
@@ -275,7 +321,10 @@ class ResetPasswordView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
-        target_user: User | None = get_user_by_email_username(request)
+        target_user: User | Response = get_user_by_email_username(request)
+
+        if type(target_user) == Response:
+            return target_user
 
         # checks if the user has verified their OTP before continuing
         if not (OTP.objects.get(user=target_user).verified):
@@ -284,7 +333,7 @@ class ResetPasswordView(generics.CreateAPIView):
         new_password = ""
         confirm_password = ""
 
-        # checks new password for matching confirmation and different from current password
+        # checks given new password for matching confirmation and different from current password in database
         if 'new_password' in request.data:
             new_password = request.data['new_password']
         else:
@@ -303,6 +352,7 @@ class ResetPasswordView(generics.CreateAPIView):
         
         try:
             target_user.password = check_password(new_password)
+            target_user.set_password(raw_password=new_password)
             target_user.save()
 
             # sets the current OTP to become invalid, otherwise this would make the user able to change their password an unlimited amount of times through the API
@@ -320,7 +370,7 @@ class ResetPasswordView(generics.CreateAPIView):
 
 class ExerciseView(generics.CreateAPIView):
     serializer_class = ExerciseSerializer
-    # valid inputs for different variables
+    # valid inputs for exercise variables stored in database
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
     body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]    
     muscle_types = ["Abdominals", "Abductors", "Abs", "Adductors", "Ankle Stabilizers", "Ankles", "Back", "Biceps", "Brachialis", "Cavles", "Cardio",
@@ -331,7 +381,7 @@ class ExerciseView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         exercise: Exercise
-        # response if one of fields empty
+        # response if one of the exercise fields are empty
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
             return api_error("Necessary Field(s) are empty")   
         
@@ -340,7 +390,7 @@ class ExerciseView(generics.CreateAPIView):
         ex_body_area = request.data['ex_body_area']
         equipment_needed = request.data['equipment_needed']
 
-        # checks if target and secondary muscles are valid or returns none
+        # checks if target and secondary muscle inputs are valid or returns none
         if 'ex_target_muscle' in request.data:
             ex_target_muscle = request.data['ex_target_muscle']
         else:
@@ -380,7 +430,7 @@ class ExerciseView(generics.CreateAPIView):
         )
         exercise.save()
 
-        # success response for created exercise
+        # success response for created Exercise instance
         return api_success({
             "ex_name": exercise.ex_name,
             "ex_type": exercise.ex_type,
@@ -441,7 +491,7 @@ class ExerciseView(generics.CreateAPIView):
         
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
-    # retrieves target user and target exercise
+    # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
