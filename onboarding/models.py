@@ -38,3 +38,16 @@ class LoggedExercise(models.Model):
 class VerifiedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
+
+class RecommendedExercise(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    datetime_recommended = models.DateTimeField(default=timezone.now())
+    good_recommendation = models.BooleanField(default=True)
+    sets = models.PositiveSmallIntegerField(default=0, null=True)
+    reps = models.PositiveSmallIntegerField(default=0, null=True)
+    distance = models.FloatField(default=0.0, null=True)
+    distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")], null=True)
+    duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
+    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
+    equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
