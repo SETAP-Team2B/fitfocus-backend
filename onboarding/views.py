@@ -24,7 +24,13 @@ from django.utils import timezone
 from django.http import JsonResponse
 import json
 
+# for exercise recommendation
 import random
+from django.db.models import Avg
+from math import floor
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -73,7 +79,7 @@ def get_exercise_by_name(request):
     
     return target_exercise
 
-def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3):
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5):
     exercises = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
@@ -99,10 +105,10 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
     if not truly_random:
     - set the following to be within the given range (if applicable to given exercise):
     - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
-    - reps: [1, ROUND(AVERAGE(exercise_history.sets WHERE exercise_history.sets >= sets - 1))]
-    - distance: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.7, 1.3]))]
-    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
-    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.9, 1.3]))]
+    - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
+    - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
+    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
+    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
 
     - combine the attributes into a given exercise
     - run through the ML model for recommending an exercise
@@ -120,42 +126,75 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
     '''
 
     for _ in range(exercises_to_recommend):
-        recommended_exercise = RecommendedExercise(
-            user=user
-        )
+        recommended = False
+        recommendation_attempts = 0 # give up after e.g. 20 failed recommendation attempts
 
-        # algorithm begins
-        bad_recommendations = 0
+        while not recommended and recommendation_attempts < 20:
+            recommended_exercise = RecommendedExercise(
+                user=user
+            )
 
-        # get the random exercise (finds a random primary key from all possible primary keys)
-        possible_pks = Exercise.objects.values_list('pk', flat=True)
+            # algorithm begins
+            bad_recommendations = 0
 
-        can_continue = False
-        exercise = Exercise()
-        while not can_continue:
-            exercise = Exercise.objects.get(pk=random.choice(possible_pks))
+            # get the random exercise (finds a random primary key from all possible primary keys)
+            possible_pks = Exercise.objects.values_list('pk', flat=True)
 
-            all_recommended_exercises = RecommendedExercise.objects.filter(user=user, exercise=exercise)
-            all_logged_exercises = LoggedExercise.objects.filter(user=user, exercise=exercise)
+            while bad_recommendations < bad_recommendation_limit:
+                can_continue = False
+                exercise = Exercise()
+                while not can_continue:
+                    exercise = Exercise.objects.get(pk=random.choice(possible_pks))
 
-            can_continue = \
-                (all_recommended_exercises.__len__() + all_logged_exercises.__len__() < 5) or \
-                (all_recommended_exercises.filter(good_exercise=True).__len__() / all_recommended_exercises.__len__() > 0.6)
+                    all_recommended_exercises = RecommendedExercise.objects.filter(user=user, exercise=exercise)
+                    all_logged_exercises = LoggedExercise.objects.filter(user=user, exercise=exercise)
 
-        recommended_exercise.exercise = exercise
-        if truly_random:
-            recommended_exercise.sets = random.randint(1, 5)
-            recommended_exercise.reps = random.randint(1, 15)
-            recommended_exercise.distance = random.randint(10, 100) / 10.0
-            recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
-        else:
-            # TODO: set equpiment weight = average
-            # TODO: continue from here
-            recommended_exercise.sets = max(1, () * random.uniform(0.9, 1.2))
-            recommended_exercise.reps = max(1, () * random.uniform(0.9, 1.2))
-            recommended_exercise.distance = max(1, () * random.uniform(0.9, 1.2))
-            recommended_exercise.duration = max(1, () * random.uniform(0.9, 1.2))
+                    can_continue = \
+                        (all_recommended_exercises.__len__() + all_logged_exercises.__len__() < 5) or \
+                        (all_recommended_exercises.filter(good_exercise=True).__len__() / all_recommended_exercises.__len__() > 0.6)
 
+                recommended_exercise.exercise = exercise
+                if truly_random:
+                    recommended_exercise.sets = random.randint(1, 5)
+                    recommended_exercise.reps = random.randint(1, 15)
+                    recommended_exercise.distance = random.randint(10, 100) / 10.0
+                    recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
+                else:
+                    minutes = max(1, round(LoggedExercise.objects.aggregate(Avg("duration", default=1))["duration__avg"] * random.uniform(0.8, 1.2), 2))
+
+                    # TODO: set equpiment weight = average
+                    recommended_exercise.sets = max(1, round((LoggedExercise.objects.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
+                    recommended_exercise.reps = max(1, round((LoggedExercise.objects.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
+                    recommended_exercise.distance = max(1, round((LoggedExercise.objects.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
+                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1)
+
+                # convert all existing recommended exercises into a dataframe
+                rec_list = \
+                    [pd.Series(list(ex.__todict__().values()),index=pd.MultiIndex.from_tuples(ex.__todict__().keys())) for ex in all_recommended_exercises] \
+                    + [pd.Series(list(recommended_exercise.__todict__().values(), index=pd.MultiIndex.from_tuples(recommended_exercise.__todict__().keys())))]
+                df = pd.DataFrame(rec_list)
+                # run a k-means nearest neighbours model with the above recommended exercise
+
+                # go up to the last one as the final value is the one we want to fit
+                x = df.iloc[:-1,:-1].values # all other attributes
+                y = df.iloc[:-1,-1].values # the "good" attribute
+
+                # start off with 5 neighbours,
+                # can be tweaked, may even set to a proportion of the dataset
+                k_means = KNeighborsClassifier(n_neighbors=5)
+                k_means.fit(x, y) # fit the model to all recommended exercises for that user
+
+                # if the predicted output is good then add it, if not repeat the above
+                prediction = k_means.predict(df.iloc[-1,:-1].values) # predict the given recommended exercise
+                if prediction == 1:
+                    exercises.append(recommended_exercise)
+                    recommended_exercise.save()
+                    recommended = True
+                    break
+                else:
+                    bad_recommendations += 1
+
+            recommendation_attempts += 1
 
     return JsonResponse(exercises)
 
@@ -658,9 +697,11 @@ class RecommendExerciseView(generics.CreateAPIView):
     # - truly_random: boolean (default false) whether a new exercise will be 100% random or not
     # - user_identifier: email/username of the user to recommend for
     # - exercises_to_recommend: non-negative integer (default 1)
-    def generateRecommendedExercises(self, request, *args, **kwargs):
+    # - k_neighbours: positive integer (default 5)
+    def get(self, request, *args, **kwargs):
         truly_random: bool = False
         exercises_to_recommend: int = 1
+        k_neighbours: int = 5
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response: return target_user
@@ -676,7 +717,16 @@ class RecommendExerciseView(generics.CreateAPIView):
         if request.data.get("exercises_to_recommend"):
             try:
                 exercises_to_recommend = request["exercises_to_recommend"]
+                if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
             except TypeError:
                 return api_error("exercises_to_recommend must be an integer.")
             
-        return recommend_exercises(user=target_user, exercises_to_recommend=exercises_to_recommend, truly_random=truly_random)
+        # sets the k_neighbours variable if it is present in the request
+        if request.data.get("k_neighbours"):
+            try:
+                k_neighbours = request["k_neighbours"]
+                if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
+            except TypeError:
+                return api_error("k_neighbours must be an integer.")
+            
+        return recommend_exercises(user=target_user, exercises_to_recommend=exercises_to_recommend, truly_random=truly_random, k_neighbours=k_neighbours)
