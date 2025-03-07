@@ -31,6 +31,8 @@ from math import floor
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
+from django.forms.models import model_to_dict
+from django.core import serializers
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -80,10 +82,12 @@ def get_exercise_by_name(request):
     return target_exercise
 
 def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5):
-    exercises = []
+    exercises: list[RecommendedExercise] = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
     # TODO: generate points based on given recommendation
+    # TODO: handle the case where the user has NO logged exercises and/or NO recommended exercises
+    # TODO: handle missing/null values in model
 
     '''
     algorithm: 
@@ -151,7 +155,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
                     can_continue = \
                         (all_recommended_exercises.__len__() + all_logged_exercises.__len__() < 5) or \
-                        (all_recommended_exercises.filter(good_exercise=True).__len__() / all_recommended_exercises.__len__() > 0.6)
+                        (all_recommended_exercises.filter(good_recommendation=True).__len__() / all_recommended_exercises.__len__() > 0.6)
 
                 recommended_exercise.exercise = exercise
                 if truly_random:
@@ -160,19 +164,27 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     recommended_exercise.distance = random.randint(10, 100) / 10.0
                     recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
                 else:
-                    minutes = max(1, round(LoggedExercise.objects.aggregate(Avg("duration", default=1))["duration__avg"] * random.uniform(0.8, 1.2), 2))
+                    # since duration is a timedelta, avg has to be handled differently
+                    all_durations: list[timedelta] = list(all_logged_exercises.values_list('duration', flat=True))
+                    all_duration_mins = [x.seconds / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
+
+                    minutes = max(1, round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2))
 
                     # TODO: set equpiment weight = average
-                    recommended_exercise.sets = max(1, round((LoggedExercise.objects.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
-                    recommended_exercise.reps = max(1, round((LoggedExercise.objects.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
-                    recommended_exercise.distance = max(1, round((LoggedExercise.objects.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
+                    # TODO: factor in user mood when it comes to the random multiplier at the end
+                    recommended_exercise.sets = max(1, round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
+                    recommended_exercise.reps = max(1, round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
+                    recommended_exercise.distance = max(1, round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
                     recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1)
 
                 # convert all existing recommended exercises into a dataframe
+                # treats all existing logged exercises as good recommendations
                 rec_list = \
                     [pd.Series(list(ex.__todict__().values()),index=pd.MultiIndex.from_tuples(ex.__todict__().keys())) for ex in all_recommended_exercises] \
-                    + [pd.Series(list(recommended_exercise.__todict__().values(), index=pd.MultiIndex.from_tuples(recommended_exercise.__todict__().keys())))]
+                    + [pd.Series(list(ex.__todict__().values()),index=pd.MultiIndex.from_tuples(ex.__todict__().keys())) for ex in all_logged_exercises] \
+                    + [pd.Series(recommended_exercise.__todict__().values(), index=pd.MultiIndex.from_tuples(recommended_exercise.__todict__().keys()))]
                 df = pd.DataFrame(rec_list)
+
                 # run a k-means nearest neighbours model with the above recommended exercise
 
                 # go up to the last one as the final value is the one we want to fit
@@ -181,11 +193,11 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
                 # start off with 5 neighbours,
                 # can be tweaked, may even set to a proportion of the dataset
-                k_means = KNeighborsClassifier(n_neighbors=5)
+                k_means = KNeighborsClassifier(n_neighbors = (5 if len(rec_list) > 5 else len(rec_list) - 1))
                 k_means.fit(x, y) # fit the model to all recommended exercises for that user
 
                 # if the predicted output is good then add it, if not repeat the above
-                prediction = k_means.predict(df.iloc[-1,:-1].values) # predict the given recommended exercise
+                prediction = k_means.predict(df.iloc[-1,:-1].values.reshape(1, -1)) # predict the given recommended exercise
                 if prediction == 1:
                     exercises.append(recommended_exercise)
                     recommended_exercise.save()
@@ -196,7 +208,11 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
             recommendation_attempts += 1
 
-    return JsonResponse(exercises)
+    serialized_exercises = []
+    for rec_ex in exercises:
+        serialized_exercises.append(model_to_dict(rec_ex))
+
+    return JsonResponse(serialized_exercises, safe=False)
 
 
 # Create your views here.
@@ -616,7 +632,7 @@ class LogExerciseView(generics.CreateAPIView):
             reps=request.data.get('reps', None),
             distance=request.data.get('distance', None),
             distance_units=request.data.get('distance_units', None),
-            duration=request.data.get('duration', None),
+            duration=pd.Timedelta("0 days " + request.data.get('duration', None)).to_pytimedelta(), # duration should be of format [x]hr[y]m[z]s
             equipment_weight=request.data.get('equipment_weight', None),
             equipment_weight_units=request.data.get('equipment_weight_units', None)
         )
@@ -709,22 +725,23 @@ class RecommendExerciseView(generics.CreateAPIView):
         # sets the truly_random variable if it is present in the request
         if request.data.get("truly_random"):
             try:
-                truly_random = request["truly_random"]
+                truly_random = request.data["truly_random"]
             except TypeError:
                 return api_error("truly_random must be a boolean.")
             
         # sets the exercises_to_recommend variable if it is present in the request
         if request.data.get("exercises_to_recommend"):
             try:
-                exercises_to_recommend = request["exercises_to_recommend"]
+                exercises_to_recommend = request.data["exercises_to_recommend"]
                 if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
-            except TypeError:
+            except TypeError as err:
+                print(err.__str__())
                 return api_error("exercises_to_recommend must be an integer.")
             
         # sets the k_neighbours variable if it is present in the request
         if request.data.get("k_neighbours"):
             try:
-                k_neighbours = request["k_neighbours"]
+                k_neighbours = request.data["k_neighbours"]
                 if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
             except TypeError:
                 return api_error("k_neighbours must be an integer.")
