@@ -12,8 +12,8 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise, LoggedExercise, VerifiedUser
-from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
+from .models import *
+from .serializers import *
 
 from random import randint
 import smtplib
@@ -23,6 +23,8 @@ from datetime import timedelta
 from django.utils import timezone
 from django.http import JsonResponse
 import json
+
+import random
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -70,6 +72,92 @@ def get_exercise_by_name(request):
         return api_error("No exercise name found.")
     
     return target_exercise
+
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3):
+    exercises = []
+
+    # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
+    # TODO: generate points based on given recommendation
+
+    '''
+    algorithm: 
+    
+    BEGIN
+
+    - set bad_recommendation counter to 0
+    - generate a random exercise from all exercise objects
+    - get all logged and recommended exercises for given user and given exercise
+    - if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 lines above
+
+    if truly_random:
+    - set the following to be random integers within the given range (if applicable to given exercise):
+    - sets: [1, 5]
+    - reps: [1, 15]
+    - distance: [1, 10]
+    - duration (in minutes): [1, 20]
+
+    if not truly_random:
+    - set the following to be within the given range (if applicable to given exercise):
+    - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
+    - reps: [1, ROUND(AVERAGE(exercise_history.sets WHERE exercise_history.sets >= sets - 1))]
+    - distance: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.7, 1.3]))]
+    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
+    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.9, 1.3]))]
+
+    - combine the attributes into a given exercise
+    - run through the ML model for recommending an exercise
+    
+    if the recommendation is "bad":
+    - increment bad_recommendation counter by 1
+    ----- if equal to 3, start from BEGIN again
+    ----- if not equal to 3, repeat "if truly_random or not" section
+    
+    if the recommendation is "good":
+    - recommend the exercise
+    - add it to exercises array
+
+    END
+    '''
+
+    for _ in range(exercises_to_recommend):
+        recommended_exercise = RecommendedExercise(
+            user=user
+        )
+
+        # algorithm begins
+        bad_recommendations = 0
+
+        # get the random exercise (finds a random primary key from all possible primary keys)
+        possible_pks = Exercise.objects.values_list('pk', flat=True)
+
+        can_continue = False
+        exercise = Exercise()
+        while not can_continue:
+            exercise = Exercise.objects.get(pk=random.choice(possible_pks))
+
+            all_recommended_exercises = RecommendedExercise.objects.filter(user=user, exercise=exercise)
+            all_logged_exercises = LoggedExercise.objects.filter(user=user, exercise=exercise)
+
+            can_continue = \
+                (all_recommended_exercises.__len__() + all_logged_exercises.__len__() < 5) or \
+                (all_recommended_exercises.filter(good_exercise=True).__len__() / all_recommended_exercises.__len__() > 0.6)
+
+        recommended_exercise.exercise = exercise
+        if truly_random:
+            recommended_exercise.sets = random.randint(1, 5)
+            recommended_exercise.reps = random.randint(1, 15)
+            recommended_exercise.distance = random.randint(10, 100) / 10.0
+            recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
+        else:
+            # TODO: set equpiment weight = average
+            # TODO: continue from here
+            recommended_exercise.sets = max(1, () * random.uniform(0.9, 1.2))
+            recommended_exercise.reps = max(1, () * random.uniform(0.9, 1.2))
+            recommended_exercise.distance = max(1, () * random.uniform(0.9, 1.2))
+            recommended_exercise.duration = max(1, () * random.uniform(0.9, 1.2))
+
+
+    return JsonResponse(exercises)
 
 
 # Create your views here.
@@ -562,3 +650,33 @@ class LogExerciseView(generics.CreateAPIView):
             filtered_response.append(response)
 
         return JsonResponse(filtered_response, safe=False)
+
+class RecommendExerciseView(generics.CreateAPIView):
+    serializer_class = LoggedExerciseSerializer
+
+    # will generate recommended exercises based on the following:
+    # - truly_random: boolean (default false) whether a new exercise will be 100% random or not
+    # - user_identifier: email/username of the user to recommend for
+    # - exercises_to_recommend: non-negative integer (default 1)
+    def generateRecommendedExercises(self, request, *args, **kwargs):
+        truly_random: bool = False
+        exercises_to_recommend: int = 1
+        target_user: User | Response = get_user_by_email_username(request)
+
+        if type(target_user) == Response: return target_user
+
+        # sets the truly_random variable if it is present in the request
+        if request.data.get("truly_random"):
+            try:
+                truly_random = request["truly_random"]
+            except TypeError:
+                return api_error("truly_random must be a boolean.")
+            
+        # sets the exercises_to_recommend variable if it is present in the request
+        if request.data.get("exercises_to_recommend"):
+            try:
+                exercises_to_recommend = request["exercises_to_recommend"]
+            except TypeError:
+                return api_error("exercises_to_recommend must be an integer.")
+            
+        return recommend_exercises(user=target_user, exercises_to_recommend=exercises_to_recommend, truly_random=truly_random)
