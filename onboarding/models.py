@@ -34,6 +34,17 @@ class LoggedExercise(models.Model):
     equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
     equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
 
+    # only for making the ML model easier to import
+    # only returns the minimum data necessary
+    def __todict__(self):
+        return {
+            "sets": self.sets if self.sets else 0,
+            "reps": self.reps if self.reps else 0,
+            "distance": self.distance if self.distance else 0.0,
+            "duration_mins": self.duration.seconds / 60.0,
+            "good": 1, # since it's been logged its obviously a good exercise (?)
+        }
+
 # whether a user is verified or not
 class VerifiedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -56,9 +67,9 @@ class RecommendedExercise(models.Model):
     # only returns the minimum data necessary
     def __todict__(self):
         return {
-            "sets": self.sets,
-            "reps": self.reps,
-            "distance": self.distance,
+            "sets": self.sets if self.sets else 0,
+            "reps": self.reps if self.reps else 0,
+            "distance": self.distance if self.distance else 0.0,
             "duration_mins": self.duration.seconds / 60.0,
             "good": 1 if self.good_recommendation else 0,
         }
