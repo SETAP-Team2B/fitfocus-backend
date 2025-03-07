@@ -3,7 +3,6 @@ runtime: python39  # Specify Python runtime (use the version supported by Google
 entrypoint: gunicorn -b :$PORT fitfocus.wsgi:application  # Start the app with Gunicorn
 
 env_variables:
-  CLOUD_SQL_CONNECTION_NAME: carbide-cairn-451020-k0:europe-west2:fitfocusup-db #
   DJANGO_SETTINGS_MODULE: "fitfocus.settings"  # Make sure the correct settings module is set
   # Add other environment variables here, like database credentials, API keys, etc.
 
