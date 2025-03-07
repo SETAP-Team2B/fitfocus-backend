@@ -51,3 +51,14 @@ class RecommendedExercise(models.Model):
     duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
     equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
     equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
+
+    # only for making the ML model easier to import
+    # only returns the minimum data necessary
+    def __todict__(self):
+        return {
+            "sets": self.sets,
+            "reps": self.reps,
+            "distance": self.distance,
+            "duration_mins": self.duration.seconds / 60.0,
+            "good": 1 if self.good_recommendation else 0,
+        }
