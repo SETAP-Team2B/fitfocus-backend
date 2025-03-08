@@ -172,6 +172,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
                     # TODO: set equpiment weight = average
                     # TODO: factor in user mood when it comes to the random multiplier at the end
+                    # TODO: don't include if there isn't any data for the average
                     recommended_exercise.sets = max(1, round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
                     recommended_exercise.reps = max(1, round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
                     recommended_exercise.distance = max(1, round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
@@ -210,7 +211,23 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
     serialized_exercises = []
     for rec_ex in exercises:
-        serialized_exercises.append(model_to_dict(rec_ex))
+        serialized_model = dict()
+
+        # goes through every object in the recommended exercise object
+        # if it needs formatting/displaying in the serialized_model, format then add
+        # excludes all null values
+        for key, value in model_to_dict(rec_ex).items():
+            if value != None and value != []:
+                match(key):
+                    case "user": pass # don't need the username as that gets sent into the request anyways
+                    case "good_recommendation": pass # don't need to return that it's a good recommendation, they always will be by default
+                    case "duration": serialized_model[key] = value.__str__() # SPECIFICALLY FOR FORMATTING PURPOSES, IT IS HARD TO UNDERSTAND ON ITS OWN
+                    case "datetime_recommended": serialized_model[key] = value.__str__() # formatting purposes too
+                    case "exercise": serialized_model["ex_name"] = Exercise.objects.get(id=value).ex_name
+                    case _:
+                        serialized_model[key] = value
+
+        serialized_exercises.append(serialized_model)
 
     return JsonResponse(serialized_exercises, safe=False)
 
