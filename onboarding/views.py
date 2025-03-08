@@ -172,7 +172,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
                     # TODO: set equpiment weight = average
                     # TODO: factor in user mood when it comes to the random multiplier at the end
-                    # TODO: don't include if there isn't any data for the average
+                    # TODO: don't include any if there isn't any data for the logged exercises
                     recommended_exercise.sets = max(1, round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
                     recommended_exercise.reps = max(1, round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
                     recommended_exercise.distance = max(1, round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))

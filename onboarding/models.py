@@ -20,6 +20,7 @@ class Exercise(models.Model):
     ex_secondary_muscle_1 = models.CharField(max_length=30, default="", null=True, db_comment= "Secondary muscle targeted")
     ex_secondary_muscle_2 = models.CharField(max_length=30, default="", null=True, db_comment= "Any other secondary muscles")
 
+# TODO: sort the __todict__ function to return None if applicable
 # subject to change with extra fields
 class LoggedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -50,6 +51,7 @@ class VerifiedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
 
+# TODO: sort the __todict__ function to return None if applicable
 class RecommendedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
