@@ -604,6 +604,10 @@ class ExerciseView(generics.CreateAPIView):
 
     # given parameters equal to ex_type, filters all exercises for values
     def get(self, request, *args, **kwargs):
+        # if no exercise objects, generate all from csv file
+        if Exercise.objects.count() == 0:
+            self.ExerciseFile()
+
         # every single Exercise object
         query_set = Exercise.objects.values()
     
