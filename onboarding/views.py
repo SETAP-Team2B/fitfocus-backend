@@ -643,16 +643,28 @@ class LogExerciseView(generics.CreateAPIView):
         logged_exercise = LoggedExercise(
             user=target_user,
             exercise=target_exercise,
-            date_logged=request.data.get('date_logged'),
+            date_logged=request.data.get('date_logged', None),
             time_logged=request.data.get('time_logged', None),
             sets=request.data.get('sets', None),
             reps=request.data.get('reps', None),
             distance=request.data.get('distance', None),
             distance_units=request.data.get('distance_units', None),
-            duration=pd.Timedelta("0 days " + request.data.get('duration', None)).to_pytimedelta(), # duration should be of format [x]hr[y]m[z]s
+            duration=pd.Timedelta("0 days " + request.data.get('duration', "")).to_pytimedelta(), # duration should be of format [x]hr[y]m[z]s
             equipment_weight=request.data.get('equipment_weight', None),
             equipment_weight_units=request.data.get('equipment_weight_units', None)
         )
+
+        # if timedelta is empty, set it to None
+        if logged_exercise.duration == timedelta(days=0): 
+            logged_exercise.duration = None
+
+        # if distance is present, should also have units
+        if logged_exercise.distance and not logged_exercise.distance_units:
+            return api_error("Distance needs a unit.")
+
+        # if equipment_weight is present, should also have units
+        if logged_exercise.equipment_weight and not logged_exercise.equipment_weight_units:
+            return api_error("Weights used need unit(s).")
 
         # validates inputs for logged exercise and saves if valid
         if logged_exercise.date_logged is None:
