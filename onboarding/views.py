@@ -47,6 +47,7 @@ def get_tokens_for_user(user):
 # given a request with an email/password, finds the user associated with the account
 # used multiple times by several functions
 # should either return a User object or call an api_error.
+# ALSO LOOKS THROUGH QUERY PARAMS AS THAT IS THE ONLY WAY TO HANDLE IT IN DART
 def get_user_by_email_username(request):
     target_user: User | None = None
 
@@ -59,6 +60,16 @@ def get_user_by_email_username(request):
     elif "username" in request.data:        
         try:
             target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    if "email" in request.query_params:
+        try:
+            target_user = User.objects.get(email=request.query_params["email"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    elif "username" in request.query_params:        
+        try:
+            target_user = User.objects.get(username=request.query_params["username"])
         except User.DoesNotExist:
             return api_error("Could not find associated user.")
     else:
@@ -193,13 +204,19 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                 x = df.iloc[:-1,:-1].values # all other attributes
                 y = df.iloc[:-1,-1].values # the "good" attribute
 
-                # start off with 5 neighbours,
-                # can be tweaked, may even set to a proportion of the dataset
-                k_means = KNeighborsClassifier(n_neighbors = (5 if len(rec_list) > 5 else len(rec_list) - 1))
-                k_means.fit(x, y) # fit the model to all recommended exercises for that user
+                if len(rec_list) > 1:
+                    # start off with 5 neighbours,
+                    # can be tweaked, may even set to a proportion of the dataset
+                    k_means = KNeighborsClassifier(n_neighbors = (5 if len(rec_list) > 5 else len(rec_list) - 1))
+                    k_means.fit(x, y) # fit the model to all recommended exercises for that user
 
-                # if the predicted output is good then add it, if not repeat the above
-                prediction = k_means.predict(df.iloc[-1,:-1].values.reshape(1, -1)) # predict the given recommended exercise
+                    # if the predicted output is good then add it, if not repeat the above
+                    prediction = k_means.predict(df.iloc[-1,:-1].values.reshape(1, -1)) # predict the given recommended exercise
+                else:
+                    prediction = 1 # if there is no training data for the model, just assume it to be true, the user can always request a new exercise
+                    # this does mean a brand new user will have completely random recommendations
+                    # TODO: find a better solution than this len() check
+
                 if prediction == 1:
                     exercises.append(recommended_exercise)
                     recommended_exercise.save()
@@ -775,25 +792,25 @@ class RecommendExerciseView(generics.CreateAPIView):
         if type(target_user) == Response: return target_user
 
         # sets the truly_random variable if it is present in the request
-        if request.data.get("truly_random"):
+        if request.query_params.get("truly_random"):
             try:
-                truly_random = request.data["truly_random"]
+                truly_random = request.query_params["truly_random"]
             except TypeError:
                 return api_error("truly_random must be a boolean.")
             
         # sets the exercises_to_recommend variable if it is present in the request
-        if request.data.get("exercises_to_recommend"):
+        if request.query_params.get("exercises_to_recommend"):
             try:
-                exercises_to_recommend = request.data["exercises_to_recommend"]
+                exercises_to_recommend = request.query_params["exercises_to_recommend"]
                 if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
             except TypeError as err:
                 print(err.__str__())
                 return api_error("exercises_to_recommend must be an integer.")
             
         # sets the k_neighbours variable if it is present in the request
-        if request.data.get("k_neighbours"):
+        if request.query_params.get("k_neighbours"):
             try:
-                k_neighbours = request.data["k_neighbours"]
+                k_neighbours = request.query_params["k_neighbours"]
                 if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
             except TypeError:
                 return api_error("k_neighbours must be an integer.")
