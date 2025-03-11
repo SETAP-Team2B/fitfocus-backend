@@ -93,7 +93,7 @@ def get_exercise_by_name(request):
     
     return target_exercise
 
-def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5):
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None):
     exercises: list[RecommendedExercise] = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
@@ -180,16 +180,33 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     all_durations: list[timedelta] = list(all_logged_exercises.values_list('duration', flat=True))
                     all_duration_mins = [x.seconds / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
 
-                    minutes = max(1, round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2))
+                    minutes = \
+                        round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
+                        if all_duration_mins != [0] \
+                        else None
 
                     # TODO: generate equipment weight and weight units
                     # TODO: factor in user mood when it comes to the random multiplier at the end
-                    # TODO: don't include any if there isn't any data for the logged exercises
                     # TODO: add distance units
-                    recommended_exercise.sets = max(1, round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
-                    recommended_exercise.reps = max(1, round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
-                    recommended_exercise.distance = max(1, round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
-                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1)
+                    recommended_exercise.sets = \
+                        round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)) \
+                        if all_logged_exercises.aggregate(Avg("sets"))["sets__avg"] != None \
+                        else None
+                    
+                    recommended_exercise.reps = \
+                        round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)) \
+                        if all_logged_exercises.aggregate(Avg("reps"))["reps__avg"] != None \
+                        else None
+
+                    recommended_exercise.distance = \
+                        round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)) \
+                        if all_logged_exercises.aggregate(Avg("distance"))["distance__avg"] != None \
+                        else None
+                    
+                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
+
+                    # set distance units to given units or KM by default
+                    recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
 
                 # convert all existing recommended exercises into a dataframe
                 # treats all existing logged exercises as good recommendations
