@@ -62,7 +62,7 @@ def get_user_by_email_username(request):
             target_user = User.objects.get(username=request.data["username"])
         except User.DoesNotExist:
             return api_error("Could not find associated user.")
-    if "email" in request.query_params:
+    elif "email" in request.query_params:
         try:
             target_user = User.objects.get(email=request.query_params["email"])
         except User.DoesNotExist:
@@ -182,9 +182,10 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
                     minutes = max(1, round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2))
 
-                    # TODO: set equpiment weight = average
+                    # TODO: generate equipment weight and weight units
                     # TODO: factor in user mood when it comes to the random multiplier at the end
                     # TODO: don't include any if there isn't any data for the logged exercises
+                    # TODO: add distance units
                     recommended_exercise.sets = max(1, round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)))
                     recommended_exercise.reps = max(1, round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)))
                     recommended_exercise.distance = max(1, round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)))
