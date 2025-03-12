@@ -814,7 +814,7 @@ class LogExerciseView(generics.CreateAPIView):
         return JsonResponse(filtered_response, safe=False)
 
 class RecommendExerciseView(generics.CreateAPIView):
-    serializer_class = LoggedExerciseSerializer
+    serializer_class = RecommendedExerciseSerializer
 
     # will generate recommended exercises based on the following:
     # - truly_random: boolean (default false) whether a new exercise will be 100% random or not
@@ -910,3 +910,26 @@ class RecommendExerciseView(generics.CreateAPIView):
             distance_units=distance_units,
             equipment_weight_units=equipment_weight_units
         )
+    
+class UpdateRecommendedExerciseView(generics.CreateAPIView):
+    serializer_class = RecommendedExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        rec_ex_id = request.data.get("rec_ex_id")
+        good_recommendation = request.data.get("good_recommendation")
+
+        if rec_ex_id == None: return api_error("A valid ID for the recommended exercise must be provided.")
+        if good_recommendation == None: return api_error("good_recommendation must be provided.")
+
+        try:
+            rec_ex = RecommendedExercise.objects.get(id=rec_ex_id)
+            rec_ex.good_recommendation = good_recommendation if type(good_recommendation) == bool else True
+            rec_ex.save()
+
+            return api_success("Exercise successfully updated.")
+        except RecommendedExercise.DoesNotExist:
+            return api_error("A recommended exercise could not be found.")
+        except RecommendedExercise.MultipleObjectsReturned:
+            return api_error("Multiple recommended exercises were found.") # should never happen
+
