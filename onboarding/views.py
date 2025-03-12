@@ -208,7 +208,12 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     # sets equipment weight range between median of all recorded weights and maximum possible weight
                     all_equipment_weights = list(filter(lambda x: x is not None, list(all_logged_exercises.filter(equipment_weight_units=(equipment_weight_units or "kg")).values_list('equipment_weight', flat=True))))
                     if len(all_equipment_weights) > 0:
-                        median_weight = round(median_low(np.array(all_equipment_weights).flatten()) * random.uniform(0.9, 1.1))
+                        flattened = []
+                        for w in all_equipment_weights:
+                            for w2 in w:
+                                flattened.append(w2)
+
+                        median_weight = round(median_low(flattened) * random.uniform(0.9, 1.1))
                         max_weight = round(max([max(w) for w in all_equipment_weights]) * random.uniform(1, 1.2)) # the maximum recorded weight across all exercises
 
                         recommended_exercise.equipment_weight = \
