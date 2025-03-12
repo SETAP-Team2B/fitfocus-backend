@@ -27,13 +27,14 @@ import csv
 
 # for exercise recommendation
 import random
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from math import floor
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
 from django.core import serializers
+from statistics import median_low
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -93,13 +94,12 @@ def get_exercise_by_name(request):
     
     return target_exercise
 
-def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None):
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None, equipment_weight_units: str = None):
     exercises: list[RecommendedExercise] = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
     # TODO: generate points based on given recommendation
     # TODO: handle the case where the user has NO logged exercises and/or NO recommended exercises
-    # TODO: handle missing/null values in model
 
     '''
     algorithm: 
@@ -177,17 +177,16 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
                 else:
                     # since duration is a timedelta, avg has to be handled differently
-                    all_durations: list[timedelta] = list(all_logged_exercises.values_list('duration', flat=True))
-                    all_duration_mins = [x.seconds / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
-
+                    all_durations = list(filter(lambda x: x is not None, list(all_logged_exercises.values_list('duration', flat=True)))) # remove all None instances of all duration values
+                    all_duration_mins = [x.total_seconds() / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
                     minutes = \
                         round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
                         if all_duration_mins != [0] \
                         else None
+                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
 
-                    # TODO: generate equipment weight and weight units
                     # TODO: factor in user mood when it comes to the random multiplier at the end
-                    # TODO: add distance units
+
                     recommended_exercise.sets = \
                         round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)) \
                         if all_logged_exercises.aggregate(Avg("sets"))["sets__avg"] != None \
@@ -202,11 +201,22 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                         round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)) \
                         if all_logged_exercises.aggregate(Avg("distance"))["distance__avg"] != None \
                         else None
-                    
-                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
-
                     # set distance units to given units or KM by default
-                    recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
+                    if recommended_exercise.distance:
+                        recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
+
+                    # sets equipment weight range between median of all recorded weights and maximum possible weight
+                    all_equipment_weights = list(filter(lambda x: x is not None, list(all_logged_exercises.filter(equipment_weight_units=(equipment_weight_units or "kg")).values_list('equipment_weight', flat=True))))
+                    print(all_equipment_weights)
+                    if len(all_equipment_weights) > 0:
+                        median_weight = round(median_low(np.array(all_equipment_weights).flatten()) * random.uniform(0.9, 1.1))
+                        max_weight = round(max([max(w) for w in all_equipment_weights]) * random.uniform(1, 1.2)) # the maximum recorded weight across all exercises
+                        print(median_weight, max_weight)
+
+                        recommended_exercise.equipment_weight = np.linspace(start=median_weight, stop=max_weight, num=(recommended_exercise.sets or 1)).tolist()                        
+
+                    if recommended_exercise.equipment_weight:
+                        recommended_exercise.equipment_weight_units = equipment_weight_units if equipment_weight_units != "" else "kg"
 
                 # convert all existing recommended exercises into a dataframe
                 # treats all existing logged exercises as good recommendations
@@ -720,13 +730,19 @@ class LogExerciseView(generics.CreateAPIView):
         if logged_exercise.distance and not logged_exercise.distance_units:
             return api_error("Distance needs a unit.")
 
-        # if equipment_weight is present, should also have units
-        if logged_exercise.equipment_weight and not logged_exercise.equipment_weight_units:
-            return api_error("Weights used need unit(s).")
+        if logged_exercise.equipment_weight:
+            # if equipment_weight is present but not sets, auto-assign sets to the length of the list
+            if not logged_exercise.sets:
+                logged_exercise.sets = sum([1 for _ in logged_exercise.equipment_weight])
+
+            # if equipment_weight is present, should also have units
+            if not logged_exercise.equipment_weight_units:
+                return api_error("Weights used need unit(s).")
+        
+        if logged_exercise.date_logged is None:
+            logged_exercise.date_logged = timezone.now().date()
 
         # validates inputs for logged exercise and saves if valid
-        if logged_exercise.date_logged is None:
-            return api_error("A date for the exercise log must be provided.")
 
         postable = False
         for attribute in ['sets', 'reps', 'distance', 'duration', 'equipment_weight']:
@@ -806,6 +822,8 @@ class RecommendExerciseView(generics.CreateAPIView):
         exercises_to_recommend: int = 1
         k_neighbours: int = 5
         target_user: User | Response = get_user_by_email_username(request)
+        distance_units: str = "km"
+        equipment_weight_units: str = "kg"
 
         if type(target_user) == Response: return target_user
 
@@ -815,6 +833,12 @@ class RecommendExerciseView(generics.CreateAPIView):
                 truly_random = request.query_params["truly_random"]
             except TypeError:
                 return api_error("truly_random must be a boolean.")
+        else:
+            if request.data.get("truly_random"):
+                try:
+                    truly_random = request.data["truly_random"]
+                except TypeError:
+                    return api_error("truly_random must be a boolean.")
             
         # sets the exercises_to_recommend variable if it is present in the request
         if request.query_params.get("exercises_to_recommend"):
@@ -824,6 +848,14 @@ class RecommendExerciseView(generics.CreateAPIView):
             except TypeError as err:
                 print(err.__str__())
                 return api_error("exercises_to_recommend must be an integer.")
+        else:
+            if request.data.get("exercises_to_recommend"):
+                try:
+                    exercises_to_recommend = request.data["exercises_to_recommend"]
+                    if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
+                except TypeError as err:
+                    print(err.__str__())
+                    return api_error("exercises_to_recommend must be an integer.")
             
         # sets the k_neighbours variable if it is present in the request
         if request.query_params.get("k_neighbours"):
@@ -832,5 +864,45 @@ class RecommendExerciseView(generics.CreateAPIView):
                 if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
             except TypeError:
                 return api_error("k_neighbours must be an integer.")
+        else:
+            if request.data.get("k_neighbours"):
+                try:
+                    k_neighbours = request.data["k_neighbours"]
+                    if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
+                except TypeError:
+                    return api_error("k_neighbours must be an integer.")
             
-        return recommend_exercises(user=target_user, exercises_to_recommend=exercises_to_recommend, truly_random=truly_random, k_neighbours=k_neighbours)
+        # sets the distance_units variable if it is present in the request
+        if request.query_params.get("distance_units"):
+            try:
+                distance_units = request.query_params["distance_units"]
+            except TypeError:
+                return api_error("distance_units must be a string.")
+        else:
+            if request.data.get("distance_units"):
+                try:
+                    distance_units = request.query_params["distance_units"]
+                except TypeError:
+                    return api_error("distance_units must be a string.")
+            
+        # sets the equipment_weight_units variable if it is present in the request
+        if request.query_params.get("equipment_weight_units"):
+            try:
+                equipment_weight_units = request.query_params["equipment_weight_units"]
+            except TypeError:
+                return api_error("equipment_weight_units must be a string.")
+        else:
+            if request.data.get("equipment_weight_units"):
+                try:
+                    equipment_weight_units = request.query_params["equipment_weight_units"]
+                except TypeError:
+                    return api_error("equipment_weight_units must be a string.")
+                
+        return recommend_exercises(
+            user=target_user, 
+            exercises_to_recommend=exercises_to_recommend, 
+            truly_random=truly_random, 
+            k_neighbours=k_neighbours,
+            distance_units=distance_units,
+            equipment_weight_units=equipment_weight_units
+        )

@@ -32,7 +32,7 @@ class LoggedExercise(models.Model):
     distance = models.FloatField(default=0.0, null=True)
     distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")], null=True)
     duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
-    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
+    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used, MUST ALWAYS BE A LIST OTHERWISE IT BREAKS
     equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
 
     # only for making the ML model easier to import
@@ -42,7 +42,7 @@ class LoggedExercise(models.Model):
             "sets": self.sets if self.sets else 0,
             "reps": self.reps if self.reps else 0,
             "distance": self.distance if self.distance else 0.0,
-            "duration_mins": self.duration.seconds / 60.0,
+            "duration_mins": self.duration.seconds / 60.0 if self.duration else 0.0,
             "good": 1, # since it's been logged its obviously a good exercise (?)
         }
 
