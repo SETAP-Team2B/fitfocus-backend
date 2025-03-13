@@ -3,6 +3,19 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 
+macro_keys = [
+    "fat_g",
+    "saturates_g",
+    "trans_fat_g",
+    "protein_g",
+    "salt_g",
+    "fiber_g",
+    "carbohydrates_g",
+    "sugars_g",
+    "cholesterol_g",
+]
+
+
 # Defines models and fields
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -75,3 +88,70 @@ class RecommendedExercise(models.Model):
             "duration_mins": self.duration.seconds / 60.0,
             "good": 1 if self.good_recommendation else 0,
         }
+    
+class Ingredient(models.Model):
+    global macro_keys
+
+    def positive_validator(value):
+        return value > 0.0
+    
+    def validate_macros(self, value):
+        if type(value) != dict: return False
+
+        for key in value.keys():
+            amount = value[key]
+            if key in macro_keys:
+                if not self.positive_validator(amount):
+                    return False
+
+        return True
+
+    def private_creator_validator(self, value):
+        return self.public or (value != None)            
+    
+    ingredient_name = models.CharField(max_length=50, unique=True)
+    sample_size = models.FloatField(validators=[positive_validator])
+    sample_units = models.CharField(max_length=20, default="serving")
+    sample_calories = models.PositiveIntegerField()
+    sample_macros = models.JSONField(validators=[validate_macros])
+    public = models.BooleanField(default=True)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None, validators=[private_creator_validator]) # the user who created the ingredient
+
+class Meal(models.Model):
+    global macro_keys
+    
+    def positive_validator(value):
+        return value > 0.0
+    
+    def validate_macros(self, value):
+        if type(value) != dict: return False
+
+        for key in value.keys():
+            amount = value[key]
+            if key in macro_keys:
+                if not self.positive_validator(amount):
+                    return False
+
+        return True
+
+    def private_creator_validator(self, value):
+        return self.public or (value != None)            
+    
+    def ingredient_list_validator(value):
+        if type(value) != dict: return False
+    
+    def all_ingredients_accessible_to_user(self, value):
+        if value != None:
+            for ing in self.ingredient_list.all():
+                if not ing.public and ing.creator != self.creator: # checks if the ingredient is private and if it is, checks they have the same creator
+                    return False
+        return True
+
+    meal_name = models.CharField(max_length=50, unique=True)
+    sample_size = models.FloatField(validators=[positive_validator])
+    sample_units = models.CharField(max_length=20, default="serving")
+    sample_calories = models.PositiveIntegerField()
+    sample_macros = models.JSONField(validators=[validate_macros])
+    ingredient_list = models.ManyToManyField(Ingredient, validators=[all_ingredients_accessible_to_user], null=True)
+    public = models.BooleanField(default=True)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None, validators=[private_creator_validator]) # the user who created the ingredient
