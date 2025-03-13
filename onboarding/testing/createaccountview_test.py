@@ -1,95 +1,81 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from unittest.mock import patch
-from models import user, verified
+from onboarding.models import verified, user 
 
-class CreateAccountViewTest(APITestCase):
+class CreateAccountViewTests(APITestCase):
     def setUp(self):
-        self.url = reverse('create-account')
+        self.url = reverse('create-user') 
 
-    @patch('fitfocus-backend.views.validate_email')  # Adjust the import path
-    @patch('fitfocus-backend.views.validate_username')  # Adjust the import path
-    @patch('fitfocus-backend.views.check_name')  # Adjust the import path
-    @patch('fitfocus-backend.views.check_password')  # Adjust the import path
-    def test_create_account_success(self, mock_check_password, mock_check_name, mock_validate_username, mock_validate_email):
-        # Mock the validation functions
-        mock_validate_email.return_value = True
-        mock_validate_username.return_value = True
-        mock_check_name.side_effect = lambda x: x  # Just return the name as is
-        mock_check_password.return_value = 'hashed_password'  # Mock hashed password
-
-        # Prepare a valid request
-        request_data = {
+    def test_create_account_success(self):
+        data = {
             'email': 'test@example.com',
             'username': 'testuser',
             'password': 'StrongPassword123!',
             'first_name': 'Test',
-            'last_name': 'User '
+            'last_name': 'user '
         }
-
-        # Make the POST request
-        response = self.client.post(self.url, data=request_data)
-
-        # Check that the response is successful
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['email'], 'test@example.com')
-        self.assertEqual(response.data['username'], 'testuser')
+        self.assertEqual(user.objects.count(), 1)
+        self.assertEqual(verified.objects.count(), 1)
 
-        # Check that the user was created
-        user = user.objects.get(email='test@example.com')
-        self.assertIsNotNone(user)
-        self.assertEqual(user.username, 'testuser')
-
-        # Check that the verified instance was created
-        verified_user = verified.objects.get(user=user)
-        self.assertIsNotNone(verified_user)
-
-    @patch('fitfocus-backend.views.validate_email')
-    @patch('fitfocus-backend.views.validate_username')
-    def test_create_account_email_exists(self, mock_validate_username, mock_validate_email):
-        # Create a user to test against
-        user.objects.create_user(email='test@example.com', password='password', username='testuser')
-
-        # Mock the validation functions
-        mock_validate_email.return_value = True
-        mock_validate_username.return_value = True
-
-        # Prepare a request with an existing email
-        request_data = {
+    def test_create_account_duplicate_email(self):
+        user.objects.create_user(email='test@example.com', username='testuser', password='StrongPassword123!')
+        data = {
             'email': 'test@example.com',
             'username': 'newuser',
             'password': 'StrongPassword123!',
             'first_name': 'New',
             'last_name': 'User '
         }
-
-        # Make the POST request
-        response = self.client.post(self.url, data=request_data)
-
-        # Check that the response indicates an error
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Email already exists on a user.", response.data['error'])
 
-    @patch('fitfocus-backend.views.validate_email')
-    @patch('fitfocus-backend.views.validate_username')
-    def test_create_account_missing_fields(self, mock_validate_username, mock_validate_email):
-        # Mock the validation functions
-        mock_validate_email.return_value = True
-        mock_validate_username.return_value = True
-
-        # Prepare a request with missing fields
-        request_data = {
-            'email': 'test@example.com',
+    def test_create_account_invalid_email(self):
+        data = {
+            'email': 'invalid-email',
             'username': 'testuser',
-            # 'password' is missing
+            'password': 'StrongPassword123!',
             'first_name': 'Test',
             'last_name': 'User '
         }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Invalid email or username.", response.data['error'])
 
-        # Make the POST request
-        response = self.client.post(self.url, data=request_data)
-
-        # Check that the response indicates an error
+    def test_create_account_missing_fields(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'first_name': 'Test'
+            # Missing password and last_name
+        }
+        response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("password is missing.", response.data['error'])
+
+    def test_create_account_weak_password(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'password': 'weak',  # Weak password
+            'first_name': 'Test',
+            'last_name': 'User '
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Weak password", response.data['error'])  # Adjust based on your error handling
+
+    def test_create_account_invalid_name(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'password': 'StrongPassword123!',
+            'first_name': 'InvalidName123',  # Invalid name
+            'last_name': 'User '
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Invalid name", response.data['error'])  # Adjust based on your error handling
