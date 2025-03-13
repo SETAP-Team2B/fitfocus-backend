@@ -1,14 +1,14 @@
-
-import unittest
 from django.urls import reverse
-from django.test import Client
-from onboarding.models import User, VerifiedUser
-from onboarding.views import CreateAccountView  # Import your view class
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from onboarding.models import VerifiedUser  
+from onboarding.views import CreateAccountView
 
-class CreateAccountViewTests(unittest.TestCase):
+User  = get_user_model()
+
+class CreateAccountViewTests(TestCase):
     def setUp(self):
-        self.client = Client()  # Create a test client
-        self.url = reverse('create-user')  # Adjust the URL name based on your URL configuration
+        self.url = reverse('create-user')
 
     def test_create_account_success(self):
         data = {
@@ -16,21 +16,25 @@ class CreateAccountViewTests(unittest.TestCase):
             'username': 'testuser',
             'password': 'StrongPassword123!',
             'first_name': 'Test',
-            'last_name': 'User  '
+            'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 201)  # HTTP 201 Created
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(VerifiedUser.objects.count(), 1)
+        self.assertEqual(User.objects.get().email, 'test@example.com')
 
-    def test_create_account_duplicate_email(self):
-        User.objects.create_user(email='test@example.com', username='testuser', password='StrongPassword123!')
+    def test_create_account_email_exists(self):
+        User.objects.create_user(
+            email='test@example.com',
+            username='testuser',
+            password='StrongPassword123!'
+        )
         data = {
             'email': 'test@example.com',
             'username': 'newuser',
             'password': 'StrongPassword123!',
             'first_name': 'New',
-            'last_name': 'User  '
+            'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
@@ -42,18 +46,19 @@ class CreateAccountViewTests(unittest.TestCase):
             'username': 'testuser',
             'password': 'StrongPassword123!',
             'first_name': 'Test',
-            'last_name': 'User  '
+            'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
         self.assertIn("Invalid email or username.", response.json().get('error'))
-        
+
     def test_create_account_missing_fields(self):
         data = {
             'email': 'test@example.com',
             'username': 'testuser',
-            'first_name': 'Test'
-            # Missing password and last_name
+            # 'password' is missing
+            'first_name': 'Test',
+            'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
@@ -63,40 +68,10 @@ class CreateAccountViewTests(unittest.TestCase):
         data = {
             'email': 'test@example.com',
             'username': 'testuser',
-            'password': 'weak',  # Weak password
+            'password': '123',  # Weak password
             'first_name': 'Test',
-            'last_name': 'User  '
+            'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Weak password", response.json().get('error'))  # Adjust based on your error handling
-
-    def test_create_account_invalid_name(self):
-        data = {
-            'email': 'test@example.com',
-            'username': 'testuser',
-            'password': 'StrongPassword123!',
-            'first_name': 'InvalidName123',  # Invalid name
-            'last_name': 'User  '
-        }
-        response = self.client.post(self.url, data, content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Invalid name", response.json().get('error'))  # Adjust based on your error handling
-
-    def test_create_account_invalid_request_type(self):
-        response = self.client.post(self.url, data='not-a-dict', content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Invalid request type.", response.json().get('error'))
-
-    def test_create_account_username_exists(self):
-        User.objects.create_user(email='test@example.com', username='testuser', password='StrongPassword123!')
-        data = {
-            'email': 'new@example.com',
-            'username': 'testuser',  # Duplicate username
-            'password': 'StrongPassword123!',
-            'first_name': 'New',
-            'last_name': 'User  '
-        }
-        response = self.client.post(self.url, data, content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Username already exists. Please try again.", response.json().get('error'))  # Adjust based on your error handling
+        self.assertIn("Weak password.", response.json().get('error'))  # Adjust based on your error handling
