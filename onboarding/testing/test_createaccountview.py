@@ -2,7 +2,7 @@ import json
 import unittest
 from django.urls import reverse
 from django.test import Client
-from onboarding.models import User, Verified
+from onboarding.models import user, verified
 from onboarding.views import CreateAccountView  # Import your view class
 
 class CreateAccountViewTests(unittest.TestCase):
