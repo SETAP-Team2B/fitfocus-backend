@@ -1,8 +1,8 @@
-import json
+
 import unittest
 from django.urls import reverse
 from django.test import Client
-from onboarding.models import user, verified
+from onboarding.models import User, VerifiedUser
 from onboarding.views import CreateAccountView  # Import your view class
 
 class CreateAccountViewTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class CreateAccountViewTests(unittest.TestCase):
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 201)  # HTTP 201 Created
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(Verified.objects.count(), 1)
+        self.assertEqual(VerifiedUser.objects.count(), 1)
 
     def test_create_account_duplicate_email(self):
         User.objects.create_user(email='test@example.com', username='testuser', password='StrongPassword123!')
