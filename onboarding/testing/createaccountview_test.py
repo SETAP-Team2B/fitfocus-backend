@@ -2,16 +2,16 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from unittest.mock import patch
-from models import User, VerifiedUser   # Adjust based on your project structure
+from models import user, verified
 
 class CreateAccountViewTest(APITestCase):
     def setUp(self):
-        self.url = reverse('create-account')  # Replace with the actual URL name for your view
+        self.url = reverse('create-account')
 
-    @patch('your_app.views.validate_email')  # Adjust the import path
-    @patch('your_app.views.validate_username')  # Adjust the import path
-    @patch('your_app.views.check_name')  # Adjust the import path
-    @patch('your_app.views.check_password')  # Adjust the import path
+    @patch('fitfocus-backend.views.validate_email')  # Adjust the import path
+    @patch('fitfocus-backend.views.validate_username')  # Adjust the import path
+    @patch('fitfocus-backend.views.check_name')  # Adjust the import path
+    @patch('fitfocus-backend.views.check_password')  # Adjust the import path
     def test_create_account_success(self, mock_check_password, mock_check_name, mock_validate_username, mock_validate_email):
         # Mock the validation functions
         mock_validate_email.return_value = True
@@ -37,19 +37,19 @@ class CreateAccountViewTest(APITestCase):
         self.assertEqual(response.data['username'], 'testuser')
 
         # Check that the user was created
-        user = User.objects.get(email='test@example.com')
+        user = user.objects.get(email='test@example.com')
         self.assertIsNotNone(user)
         self.assertEqual(user.username, 'testuser')
 
-        # Check that the VerifiedUser  instance was created
-        verified_user = VerifiedUser .objects.get(user=user)
+        # Check that the verified instance was created
+        verified_user = verified.objects.get(user=user)
         self.assertIsNotNone(verified_user)
 
-    @patch('your_app.views.validate_email')
-    @patch('your_app.views.validate_username')
+    @patch('fitfocus-backend.views.validate_email')
+    @patch('fitfocus-backend.views.validate_username')
     def test_create_account_email_exists(self, mock_validate_username, mock_validate_email):
         # Create a user to test against
-        User.objects.create_user(email='test@example.com', password='password', username='testuser')
+        user.objects.create_user(email='test@example.com', password='password', username='testuser')
 
         # Mock the validation functions
         mock_validate_email.return_value = True
@@ -71,8 +71,8 @@ class CreateAccountViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Email already exists on a user.", response.data['error'])
 
-    @patch('your_app.views.validate_email')
-    @patch('your_app.views.validate_username')
+    @patch('fitfocus-backend.views.validate_email')
+    @patch('fitfocus-backend.views.validate_username')
     def test_create_account_missing_fields(self, mock_validate_username, mock_validate_email):
         # Mock the validation functions
         mock_validate_email.return_value = True
