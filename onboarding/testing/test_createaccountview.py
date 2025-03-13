@@ -47,6 +47,7 @@ class CreateAccountViewTests(unittest.TestCase):
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
         self.assertIn("Invalid email or username.", response.json().get('error'))
+        
     def test_create_account_missing_fields(self):
         data = {
             'email': 'test@example.com',
@@ -87,7 +88,7 @@ class CreateAccountViewTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
         self.assertIn("Invalid request type.", response.json().get('error'))
 
-     def test_create_account_username_exists(self):
+    def test_create_account_username_exists(self):
         User.objects.create_user(email='test@example.com', username='testuser', password='StrongPassword123!')
         data = {
             'email': 'new@example.com',
