@@ -12,8 +12,8 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise, LoggedExercise
-from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
+from .models import OTP, Exercise, LoggedExercise, UserData
+from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer, UserDataSerializer
 
 from random import randint
 import smtplib
@@ -422,8 +422,24 @@ class ExerciseView(generics.CreateAPIView):
         
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
+
+    
     # retrieves target user and target exercise
     def post(self, request, *args, **kwargs):
+        print("Headers:", request.headers)
+        print("Body:", request.body.decode('utf-8'))
+        try:
+        # Ensure request.data is a dictionary
+            data = request.data
+            if not data:
+                return api_error("No data provided.")
+
+        except json.JSONDecodeError:
+            return api_error("Invalid JSON format.")
+
+    # Check what data is being received
+        print("Request Data:", data) 
+
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
         target_exercise = get_exercise_by_name(request)
@@ -512,3 +528,20 @@ class LogExerciseView(generics.CreateAPIView):
             filtered_response.append(response)
 
         return JsonResponse(filtered_response, safe=False)
+
+class UserDataCreateView(generics.CreateAPIView):
+    queryset = UserData.objects.all()
+    serializer_class = UserDataSerializer
+   
+
+    def perform_create(self, serializer):
+        
+        serializer.save()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

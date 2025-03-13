@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-vkh!7u^ctybo8_vrod2e5v-ion3^xn=gi9)!+f35l6+&-*g)2s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2', 'your-local-ip-address']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2', 'your-local-ip-address', 'jaydenslaptop']
 
 
 REST_FRAMEWORK = {
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'onboarding',
+    'corsheaders',
     'utils'
 ]
 
@@ -59,7 +60,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'fitfocus.urls'
 

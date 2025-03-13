@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import OTP, Exercise, LoggedExercise
+from .models import OTP, Exercise, LoggedExercise, UserData
 
 # defines serializers for models
 class UserSerializer(serializers.ModelSerializer):
@@ -22,3 +22,8 @@ class LoggedExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoggedExercise
         fields = '__all__'
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = ['user', 'user_age', 'user_sex', 'user_height', 'user_height_units', 'user_weight', 'user_weight_units']

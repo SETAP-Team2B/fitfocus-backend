@@ -11,5 +11,6 @@ urlpatterns = [
     path("validate-otp/", views.ValidateOTPView().as_view(), name="validate-otp"),
     path("reset-password/", views.ResetPasswordView().as_view(), name="reset-password"),
     path("create-exercise/", views.ExerciseView().as_view(), name="create-exercise"),
-    path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise")
+    path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise"),
+    path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
 ]
