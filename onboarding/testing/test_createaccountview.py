@@ -47,6 +47,40 @@ class CreateAccountViewTests(unittest.TestCase):
         response = self.client.post(self.url, data, content_type='application/json')
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
         self.assertIn("Invalid email or username.", response.json().get('error'))
+    def test_create_account_missing_fields(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'first_name': 'Test'
+            # Missing password and last_name
+        }
+        response = self.client.post(self.url, data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
+        self.assertIn("password is missing.", response.json().get('error'))
+
+    def test_create_account_weak_password(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'password': 'weak',  # Weak password
+            'first_name': 'Test',
+            'last_name': 'User  '
+        }
+        response = self.client.post(self.url, data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
+        self.assertIn("Weak password", response.json().get('error'))  # Adjust based on your error handling
+
+    def test_create_account_invalid_name(self):
+        data = {
+            'email': 'test@example.com',
+            'username': 'testuser',
+            'password': 'StrongPassword123!',
+            'first_name': 'InvalidName123',  # Invalid name
+            'last_name': 'User  '
+        }
+        response = self.client.post(self.url, data, content_type='application/json')
+        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
+        self.assertIn("Invalid name", response.json().get('error'))  # Adjust based on your error handling
 
     def test_create_account_invalid_request_type(self):
         response = self.client.post(self.url, data='not-a-dict', content_type='application/json')
