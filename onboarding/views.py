@@ -36,6 +36,19 @@ from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
 
+
+# ensures all required attributes are in the request
+# reusable to all get/post functions
+def check_all_required_keys_present(request, keys: list):
+    if type(request) != dict:
+        return api_error("Request was not a dictionary.")
+    
+    for key in keys:
+        if not request.data.get(key): # if the key is not present in request.data, raise an api error
+            return api_error(f"Request must contain (at least) the following: {', '.join(keys)}")
+
+    return
+
 # generates and returns token for user
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -933,3 +946,32 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
+class ConsumableView(generics.CreateAPIView):
+    serializer_class = ConsumableSerializer
+
+    # handles creating OR updating a consumable based on the name
+    def post(self, request, *args, **kwargs):
+        keys = [
+            "name",
+            "sample_size",
+            "sample_calories",
+        ]
+        check_all_required_keys_present(request, keys)
+
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        try:
+            consumable = Consumable.objects.get_or_create(
+                name=request.data['name']
+            )
+        except Consumable.DoesNotExist:
+            return api_error("Ingredient does not exist.") # should never happen with the get_or_create method but to be safe
+        except Consumable.MultipleObjectsReturned:
+            return api_error("Multiple ingredients with the same name were found.")
+        
+        # if the ingredient did not exist beforehand, the user passed through is made the owner of this ingredient
+        consumable.sample_calories = request.data["sample_calories"]
+        consumable.sample_macros = request.data.get("sample_macros")
+        consumable.sample_size = request.data["sample_size"]
+        consumable.sample_units = request.data.get("sample_units") or "serving"

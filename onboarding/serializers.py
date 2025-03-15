@@ -32,3 +32,9 @@ class RecommendedExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecommendedExercise
         fields = '__all__'
+
+
+class ConsumableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consumable
+        fields = '__all__'

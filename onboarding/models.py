@@ -89,35 +89,9 @@ class RecommendedExercise(models.Model):
             "good": 1 if self.good_recommendation else 0,
         }
     
-class Ingredient(models.Model):
-    global macro_keys
-
-    def positive_validator(value):
-        return value > 0.0
-    
-    def validate_macros(self, value):
-        if type(value) != dict: return False
-
-        for key in value.keys():
-            amount = value[key]
-            if key in macro_keys:
-                if not self.positive_validator(amount):
-                    return False
-
-        return True
-
-    def private_creator_validator(self, value):
-        return self.public or (value != None)            
-    
-    ingredient_name = models.CharField(max_length=50, unique=True)
-    sample_size = models.FloatField(validators=[positive_validator])
-    sample_units = models.CharField(max_length=20, default="serving")
-    sample_calories = models.PositiveIntegerField()
-    sample_macros = models.JSONField(validators=[validate_macros])
-    public = models.BooleanField(default=True)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None, validators=[private_creator_validator]) # the user who created the ingredient
-
-class Meal(models.Model):
+# this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
+# i tried thinking about how to make it from other consumables but it broke my brain
+class Consumable(models.Model):
     global macro_keys
     
     def positive_validator(value):
@@ -134,24 +108,32 @@ class Meal(models.Model):
 
         return True
 
-    def private_creator_validator(self, value):
-        return self.public or (value != None)            
-    
-    def ingredient_list_validator(value):
-        if type(value) != dict: return False
-    
-    def all_ingredients_accessible_to_user(self, value):
-        if value != None:
-            for ing in self.ingredient_list.all():
-                if not ing.public and ing.creator != self.creator: # checks if the ingredient is private and if it is, checks they have the same creator
-                    return False
-        return True
-
-    meal_name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
     sample_size = models.FloatField(validators=[positive_validator])
     sample_units = models.CharField(max_length=20, default="serving")
     sample_calories = models.PositiveIntegerField()
-    sample_macros = models.JSONField(validators=[validate_macros])
-    ingredient_list = models.ManyToManyField(Ingredient, validators=[all_ingredients_accessible_to_user], null=True)
-    public = models.BooleanField(default=True)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, default=None, validators=[private_creator_validator]) # the user who created the ingredient
+    sample_macros = models.JSONField(validators=[validate_macros], null=True)
+
+class LoggedConsumable(models.Model):
+    global macro_keys
+    
+    def positive_validator(value):
+        return value > 0.0
+    
+    def validate_macros(self, value):
+        if type(value) != dict: return False
+
+        for key in value.keys():
+            amount = value[key]
+            if key in macro_keys:
+                if not self.positive_validator(amount):
+                    return False
+
+        return True
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    consumable = models.ForeignKey(Consumable, on_delete=models.DO_NOTHING) # do nothing does create integrity issues, however PK is a string and so is still useable for now-deleted consumables (should never happen but edge case is accounted for)
+    amount_logged = models.FloatField(validators=[positive_validator]) # this is a multiplier based on the sample_size of the Consumable
+    date_logged = models.DateField() # this is NOT when the instance was created, but when the consumable was consumed.
+    calories_logged = models.PositiveIntegerField()
+    macros_logged = models.JSONField(validators=[validate_macros], null=True)
