@@ -20,6 +20,7 @@ class Exercise(models.Model):
     ex_secondary_muscle_1 = models.CharField(max_length=30, default="", null=True, db_comment= "Secondary muscle targeted")
     ex_secondary_muscle_2 = models.CharField(max_length=30, default="", null=True, db_comment="Other Secondary Muscle Targeted")
 
+# TODO: sort the __todict__ function to return None if applicable
 # subject to change with extra fields
 class LoggedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -31,10 +32,46 @@ class LoggedExercise(models.Model):
     distance = models.FloatField(default=0.0, null=True)
     distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")], null=True)
     duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
-    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
+    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used, MUST ALWAYS BE A LIST OTHERWISE IT BREAKS
     equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
+
+    # only for making the ML model easier to import
+    # only returns the minimum data necessary
+    def __todict__(self):
+        return {
+            "sets": self.sets if self.sets else 0,
+            "reps": self.reps if self.reps else 0,
+            "distance": self.distance if self.distance else 0.0,
+            "duration_mins": self.duration.seconds / 60.0 if self.duration else 0.0,
+            "good": 1, # since it's been logged its obviously a good exercise (?)
+        }
 
 # whether a user is verified or not
 class VerifiedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
+
+# TODO: sort the __todict__ function to return None if applicable
+class RecommendedExercise(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    datetime_recommended = models.DateTimeField(default=timezone.now())
+    good_recommendation = models.BooleanField(default=True)
+    sets = models.PositiveSmallIntegerField(default=0, null=True)
+    reps = models.PositiveSmallIntegerField(default=0, null=True)
+    distance = models.FloatField(default=0.0, null=True)
+    distance_units = models.CharField(max_length=5, choices=[("km", "km"), ("mi", "mi")], null=True)
+    duration = models.DurationField(default=timedelta(hours=0, minutes=0, seconds=0), null=True)
+    equipment_weight = models.JSONField(default=list, null=True) # a list of integers for varying weights if multiple were used
+    equipment_weight_units = models.CharField(max_length=2, choices=[("kg", "kg"), ("lb", "lb")], null=True)
+
+    # only for making the ML model easier to import
+    # only returns the minimum data necessary
+    def __todict__(self):
+        return {
+            "sets": self.sets if self.sets else 0,
+            "reps": self.reps if self.reps else 0,
+            "distance": self.distance if self.distance else 0.0,
+            "duration_mins": self.duration.seconds / 60.0,
+            "good": 1 if self.good_recommendation else 0,
+        }

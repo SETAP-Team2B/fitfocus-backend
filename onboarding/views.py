@@ -12,8 +12,8 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import OTP, Exercise, LoggedExercise, VerifiedUser
-from .serializers import UserSerializer, OTPSerializer, ExerciseSerializer, ExerciseSerializer, LoggedExerciseSerializer
+from .models import *
+from .serializers import *
 
 from random import randint
 import smtplib
@@ -24,6 +24,17 @@ from django.utils import timezone
 from django.http import JsonResponse
 import json
 import csv
+
+# for exercise recommendation
+import random
+from django.db.models import Avg, Count
+from math import floor
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from django.forms.models import model_to_dict
+from django.core import serializers
+from statistics import median_low
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -37,6 +48,7 @@ def get_tokens_for_user(user):
 # given a request with an email/password, finds the user associated with the account
 # used multiple times by several functions
 # should either return a User object or call an api_error.
+# ALSO LOOKS THROUGH QUERY PARAMS AS THAT IS THE ONLY WAY TO HANDLE IT IN DART
 def get_user_by_email_username(request):
     target_user: User | None = None
 
@@ -49,6 +61,16 @@ def get_user_by_email_username(request):
     elif "username" in request.data:        
         try:
             target_user = User.objects.get(username=request.data["username"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    elif "email" in request.query_params:
+        try:
+            target_user = User.objects.get(email=request.query_params["email"])
+        except User.DoesNotExist:
+            return api_error("Could not find associated user.")
+    elif "username" in request.query_params:        
+        try:
+            target_user = User.objects.get(username=request.query_params["username"])
         except User.DoesNotExist:
             return api_error("Could not find associated user.")
     else:
@@ -71,6 +93,193 @@ def get_exercise_by_name(request):
         return api_error("No exercise name found.")
     
     return target_exercise
+
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None, equipment_weight_units: str = None):
+    exercises: list[RecommendedExercise] = []
+
+    # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
+    # TODO: generate points based on given recommendation
+    # TODO: handle the case where the user has NO logged exercises and/or NO recommended exercises
+
+    '''
+    algorithm: 
+    
+    BEGIN
+
+    - set bad_recommendation counter to 0
+    - generate a random exercise from all exercise objects
+    - get all logged and recommended exercises for given user and given exercise
+    - if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 lines above
+
+    if truly_random:
+    - set the following to be random integers within the given range (if applicable to given exercise):
+    - sets: [1, 5]
+    - reps: [1, 15]
+    - distance: [1, 10]
+    - duration (in minutes): [1, 20]
+
+    if not truly_random:
+    - set the following to be within the given range (if applicable to given exercise):
+    - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
+    - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
+    - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
+    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
+    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
+
+    - combine the attributes into a given exercise
+    - run through the ML model for recommending an exercise
+    
+    if the recommendation is "bad":
+    - increment bad_recommendation counter by 1
+    ----- if equal to 3, start from BEGIN again
+    ----- if not equal to 3, repeat "if truly_random or not" section
+    
+    if the recommendation is "good":
+    - recommend the exercise
+    - add it to exercises array
+
+    END
+    '''
+
+    for _ in range(exercises_to_recommend):
+        recommended = False
+        recommendation_attempts = 0 # give up after e.g. 20 failed recommendation attempts
+
+        while not recommended and recommendation_attempts < 20:
+            recommended_exercise = RecommendedExercise(
+                user=user
+            )
+
+            # algorithm begins
+            bad_recommendations = 0
+
+            # get the random exercise (finds a random primary key from all possible primary keys)
+            possible_pks = Exercise.objects.values_list('pk', flat=True)
+
+            while bad_recommendations < bad_recommendation_limit:
+                can_continue = False
+                exercise = Exercise()
+                while not can_continue:
+                    exercise = Exercise.objects.get(pk=random.choice(possible_pks))
+
+                    all_recommended_exercises = RecommendedExercise.objects.filter(user=user, exercise=exercise)
+                    all_logged_exercises = LoggedExercise.objects.filter(user=user, exercise=exercise)
+
+                    can_continue = \
+                        (all_recommended_exercises.__len__() + all_logged_exercises.__len__() < 5) or \
+                        (all_recommended_exercises.filter(good_recommendation=True).__len__() / all_recommended_exercises.__len__() > 0.6)
+
+                recommended_exercise.exercise = exercise
+                if truly_random:
+                    recommended_exercise.sets = random.randint(1, 5)
+                    recommended_exercise.reps = random.randint(1, 15)
+                    recommended_exercise.distance = random.randint(10, 100) / 10.0
+                    recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
+                else:
+                    # since duration is a timedelta, avg has to be handled differently
+                    all_durations = list(filter(lambda x: x is not None, list(all_logged_exercises.values_list('duration', flat=True)))) # remove all None instances of all duration values
+                    all_duration_mins = [x.total_seconds() / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
+                    minutes = \
+                        round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
+                        if all_duration_mins != [0] \
+                        else None
+                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
+
+                    # TODO: factor in user mood when it comes to the random multiplier at the end
+
+                    recommended_exercise.sets = \
+                        round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)) \
+                        if all_logged_exercises.aggregate(Avg("sets"))["sets__avg"] != None \
+                        else None
+                    
+                    recommended_exercise.reps = \
+                        round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)) \
+                        if all_logged_exercises.aggregate(Avg("reps"))["reps__avg"] != None \
+                        else None
+
+                    recommended_exercise.distance = \
+                        round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)) \
+                        if all_logged_exercises.aggregate(Avg("distance"))["distance__avg"] != None \
+                        else None
+                    # set distance units to given units or KM by default
+                    if recommended_exercise.distance:
+                        recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
+
+                    # sets equipment weight range between median of all recorded weights and maximum possible weight
+                    all_equipment_weights = list(filter(lambda x: x is not None, list(all_logged_exercises.filter(equipment_weight_units=(equipment_weight_units or "kg")).values_list('equipment_weight', flat=True))))
+                    if len(all_equipment_weights) > 0:
+                        flattened = []
+                        for w in all_equipment_weights:
+                            for w2 in w:
+                                flattened.append(w2)
+
+                        median_weight = round(median_low(flattened) * random.uniform(0.9, 1.1))
+                        max_weight = round(max([max(w) for w in all_equipment_weights]) * random.uniform(1, 1.2)) # the maximum recorded weight across all exercises
+
+                        recommended_exercise.equipment_weight = \
+                            np.linspace(start=median_weight, stop=max_weight, num=(recommended_exercise.sets or 1)).round().tolist()                        
+
+                    if recommended_exercise.equipment_weight:
+                        recommended_exercise.equipment_weight_units = equipment_weight_units if equipment_weight_units != "" else "kg"
+
+                # convert all existing recommended exercises into a dataframe
+                # treats all existing logged exercises as good recommendations
+                rec_list = \
+                    [pd.Series(list(ex.__todict__().values()),index=pd.MultiIndex.from_tuples(ex.__todict__().keys())) for ex in all_recommended_exercises] \
+                    + [pd.Series(list(ex.__todict__().values()),index=pd.MultiIndex.from_tuples(ex.__todict__().keys())) for ex in all_logged_exercises] \
+                    + [pd.Series(recommended_exercise.__todict__().values(), index=pd.MultiIndex.from_tuples(recommended_exercise.__todict__().keys()))]
+                df = pd.DataFrame(rec_list)
+
+                # run a k-means nearest neighbours model with the above recommended exercise
+
+                # go up to the last one as the final value is the one we want to fit
+                x = df.iloc[:-1,:-1].values # all other attributes
+                y = df.iloc[:-1,-1].values # the "good" attribute
+
+                if len(rec_list) > 1:
+                    # start off with 5 neighbours,
+                    # can be tweaked, may even set to a proportion of the dataset
+                    k_means = KNeighborsClassifier(n_neighbors = (5 if len(rec_list) > 5 else len(rec_list) - 1))
+                    k_means.fit(x, y) # fit the model to all recommended exercises for that user
+
+                    # if the predicted output is good then add it, if not repeat the above
+                    prediction = k_means.predict(df.iloc[-1,:-1].values.reshape(1, -1)) # predict the given recommended exercise
+                else:
+                    prediction = 1 # if there is no training data for the model, just assume it to be true, the user can always request a new exercise
+                    # this does mean a brand new user will have completely random recommendations
+                    # TODO: find a better solution than this len() check
+
+                if prediction == 1:
+                    exercises.append(recommended_exercise)
+                    recommended_exercise.save()
+                    recommended = True
+                    break
+                else:
+                    bad_recommendations += 1
+
+            recommendation_attempts += 1
+
+    serialized_exercises = []
+    for rec_ex in exercises:
+        serialized_model = dict()
+
+        # goes through every object in the recommended exercise object
+        # if it needs formatting/displaying in the serialized_model, format then add
+        # excludes all null values
+        for key, value in model_to_dict(rec_ex).items():
+            if value != None and value != []:
+                match(key):
+                    case "user": pass # don't need the username as that gets sent into the request anyways
+                    case "good_recommendation": pass # don't need to return that it's a good recommendation, they always will be by default
+                    case "duration": serialized_model[key] = value.__str__() # SPECIFICALLY FOR FORMATTING PURPOSES, IT IS HARD TO UNDERSTAND ON ITS OWN
+                    case "datetime_recommended": serialized_model[key] = value.__str__() # formatting purposes too
+                    case "exercise": serialized_model["ex_name"] = Exercise.objects.get(id=value).ex_name
+                    case _:
+                        serialized_model[key] = value
+
+        serialized_exercises.append(serialized_model)
+
+    return JsonResponse(serialized_exercises, safe=False)
 
 
 # Create your views here.
@@ -444,6 +653,10 @@ class ExerciseView(generics.CreateAPIView):
 
     # given parameters equal to ex_type, filters all exercises for values
     def get(self, request, *args, **kwargs):
+        # if no exercise objects, generate all from csv file
+        if Exercise.objects.count() == 0:
+            self.ExerciseFile()
+
         # every single Exercise object
         query_set = Exercise.objects.values()
     
@@ -502,20 +715,38 @@ class LogExerciseView(generics.CreateAPIView):
         logged_exercise = LoggedExercise(
             user=target_user,
             exercise=target_exercise,
-            date_logged=request.data.get('date_logged'),
+            date_logged=request.data.get('date_logged', None),
             time_logged=request.data.get('time_logged', None),
             sets=request.data.get('sets', None),
             reps=request.data.get('reps', None),
             distance=request.data.get('distance', None),
             distance_units=request.data.get('distance_units', None),
-            duration=request.data.get('duration', None),
+            duration=pd.Timedelta("0 days " + request.data.get('duration', "")).to_pytimedelta(), # duration should be of format [x]hr[y]m[z]s
             equipment_weight=request.data.get('equipment_weight', None),
             equipment_weight_units=request.data.get('equipment_weight_units', None)
         )
 
-        # validates inputs for logged exercise and saves if valid
+        # if timedelta is empty, set it to None
+        if logged_exercise.duration == timedelta(days=0): 
+            logged_exercise.duration = None
+
+        # if distance is present, should also have units
+        if logged_exercise.distance and not logged_exercise.distance_units:
+            return api_error("Distance needs a unit.")
+
+        if logged_exercise.equipment_weight:
+            # if equipment_weight is present but not sets, auto-assign sets to the length of the list
+            if not logged_exercise.sets:
+                logged_exercise.sets = sum([1 for _ in logged_exercise.equipment_weight])
+
+            # if equipment_weight is present, should also have units
+            if not logged_exercise.equipment_weight_units:
+                return api_error("Weights used need unit(s).")
+        
         if logged_exercise.date_logged is None:
-            return api_error("A date for the exercise log must be provided.")
+            logged_exercise.date_logged = timezone.now().date()
+
+        # validates inputs for logged exercise and saves if valid
 
         postable = False
         for attribute in ['sets', 'reps', 'distance', 'duration', 'equipment_weight']:
@@ -581,3 +812,124 @@ class LogExerciseView(generics.CreateAPIView):
             filtered_response.append(response)
 
         return JsonResponse(filtered_response, safe=False)
+
+class RecommendExerciseView(generics.CreateAPIView):
+    serializer_class = RecommendedExerciseSerializer
+
+    # will generate recommended exercises based on the following:
+    # - truly_random: boolean (default false) whether a new exercise will be 100% random or not
+    # - user_identifier: email/username of the user to recommend for
+    # - exercises_to_recommend: non-negative integer (default 1)
+    # - k_neighbours: positive integer (default 5)
+    def get(self, request, *args, **kwargs):
+        truly_random: bool = False
+        exercises_to_recommend: int = 1
+        k_neighbours: int = 5
+        target_user: User | Response = get_user_by_email_username(request)
+        distance_units: str = "km"
+        equipment_weight_units: str = "kg"
+
+        if type(target_user) == Response: return target_user
+
+        # sets the truly_random variable if it is present in the request
+        if request.query_params.get("truly_random"):
+            try:
+                truly_random = request.query_params["truly_random"]
+            except TypeError:
+                return api_error("truly_random must be a boolean.")
+        else:
+            if request.data.get("truly_random"):
+                try:
+                    truly_random = request.data["truly_random"]
+                except TypeError:
+                    return api_error("truly_random must be a boolean.")
+            
+        # sets the exercises_to_recommend variable if it is present in the request
+        if request.query_params.get("exercises_to_recommend"):
+            try:
+                exercises_to_recommend = request.query_params["exercises_to_recommend"]
+                if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
+            except TypeError as err:
+                print(err.__str__())
+                return api_error("exercises_to_recommend must be an integer.")
+        else:
+            if request.data.get("exercises_to_recommend"):
+                try:
+                    exercises_to_recommend = request.data["exercises_to_recommend"]
+                    if exercises_to_recommend < 1: return api_error("exercises_to_recommend must be at least 1.")
+                except TypeError as err:
+                    print(err.__str__())
+                    return api_error("exercises_to_recommend must be an integer.")
+            
+        # sets the k_neighbours variable if it is present in the request
+        if request.query_params.get("k_neighbours"):
+            try:
+                k_neighbours = request.query_params["k_neighbours"]
+                if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
+            except TypeError:
+                return api_error("k_neighbours must be an integer.")
+        else:
+            if request.data.get("k_neighbours"):
+                try:
+                    k_neighbours = request.data["k_neighbours"]
+                    if k_neighbours < 1: return api_error("k_neighbours must be at least 1.")
+                except TypeError:
+                    return api_error("k_neighbours must be an integer.")
+            
+        # sets the distance_units variable if it is present in the request
+        if request.query_params.get("distance_units"):
+            try:
+                distance_units = request.query_params["distance_units"]
+            except TypeError:
+                return api_error("distance_units must be a string.")
+        else:
+            if request.data.get("distance_units"):
+                try:
+                    distance_units = request.query_params["distance_units"]
+                except TypeError:
+                    return api_error("distance_units must be a string.")
+            
+        # sets the equipment_weight_units variable if it is present in the request
+        if request.query_params.get("equipment_weight_units"):
+            try:
+                equipment_weight_units = request.query_params["equipment_weight_units"]
+            except TypeError:
+                return api_error("equipment_weight_units must be a string.")
+        else:
+            if request.data.get("equipment_weight_units"):
+                try:
+                    equipment_weight_units = request.query_params["equipment_weight_units"]
+                except TypeError:
+                    return api_error("equipment_weight_units must be a string.")
+                
+        return recommend_exercises(
+            user=target_user, 
+            exercises_to_recommend=exercises_to_recommend, 
+            truly_random=truly_random, 
+            k_neighbours=k_neighbours,
+            distance_units=distance_units,
+            equipment_weight_units=equipment_weight_units
+        )
+    
+class UpdateRecommendedExerciseView(generics.CreateAPIView):
+    serializer_class = RecommendedExerciseSerializer
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        rec_ex_id = request.data.get("rec_ex_id")
+        good_recommendation = request.data.get("good_recommendation")
+
+        if rec_ex_id == None: return api_error("A valid ID for the recommended exercise must be provided.")
+        if good_recommendation == None: return api_error("good_recommendation must be provided.")
+
+        try:
+            rec_ex = RecommendedExercise.objects.get(id=rec_ex_id)
+            rec_ex.good_recommendation = good_recommendation if type(good_recommendation) == bool else True
+            rec_ex.save()
+
+            return api_success("Exercise successfully updated.")
+        except RecommendedExercise.DoesNotExist:
+            return api_error("A recommended exercise could not be found.")
+        except RecommendedExercise.MultipleObjectsReturned:
+            return api_error("Multiple recommended exercises were found.") # should never happen
+
