@@ -15,6 +15,20 @@ macro_keys = [
     "cholesterol_g",
 ]
 
+def positive_validator(value, include_equal: bool = False):
+    return value > 0.0 if not include_equal else value >= 0.0
+
+def validate_macros(value):
+    if type(value) != dict: return False
+
+    for key in value.keys():
+        amount = value[key]
+        if key in macro_keys:
+            if not positive_validator(amount, include_equal=True):
+                return False
+
+    return True
+
 
 # Defines models and fields
 class OTP(models.Model):
@@ -92,44 +106,17 @@ class RecommendedExercise(models.Model):
 # this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
 # i tried thinking about how to make it from other consumables but it broke my brain
 class Consumable(models.Model):
-    global macro_keys
-    
-    def positive_validator(value):
-        return value > 0.0
-    
-    def validate_macros(self, value):
-        if type(value) != dict: return False
-
-        for key in value.keys():
-            amount = value[key]
-            if key in macro_keys:
-                if not self.positive_validator(amount):
-                    return False
-
-        return True
+    global macro_keys, positive_validator, validate_macros
 
     name = models.CharField(max_length=50, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
     sample_size = models.FloatField(validators=[positive_validator])
     sample_units = models.CharField(max_length=20, default="serving")
     sample_calories = models.PositiveIntegerField()
     sample_macros = models.JSONField(validators=[validate_macros], null=True)
+    logged_user = models.ManyToManyField(to=User, through="LoggedConsumable")
 
 class LoggedConsumable(models.Model):
-    global macro_keys
-    
-    def positive_validator(value):
-        return value > 0.0
-    
-    def validate_macros(self, value):
-        if type(value) != dict: return False
-
-        for key in value.keys():
-            amount = value[key]
-            if key in macro_keys:
-                if not self.positive_validator(amount):
-                    return False
-
-        return True
+    global macro_keys, positive_validator, validate_macros
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     consumable = models.ForeignKey(Consumable, on_delete=models.DO_NOTHING) # do nothing does create integrity issues, however PK is a string and so is still useable for now-deleted consumables (should never happen but edge case is accounted for)

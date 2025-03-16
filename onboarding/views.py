@@ -958,15 +958,10 @@ class ConsumableView(generics.CreateAPIView):
         ]
         check_all_required_keys_present(request, keys)
 
-        target_user = get_user_by_email_username(request)
-        if type(target_user) == Response: return target_user
-
         try:
-            consumable = Consumable.objects.get_or_create(
-                name=request.data['name']
-            )
+            consumable = Consumable.objects.get(name=request.data['name'])
         except Consumable.DoesNotExist:
-            return api_error("Ingredient does not exist.") # should never happen with the get_or_create method but to be safe
+            consumable = Consumable(name=request.data['name'])
         except Consumable.MultipleObjectsReturned:
             return api_error("Multiple ingredients with the same name were found.")
         
@@ -975,3 +970,74 @@ class ConsumableView(generics.CreateAPIView):
         consumable.sample_macros = request.data.get("sample_macros")
         consumable.sample_size = request.data["sample_size"]
         consumable.sample_units = request.data.get("sample_units") or "serving"
+
+        consumable.save()
+
+        return api_success("Consumable created!")
+
+'''
+The LogConsumable view takes in the following parameters:
+* refers to an optional parameter
+
+- username/email: a string which should identify a single user (if they exist)
+- consumable: a string, being the name of a consumable item,
+- amount_logged: the amount of the consumable above that was consumed,
+- date_logged: a string (date format YYYY-MM-DD), when the consumable was consumed
+- calories_logged: an integer of the total calories logged for the given consumable
+- *macros_logged: a dictionary (keys can only be from models.macro_keys, values are all numeric), containing the macronutrient total of the consumable
+'''
+class LogConsumableView(generics.CreateAPIView):
+    serializer_class = LoggedConsumableSerializer
+
+    def post(self, request, *args, **kwargs):
+        keys = [
+            "consumable",
+            "amount_logged",
+            "date_logged",
+            "calories_logged"
+        ]
+        check_all_required_keys_present(request, keys)
+
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        try:
+            amount_logged = request.data["amount_logged"]
+
+            new_consumable = False
+            try:
+                target_consumable = Consumable.objects.get(name=request.data["consumable"])
+            except Consumable.DoesNotExist:
+                new_consumable = True
+                target_consumable = Consumable(
+                    name=request.data["consumable"]
+                )
+            if new_consumable:
+                target_consumable.sample_size = 1
+                target_consumable.sample_units = "serving"
+                target_consumable.sample_calories = round(int(request.data["calories_logged"]) / amount_logged) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
+                if request.data.get("macros_logged"): 
+                    adjusted_macros = dict()
+
+                    for key, value in request.data["macros_logged"].items():
+                        adjusted_macros[key] = float(value) / amount_logged # set the value of a single sample to the total macros / amount of samples
+            
+                    target_consumable.sample_macros = adjusted_macros
+
+                target_consumable.save()
+
+
+            logged_consumable = LoggedConsumable(
+                user=target_user,
+                consumable=target_consumable, # index at 0 because get_or_create returns a tuple 
+                amount_logged=amount_logged if not new_consumable else 1, # return 1 serving of the newly created consumable when logged
+                date_logged=request.data["date_logged"],
+                calories_logged=request.data["calories_logged"],
+            )
+            if request.data.get("macros_logged"): logged_consumable.macros_logged = request.data["macros_logged"]
+
+            logged_consumable.save()
+
+            return api_success("Consumable logged!")
+        except Exception as e:
+            return api_error(e.__str__())

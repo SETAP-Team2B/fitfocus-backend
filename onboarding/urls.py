@@ -14,5 +14,6 @@ urlpatterns = [
     path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise"),
     path("recommend-exercise/", views.RecommendExerciseView.as_view(), name="recommend-exercise"),
     path("update-recommendation/", views.UpdateRecommendedExerciseView.as_view(), name="update-recommendation"),
-    path("create-consumable", views.ConsumableView().as_view(), name="create-consumable"),
+    path("create-consumable/", views.ConsumableView().as_view(), name="create-consumable"),
+    path("log-consumable/", views.LogConsumableView().as_view(), name="log-consumable"),
 ]

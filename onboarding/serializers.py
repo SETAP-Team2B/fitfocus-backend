@@ -38,3 +38,8 @@ class ConsumableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consumable
         fields = '__all__'
+
+class LoggedConsumableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoggedConsumable
+        fields = '__all__'
