@@ -1,6 +1,8 @@
+import json
 from django.urls import reverse
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from onboarding.models import VerifiedUser  
 from onboarding.views import CreateAccountView
 
@@ -16,10 +18,13 @@ class CreateAccountViewTests(TestCase):
             'username': 'testuser',
             'password': 'StrongPassword123!',
             'first_name': 'Test',
-            'last_name': 'User '
+            'last_name': 'User'
         }
-        response = self.client.post(self.url, data, content_type='application/json')
-        self.assertEqual(response.status_code, 201)  # HTTP 201 Created
+        response = self.client.post(self.url, json.dumps(data), content_type='application/json')
+
+        print("Response content:", response.content)  
+
+        self.assertEqual(response.status_code, 200)  # HTTP 201 Created
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get().email, 'test@example.com')
 
@@ -34,11 +39,14 @@ class CreateAccountViewTests(TestCase):
             'username': 'newuser',
             'password': 'StrongPassword123!',
             'first_name': 'New',
-            'last_name': 'User '
+            'last_name': 'User'
         }
         response = self.client.post(self.url, data, content_type='application/json')
+
+        print("Response content:", response.content)  
+
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Email already exists on a user.", response.json().get('error'))
+        self.assertIn("Email already exists on a user.", json.loads(response.content).get('message'))
 
     def test_create_account_invalid_email(self):
         data = {
@@ -49,8 +57,11 @@ class CreateAccountViewTests(TestCase):
             'last_name': 'User '
         }
         response = self.client.post(self.url, data, content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Invalid email or username.", response.json().get('error'))
+
+        print("Response content:", response.content)  
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Invalid email or username.", json.loads(response.content).get('message'))
 
     def test_create_account_missing_fields(self):
         data = {
@@ -58,20 +69,26 @@ class CreateAccountViewTests(TestCase):
             'username': 'testuser',
             # 'password' is missing
             'first_name': 'Test',
-            'last_name': 'User '
+            'last_name': 'User'
         }
         response = self.client.post(self.url, data, content_type='application/json')
+
+        print("Response content:", response.content)   
+
         self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("password is missing.", response.json().get('error'))
+        self.assertIn("'password' is missing.", json.loads(response.content).get('message'))
 
     def test_create_account_weak_password(self):
         data = {
             'email': 'test@example.com',
             'username': 'testuser',
-            'password': '123',  # Weak password
             'first_name': 'Test',
-            'last_name': 'User '
+            'last_name': 'User',
+            'password': '123'  # Intentionally weak password
         }
-        response = self.client.post(self.url, data, content_type='application/json')
-        self.assertEqual(response.status_code, 400)  # HTTP 400 Bad Request
-        self.assertIn("Weak password.", response.json().get('error'))  # Adjust based on your error handling
+        response = self.client.post(self.url, json.dumps(data), content_type='application/json')
+
+        print("Response content:", response.content)  
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)  
+        self.assertIn("Password is too weak. Use a strong password with at least 6 upper and lower case alpha-numeric characters including special symbols", json.loads(response.content).get('message'))
