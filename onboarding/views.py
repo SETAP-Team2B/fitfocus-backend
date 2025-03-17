@@ -350,7 +350,7 @@ class CreateAccountView(generics.CreateAPIView):
                 return api_error("User not found")
             
             #chceks if the users from email and username match
-            if email_user != username_user:
+            if email_user.id != username_user.id:
                 return api_error("Username does not match email")
             
             target_user_id = email_user.id
@@ -359,9 +359,6 @@ class CreateAccountView(generics.CreateAPIView):
                 return api_error("Password does not match username/email")
             
             User.objects.filter(id=target_user_id).delete()
-            OTP.objects.filter(user_id=target_user_id).delete()
-            RecommendedExercise.objects.filter(user_id=target_user_id).delete()
-            VerifiedUser.objects.filter(user_id=target_user_id).delete()
 
             return api_success(f"User account {target_user_id} deleted succesfully")
 
