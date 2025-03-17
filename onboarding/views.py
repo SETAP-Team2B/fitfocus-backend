@@ -29,9 +29,9 @@ import csv
 import random
 from django.db.models import Avg, Count
 from math import floor
-import numpy as np
-import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
+#import numpy as np
+#import pandas as pd
+#from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
@@ -330,6 +330,40 @@ class CreateAccountView(generics.CreateAPIView):
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
 
+    def delete(self, request, *args, **kwargs):
+        if type(request.data) is not dict:
+            return api_error("Invalid request type.")
+        
+        if 'password' not in request.data or 'email' not in request.data or 'username' not in request.data:
+                return api_error("Invalid Entry")
+        
+        try:
+            user_pass = request.data.get('password')
+
+            #get the user from email
+            email_user = User.objects.get(email=request.data.get('email'))
+            #get the user from username
+            username_user = User.objects.get(username=request.data.get('username'))
+
+            #checking if the user is in the database
+            if not email_user or not username_user:
+                return api_error("User not found")
+            
+            #chceks if the users from email and username match
+            if email_user.id != username_user.id:
+                return api_error("Username does not match email")
+            
+            target_user_id = email_user.id
+            
+            if email_user.check_password(user_pass):
+                return api_error("Password does not match username/email")
+            
+            User.objects.filter(id=target_user_id).delete()
+
+            return api_success(f"User account {target_user_id} deleted succesfully")
+
+        except IntegrityError:
+            return api_error("Incorrect Details")
 
 class LoginView(APIView):
     def post(self, request):
