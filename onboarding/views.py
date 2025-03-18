@@ -29,7 +29,7 @@ import csv
 import random
 from django.db.models import Avg, Count
 from math import floor
-import numpy as np 
+import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
