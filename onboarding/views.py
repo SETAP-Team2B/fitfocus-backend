@@ -29,7 +29,7 @@ import csv
 import random
 from django.db.models import Avg, Count
 from math import floor
-import numpy as np
+import numpy as np 
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
@@ -104,7 +104,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
     '''
     algorithm: 
     
-    BEGIN
+    BEGIN 
 
     - set bad_recommendation counter to 0
     - generate a random exercise from all exercise objects
