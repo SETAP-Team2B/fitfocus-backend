@@ -355,7 +355,7 @@ class CreateAccountView(generics.CreateAPIView):
             
             target_user_id = email_user.id
             
-            if email_user.check_password(user_pass):
+            if not email_user.check_password(user_pass):
                 return api_error("Password does not match username/email")
             
             User.objects.filter(id=target_user_id).delete()
