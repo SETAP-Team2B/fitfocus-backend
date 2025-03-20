@@ -988,6 +988,35 @@ The LogConsumable view takes in the following parameters:
 '''
 class LogConsumableView(generics.CreateAPIView):
     serializer_class = LoggedConsumableSerializer
+    
+    def get(self, request, *args, **kwargs):
+        logged_consumable_queryset = LoggedConsumable.objects.get_queryset()
+        
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+        logged_consumable_queryset.filter(user=target_user)
+
+        if request.query_params.get("date_logged"):
+            logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
+
+        serialized_consumables = []
+        for consum in logged_consumable_queryset:
+            serialized_model = dict()
+
+            # goes through every object in the recommended exercise object
+            # if it needs formatting/displaying in the serialized_model, format then add
+            # excludes all null values
+            for key, value in model_to_dict(consum).items():
+                if value != None and value != []:
+                    match(key):
+                        case "id": pass
+                        case "user": pass # don't need the username as that gets sent into the request anyways
+                        case _:
+                            serialized_model[key] = value
+
+            serialized_consumables.append(serialized_model)
+            
+        return JsonResponse(serialized_consumables, safe=False)
 
     def post(self, request, *args, **kwargs):
         keys = [
