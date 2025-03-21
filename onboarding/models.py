@@ -75,3 +75,28 @@ class RecommendedExercise(models.Model):
             "duration_mins": self.duration.seconds / 60.0,
             "good": 1 if self.good_recommendation else 0,
         }
+
+class UserData(models.Model):
+    SEX_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('X', 'Prefer not to say/Other'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # User is a foreign key, not null
+    user_age = models.PositiveSmallIntegerField()  # Positive int (must be >= 0)
+    user_sex = models.CharField(max_length=1, choices=SEX_CHOICES, null=True, blank=True)
+    user_height = models.FloatField()  
+    user_height_units = models.CharField(max_length=2, choices=[('in', 'Inches'), ('cm', 'Centimeters')]) 
+    user_weight = models.FloatField()  
+    user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')])  
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=models.Q(user_height__gt=0), name='check_user_height_positive'),
+            models.CheckConstraint(check=models.Q(user_weight__gt=0), name='check_user_weight_positive'),
+        ]
+    
+    def __str__(self):
+        return f"User Data for {self.user.username}"
+

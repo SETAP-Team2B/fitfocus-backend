@@ -967,3 +967,23 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
+class UserDataCreateView(generics.CreateAPIView):
+    queryset = UserData.objects.all()
+    serializer_class = UserDataSerializer
+   
+
+    def perform_create(self, serializer):
+        username = self.request.data.get("username")  # Get username from request
+        try:
+            user = User.objects.get(username=username)  # Find user in DB
+            serializer.save(user=user)  # Save user data with linked user
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"error": "User not found."})
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)

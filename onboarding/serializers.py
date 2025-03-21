@@ -32,3 +32,8 @@ class RecommendedExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecommendedExercise
         fields = '__all__'
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = ['user', 'user_age', 'user_sex', 'user_height', 'user_height_units', 'user_weight', 'user_weight_units']
