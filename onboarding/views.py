@@ -787,20 +787,22 @@ class LogExerciseView(generics.CreateAPIView):
             
         # makes appropriate filters based on exercise attributes
         for attribute in all_fields:
-            if attribute in request.data.keys():
+            if attribute in request.query_params.keys():
                 match(attribute):
-                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.data["username"]))
-                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.data["email"]))
-                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.data["ex_name"]))
-                    case "date_logged": query_set = query_set.filter(date_logged=request.data["date_logged"])
-                    case "time_logged": query_set = query_set.filter(time_logged=request.data["time_logged"])
-                    case "sets": query_set = query_set.filter(sets=request.data["sets"])
-                    case "reps": query_set = query_set.filter(reps=request.data["reps"])
-                    case "distance": query_set = query_set.filter(distance=request.data["distance"])
-                    case "distance_units": query_set = query_set.filter(distance_units=request.data["distance_units"])
-                    case "duration": query_set = query_set.filter(duration=request.data["duration"])
-                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.data["equipment_weight"])
-                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.data["equipment_weight_units"])
+                    case "date_logged__gt": query_set = query_set.filter(date_logged__gt=request.query_params["date_logged__gt"])
+                    case "date_logged__lte": query_set = query_set.filter(date_logged__lte=request.query_params["date_logged__lte"])
+                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.query_params["username"]))
+                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.query_params["email"]))
+                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.query_params["ex_name"]))
+                    case "date_logged": query_set = query_set.filter(date_logged=request.query_params["date_logged"])
+                    case "time_logged": query_set = query_set.filter(time_logged=request.query_params["time_logged"])
+                    case "sets": query_set = query_set.filter(sets=request.query_params["sets"])
+                    case "reps": query_set = query_set.filter(reps=request.query_params["reps"])
+                    case "distance": query_set = query_set.filter(distance=request.query_params["distance"])
+                    case "distance_units": query_set = query_set.filter(distance_units=request.query_params["distance_units"])
+                    case "duration": query_set = query_set.filter(duration=request.query_params["duration"])
+                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.query_params["equipment_weight"])
+                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.query_params["equipment_weight_units"])
                     case _:
                         return api_error("Attribute not accounted for in filter.")
 
