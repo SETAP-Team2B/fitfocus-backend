@@ -984,28 +984,12 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
             return api_error("Multiple recommended exercises were found.") # should never happen
 
 class UserDataCreateView(generics.CreateAPIView):
-    queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
-   
 
-    '''
-    def perform_create(self, serializer):
-        username = self.request.data.get("username")  # Get username from request
-        try:
-            user = User.objects.get(username=username)  # Find user in DB
-            serializer.save(user=user)  # Save user data with linked user
-        except User.DoesNotExist:
-            raise serializers.ValidationError({"error": "User not found."})
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
-    '''
-
+    # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
+    # this shouldn't happen, but isn't a problem because of user data cascade deletion
+    # can be useful for tracking weight over time, but height and/or sex history should not be stored
+    # TODO: potentially create another model for user weight and when that was logged, based off of this view
     def post(self, request, *args, **kwargs):
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
