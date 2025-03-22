@@ -988,6 +988,7 @@ class UserDataCreateView(generics.CreateAPIView):
     serializer_class = UserDataSerializer
    
 
+    '''
     def perform_create(self, serializer):
         username = self.request.data.get("username")  # Get username from request
         try:
@@ -1003,3 +1004,62 @@ class UserDataCreateView(generics.CreateAPIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+    '''
+
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        userData = UserData(user=target_user)
+
+
+        if request.data.get("user_age"):
+            try:
+                userData.user_age = int(request.data["user_age"])
+                if userData.user_age < 1: raise TypeError
+            except TypeError:
+                return api_error("Age can only be a whole number >= 1")
+        else: 
+            return api_error("No age was provided.")
+
+        if request.data.get("user_sex"):
+            if request.data["user_sex"] not in ["M", "F", "X"]:
+                return api_error("User sex must be M, F, X or empty.")
+            else:
+                userData.user_sex = request.data["user_sex"]
+
+        if request.data.get("user_height"):
+            try:
+                userData.user_height = float(request.data["user_height"])
+                if userData.user_height <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Height must be a positive number.")
+        else: 
+            return api_error("No height was provided.")
+
+        if request.data.get("user_height_units") != None:
+            if request.data["user_height_units"] not in ["in", "cm"]:
+                return api_error("Height units must be: \"in\" OR \"cm\".")
+            else:
+                userData.user_height_units = request.data["user_height_units"]
+        else: 
+            return api_error("No height units were provided.")
+
+        if request.data.get("user_weight"):
+            try:
+                userData.user_weight = float(request.data["user_weight"])
+                if userData.user_weight <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Weight must be positive.")
+
+            if request.data.get("user_weight_units"):
+                if request.data["user_weight_units"] not in ["lb", "kg"]:
+                    return api_error("Weight units must be: \"lb\" OR \"kg\".")
+                else:
+                    userData.user_weight_units = request.data["user_weight_units"]
+            else:
+                return api_error("Weight units must be provided for a weight.")
+
+        userData.save()
+
+        return JsonResponse(model_to_dict(userData), safe=False)

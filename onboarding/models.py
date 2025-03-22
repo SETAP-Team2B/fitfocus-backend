@@ -8,7 +8,7 @@ class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     otp = models.CharField(max_length=6, default="", null=False, db_comment="The OTP sent to the user.")
     created_at = models.DateTimeField(auto_now=True, db_comment="When the OTP was created. Useful for restricting the frequency of new OTP generation.")
-    expiry_time = models.DateTimeField(default=timezone.now() + timezone.timedelta(minutes=5), db_comment="When the OTP can no longer be accepted. Default is 5 minutes after when it was created.")
+    expiry_time = models.DateTimeField(db_comment="When the OTP can no longer be accepted. Default is 5 minutes after when it was created.")
     verified = models.BooleanField(default=False, db_comment="Whether the OTP for the user has been verified. Good for preventing repeat entries and also ensuring user is secure.")
 
 class Exercise(models.Model):  
@@ -25,8 +25,8 @@ class Exercise(models.Model):
 class LoggedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=False)
-    date_logged = models.DateField(default=timezone.now().date())
-    time_logged = models.TimeField(default=timezone.now().time(), null=True)
+    date_logged = models.DateField(default=timezone.now)
+    time_logged = models.TimeField(default=timezone.now, null=True)
     sets = models.PositiveSmallIntegerField(default=0, null=True)
     reps = models.PositiveSmallIntegerField(default=0, null=True)
     distance = models.FloatField(default=0.0, null=True)
@@ -55,7 +55,7 @@ class VerifiedUser(models.Model):
 class RecommendedExercise(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    datetime_recommended = models.DateTimeField(default=timezone.now())
+    datetime_recommended = models.DateTimeField(default=timezone.now)
     good_recommendation = models.BooleanField(default=True)
     sets = models.PositiveSmallIntegerField(default=0, null=True)
     reps = models.PositiveSmallIntegerField(default=0, null=True)
@@ -87,14 +87,8 @@ class UserData(models.Model):
     user_sex = models.CharField(max_length=1, choices=SEX_CHOICES, null=True, blank=True)
     user_height = models.FloatField()  
     user_height_units = models.CharField(max_length=2, choices=[('in', 'Inches'), ('cm', 'Centimeters')]) 
-    user_weight = models.FloatField()  
-    user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')])  
-
-    class Meta:
-        constraints = [
-            models.CheckConstraint(check=models.Q(user_height__gt=0), name='check_user_height_positive'),
-            models.CheckConstraint(check=models.Q(user_weight__gt=0), name='check_user_weight_positive'),
-        ]
+    user_weight = models.FloatField(null=True)  
+    user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')], null=True)
     
     def __str__(self):
         return f"User Data for {self.user.username}"
