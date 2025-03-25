@@ -1121,7 +1121,9 @@ class LogConsumableView(generics.CreateAPIView):
 
             return api_success("Consumable logged!")
         except Exception as e:
-            return api_error(e.__str__())class UserDataCreateView(generics.CreateAPIView):
+            return api_error(e.__str__())
+        
+class UserDataCreateView(generics.CreateAPIView):
     serializer_class = UserDataSerializer
 
     # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
