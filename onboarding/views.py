@@ -39,15 +39,21 @@ from statistics import median_low
 
 # ensures all required attributes are in the request
 # reusable to all get/post functions
+
 def check_all_required_keys_present(request, keys: list):
     if type(request) != dict:
         return api_error("Request was not a dictionary.")
-    
-    for key in keys:
-        if not request.data.get(key): # if the key is not present in request.data, raise an api error
-            return api_error(f"Request must contain (at least) the following: {', '.join(keys)}")
 
+    # if the key is not present in request.data OR is an empty string where a string should be, raise an api error
+    for key in keys:
+        if key not in list(request.data.keys()):
+            return api_error(f"Request must contain (at least) the following: {', '.join(keys)}")
+        else:
+            if request.data[key] == "" or request.data[key] == None:
+                return api_error(f"{key} was found, but is empty.")
+    
     return
+
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -1077,13 +1083,19 @@ class LogConsumableView(generics.CreateAPIView):
             "date_logged",
             "calories_logged"
         ]
-        check_all_required_keys_present(request, keys)
+        
+        for key in keys:
+            if key not in list(request.data.keys()):
+                return api_error(f"One or more API fields were not included in the request.")
+            else:
+                if request.data[key] == "" or request.data[key] == None:
+                    return api_error(f"One or more required fields are empty.")
 
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
         try:
-            amount_logged = request.data["amount_logged"]
+            amount_logged = request.data.get("amount_logged") or 1
 
             new_consumable = False
             try:
@@ -1091,19 +1103,13 @@ class LogConsumableView(generics.CreateAPIView):
             except Consumable.DoesNotExist:
                 new_consumable = True
                 target_consumable = Consumable(
-                    name=request.data["consumable"]
+                    name=request.data["consumable"],
+                    sample_units=request.data.get("sample_units") or "serving"
                 )
             if new_consumable:
-                target_consumable.sample_size = 1
-                target_consumable.sample_units = "serving"
-                target_consumable.sample_calories = round(int(request.data["calories_logged"]) / amount_logged) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
-                if request.data.get("macros_logged"): 
-                    adjusted_macros = dict()
-
-                    for key, value in request.data["macros_logged"].items():
-                        adjusted_macros[key] = float(value) / amount_logged # set the value of a single sample to the total macros / amount of samples
-            
-                    target_consumable.sample_macros = adjusted_macros
+                target_consumable.sample_size = amount_logged
+                target_consumable.sample_calories = int(request.data["calories_logged"]) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
+                target_consumable.sample_macros = request.data.get("macros_logged")
 
                 target_consumable.save()
 
