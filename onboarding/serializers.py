@@ -32,3 +32,8 @@ class RecommendedExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecommendedExercise
         fields = '__all__'
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = '__all__'

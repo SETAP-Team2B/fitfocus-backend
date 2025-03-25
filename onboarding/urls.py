@@ -12,6 +12,8 @@ urlpatterns = [
     path("reset-password/", views.ResetPasswordView().as_view(), name="reset-password"),
     path("create-exercise/", views.ExerciseView().as_view(), name="create-exercise"),
     path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise"),
+    path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("recommend-exercise/", views.RecommendExerciseView.as_view(), name="recommend-exercise"),
     path("update-recommendation/", views.UpdateRecommendedExerciseView.as_view(), name="update-recommendation"),
+    path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
 ]
