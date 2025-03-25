@@ -3,6 +3,33 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 
+macro_keys = [
+    "fat_g",
+    "saturates_g",
+    "trans_fat_g",
+    "protein_g",
+    "salt_g",
+    "fiber_g",
+    "carbohydrates_g",
+    "sugars_g",
+    "cholesterol_g",
+]
+
+def positive_validator(value, include_equal: bool = False):
+    return value > 0.0 if not include_equal else value >= 0.0
+
+def validate_macros(value):
+    if type(value) != dict: return False
+
+    for key in value.keys():
+        amount = value[key]
+        if key in macro_keys:
+            if not positive_validator(amount, include_equal=True):
+                return False
+
+    return True
+
+
 # Defines models and fields
 class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
@@ -92,3 +119,25 @@ class UserData(models.Model):
     
     def __str__(self):
         return f"User Data for {self.user.username}"
+    
+# this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
+# i tried thinking about how to make it from other consumables but it broke my brain
+class Consumable(models.Model):
+    global macro_keys, positive_validator, validate_macros
+
+    name = models.CharField(max_length=50, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
+    sample_size = models.FloatField(validators=[positive_validator])
+    sample_units = models.CharField(max_length=20, default="serving")
+    sample_calories = models.PositiveIntegerField()
+    sample_macros = models.JSONField(validators=[validate_macros], null=True)
+    logged_user = models.ManyToManyField(to=User, through="LoggedConsumable")
+
+class LoggedConsumable(models.Model):
+    global macro_keys, positive_validator, validate_macros
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    consumable = models.ForeignKey(Consumable, on_delete=models.DO_NOTHING) # do nothing does create integrity issues, however PK is a string and so is still useable for now-deleted consumables (should never happen but edge case is accounted for)
+    amount_logged = models.FloatField(validators=[positive_validator]) # this is a multiplier based on the sample_size of the Consumable
+    date_logged = models.DateField() # this is NOT when the instance was created, but when the consumable was consumed.
+    calories_logged = models.PositiveIntegerField()
+    macros_logged = models.JSONField(validators=[validate_macros], null=True)
