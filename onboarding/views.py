@@ -117,7 +117,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
     '''
     algorithm: 
     
-    BEGIN
+    BEGIN 
 
     - set bad_recommendation counter to 0
     - generate a random exercise from all exercise objects
@@ -343,6 +343,40 @@ class CreateAccountView(generics.CreateAPIView):
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
 
+    def delete(self, request, *args, **kwargs):
+        if type(request.data) is not dict:
+            return api_error("Invalid request type.")
+        
+        if 'password' not in request.data or 'email' not in request.data or 'username' not in request.data:
+                return api_error("Invalid Entry")
+        
+        try:
+            user_pass = request.data.get('password')
+
+            #get the user from email
+            email_user = User.objects.get(email=request.data.get('email'))
+            #get the user from username
+            username_user = User.objects.get(username=request.data.get('username'))
+
+            #checking if the user is in the database
+            if not email_user or not username_user:
+                return api_error("User not found")
+            
+            #chceks if the users from email and username match
+            if email_user.id != username_user.id:
+                return api_error("Username does not match email")
+            
+            target_user_id = email_user.id
+            
+            if not email_user.check_password(user_pass):
+                return api_error("Password does not match username/email")
+            
+            User.objects.filter(id=target_user_id).delete()
+
+            return api_success(f"User account {target_user_id} deleted succesfully")
+
+        except IntegrityError:
+            return api_error("Incorrect Details")
 
 class LoginView(APIView):
     def post(self, request):
@@ -717,8 +751,24 @@ class ExerciseView(generics.CreateAPIView):
         
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
+
+    
     # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
+        print("Headers:", request.headers)
+        print("Body:", request.body.decode('utf-8'))
+        try:
+        # Ensure request.data is a dictionary
+            data = request.data
+            if not data:
+                return api_error("No data provided.")
+
+        except json.JSONDecodeError:
+            return api_error("Invalid JSON format.")
+
+    # Check what data is being received
+        print("Request Data:", data) 
+
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
         target_exercise = get_exercise_by_name(request)
@@ -1071,4 +1121,67 @@ class LogConsumableView(generics.CreateAPIView):
 
             return api_success("Consumable logged!")
         except Exception as e:
-            return api_error(e.__str__())
+            return api_error(e.__str__())class UserDataCreateView(generics.CreateAPIView):
+    serializer_class = UserDataSerializer
+
+    # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
+    # this shouldn't happen, but isn't a problem because of user data cascade deletion
+    # can be useful for tracking weight over time, but height and/or sex history should not be stored
+    # TODO: potentially create another model for user weight and when that was logged, based off of this view
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        userData = UserData(user=target_user)
+
+
+        if request.data.get("user_age"):
+            try:
+                userData.user_age = int(request.data["user_age"])
+                if userData.user_age < 1: raise TypeError
+            except TypeError:
+                return api_error("Age can only be a whole number >= 1")
+        else: 
+            return api_error("No age was provided.")
+
+        if request.data.get("user_sex"):
+            if request.data["user_sex"] not in ["M", "F", "X"]:
+                return api_error("User sex must be M, F, X or empty.")
+            else:
+                userData.user_sex = request.data["user_sex"]
+
+        if request.data.get("user_height"):
+            try:
+                userData.user_height = float(request.data["user_height"])
+                if userData.user_height <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Height must be a positive number.")
+        else: 
+            return api_error("No height was provided.")
+
+        if request.data.get("user_height_units") != None:
+            if request.data["user_height_units"] not in ["in", "cm"]:
+                return api_error("Height units must be: \"in\" OR \"cm\".")
+            else:
+                userData.user_height_units = request.data["user_height_units"]
+        else: 
+            return api_error("No height units were provided.")
+
+        if request.data.get("user_weight"):
+            try:
+                userData.user_weight = float(request.data["user_weight"])
+                if userData.user_weight <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Weight must be positive.")
+
+            if request.data.get("user_weight_units"):
+                if request.data["user_weight_units"] not in ["lb", "kg"]:
+                    return api_error("Weight units must be: \"lb\" OR \"kg\".")
+                else:
+                    userData.user_weight_units = request.data["user_weight_units"]
+            else:
+                return api_error("Weight units must be provided for a weight.")
+
+        userData.save()
+
+        return JsonResponse(model_to_dict(userData), safe=False)
