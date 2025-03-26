@@ -14,4 +14,10 @@ urlpatterns = [
     path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise"),
     path("recommend-exercise/", views.RecommendExerciseView.as_view(), name="recommend-exercise"),
     path("update-recommendation/", views.UpdateRecommendedExerciseView.as_view(), name="update-recommendation"),
+    path("routines/", views.RoutineListCreateView.as_view(), name="routines"),
+    path("routines/<int:pk>/", views.RoutineDetailView.as_view(), name="routine-detail"),
+    path("routines/<int:pk>/update/", views.RoutineUpdateView.as_view(), name="routine-update"),
+    path("routines/<int:pk>/delete/", views.RoutineDeleteView.as_view(), name="routine-delete"),
+    path("routine-exercises/", views.RoutineExerciseListCreateView.as_view(), name="routine-exercise-list"),
+    path("routine-exercises/<int:pk>/", views.RoutineExerciseDetailView.as_view(), name="routine-exercise-detail"),
 ]

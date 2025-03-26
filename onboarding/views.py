@@ -4,11 +4,14 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from django.http import Http404
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from utils.api import api_error, api_success, check_input
 from utils.exceptions import InvalidNameException, WeakPasswordError
 from utils.validator import Messages, validate_email, \
     validate_username, check_password, check_name
-from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
@@ -967,3 +970,82 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
+class RoutineListCreateView(generics.ListCreateAPIView):
+    """Handles listing all routines and creating a new one."""
+    serializer_class = RoutineSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Only return routines belonging to the logged-in user."""
+        return Routine.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Associate the created routine with the logged-in user."""
+        serializer.save(user=self.request.user)
+
+
+class RoutineDetailView(generics.RetrieveAPIView):
+    """Handles retrieving a single routine."""
+    serializer_class = RoutineSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Only allow the user to retrieve their own routines."""
+        return Routine.objects.filter(user=self.request.user)
+
+# Routine Update API View
+class RoutineUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        routine = self.get_object()
+
+        data = request.data.copy()
+        if "name" not in data or not data["name"].strip():
+            data["name"] = "My Routine"
+
+        serializer = RoutineUpdateSerializer(routine, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self):
+        routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
+        if not routine:
+            raise Http404("Routine not found or you do not have permission to edit it")
+        return routine
+
+# Routine Delete API View
+class RoutineDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        routine = self.get_object()
+        routine.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_object(self):
+        routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
+        if not routine:
+            raise Http404("Routine not found or you do not have permission to delete it")
+        return routine
+
+class RoutineExerciseListCreateView(generics.ListCreateAPIView):
+    """Handles listing all RoutineExercise objects and creating new ones."""
+    queryset = RoutineExercise.objects.all()
+    serializer_class = RoutineExerciseSerializer
+
+    def get_queryset(self):
+        """Filter exercises to only return those belonging to the logged-in user."""
+        return RoutineExercise.objects.filter(routine__user=self.request.user)
+
+
+class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Handles retrieving, updating, or deleting a specific RoutineExercise."""
+    queryset = RoutineExercise.objects.all()
+    serializer_class = RoutineExerciseSerializer
+
+    def get_queryset(self):
+        """Filter exercises so users can only modify their own routine exercises."""
+        return RoutineExercise.objects.filter(routine__user=self.request.user)

@@ -75,3 +75,21 @@ class RecommendedExercise(models.Model):
             "duration_mins": self.duration.seconds / 60.0,
             "good": 1 if self.good_recommendation else 0,
         }
+
+class Routine(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Each routine belongs to a user
+    name = models.CharField(max_length=255)  # Routine name
+    description = models.TextField(blank=True, null=True)  # Optional description
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set timestamp
+
+    def __str__(self):
+        return f"{self.name} ({self.user.username})"
+
+# RoutineExercise model
+class RoutineExercise(models.Model):
+    routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name="routine_exercises")
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.exercise.ex_name} in {self.routine.name} (Order: {self.order})"

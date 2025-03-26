@@ -32,3 +32,31 @@ class RecommendedExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecommendedExercise
         fields = '__all__'
+
+class RoutineExerciseSerializer(serializers.ModelSerializer):
+    exercise_name = serializers.CharField(source='exercise.ex_name', read_only=True)
+
+    class Meta:
+        model = RoutineExercise
+        fields = ['exercise', 'exercise_name', 'order']
+
+
+class RoutineSerializer(serializers.ModelSerializer):
+    routine_exercises = RoutineExerciseSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Routine
+        fields = ['id', 'user', 'name', 'description', 'created_at', 'routine_exercises']
+
+    def validate_name(self, value):
+        # If no name is provided, return "My Routine"
+        if not value:
+            return "My Routine"
+        return value
+
+
+# Serializer for updating routines
+class RoutineUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Routine
+        fields = ['name', 'description']
