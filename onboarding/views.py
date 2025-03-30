@@ -1190,6 +1190,18 @@ class UserDataCreateView(generics.CreateAPIView):
             else:
                 return api_error("Weight units must be provided for a weight.")
 
+        if request.data.get("user_target_weight"):
+            try:
+                userData.user_target_weight = float(request.data["user_target_weight"])
+                if userData.user_target_weight <= 0.0: raise ValueError
+            except ValueError:
+                return api_error("Target weight must be a positive number.")
+
+        if request.data.get("user_body_goals"):
+            if not isinstance(request.data["user_body_goals"], list):
+                return api_error("Body goals must be given as a list.")
+            else:
+                userData.user_body_goals = request.data["user_body_goals"]
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
