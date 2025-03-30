@@ -48,3 +48,8 @@ class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
         fields = '__all__'
+
+class UserMoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserMood
+        fields = '__all__'

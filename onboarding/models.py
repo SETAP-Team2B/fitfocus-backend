@@ -141,3 +141,8 @@ class LoggedConsumable(models.Model):
     date_logged = models.DateField() # this is NOT when the instance was created, but when the consumable was consumed.
     calories_logged = models.PositiveIntegerField()
     macros_logged = models.JSONField(validators=[validate_macros], null=True)
+
+class UserMood(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mood_level = models.SmallIntegerField(default=0, choices=[-2, -1, 0, 1, 2])
+    datetime_recorded = models.DateTimeField(default=timezone.now)

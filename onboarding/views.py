@@ -1193,3 +1193,76 @@ class UserDataCreateView(generics.CreateAPIView):
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
+
+
+class UserMoodView(generics.CreateAPIView):
+    serializer_class = UserMoodSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        userMood = UserMood(user=target_user)
+
+        if request.data.get("mood_level"):
+            try:
+                userMood.mood_level = int(request.data["mood_level"])
+                if userMood.mood_level not in [-2, -1, 0, 1, 2]: raise TypeError
+            except TypeError:
+                return api_error("Mood level must be an integer between -2 and 2")
+        else: 
+            return api_error("No mood was provided.")
+        
+        if request.data.get("datetime_recorded"):
+            try:
+                userMood.datetime_recorded = timedelta(request.data["datetime_recorded"])
+            except TypeError:
+                return api_error("DateTime is in the incorrect format")
+        else:
+            return api_error("No Datetime was recorded")
+        
+        userMood.save()
+
+        return api_success({
+            "mood_level": userMood.mood_level,
+            "datetime_recorded": userMood.datetime_recorded
+        })
+        
+    def get(self, request, *args, **kwargs):
+
+        user_mood_queryset = UserMood.objects.get_queryset()
+        target_user = User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+        user_mood_queryset.filter(user=target_user)
+
+        user_mood_items = []
+
+
+        if request.query_params.get("mood_level") in user_mood_queryset and request.query_params.get("datetime_recorded") in user_mood_queryset:
+            mood_id = user_mood_queryset.latest() #may need'id' in latest
+            mood_level = user_mood_queryset.filter(id=mood_id).get("mood_level")
+            datetime_recorded = user_mood_queryset.filter(id=mood_id).get("datetime_recorded")
+        
+        else:
+
+            if request.query_params.get("mood_level"):
+                try:
+                    mood_level = user_mood_queryset["mood_level"]
+                except TypeError:
+                    return api_error("Mood level must be an integer between -2 and 2")
+            else:
+                mood_level = 0
+
+            if request.query_params.get("datetime_recorded"):
+                try:
+                    datetime_recorded = user_mood_queryset["datetime_recorded"]
+                except TypeError:
+                    return api_error("Datetime is in the incorrect format")
+            else:
+                datetime_recorded = "1970-01-01 00:00:00"
+        
+        user_mood_items.append(mood_level)
+        user_mood_items.append(datetime_recorded)
+
+        return JsonResponse(user_mood_items, safe=False)
+    
