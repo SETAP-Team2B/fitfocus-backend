@@ -38,7 +38,7 @@ class RoutineExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RoutineExercise
-        fields = ['exercise', 'exercise_name', 'order']
+        fields = ['id','routine','exercise', 'exercise_name', 'order']
 
 
 class RoutineSerializer(serializers.ModelSerializer):
@@ -47,6 +47,7 @@ class RoutineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Routine
         fields = ['id', 'user', 'name', 'description', 'created_at', 'routine_exercises']
+        extra_kwargs = {'user': {'read_only': True}}
 
     def validate_name(self, value):
         # If no name is provided, return "My Routine"
