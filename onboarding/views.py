@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.http import Http404
+from django.db.models import F
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from utils.api import api_error, api_success, check_input
 from utils.exceptions import InvalidNameException, WeakPasswordError
@@ -971,26 +972,26 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
             return api_error("Multiple recommended exercises were found.") # should never happen
 
 class RoutineListCreateView(generics.ListCreateAPIView):
-    """Handles listing all routines and creating a new one."""
+    #Handles listing all routines and creating a new one.
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        """Only return routines belonging to the logged-in user."""
+    #Only return routines belonging to the logged-in user.
         return Routine.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        """Associate the created routine with the logged-in user."""
+        ##Associate the created routine with the logged-in user.
         serializer.save(user=self.request.user)
 
 
 class RoutineDetailView(generics.RetrieveAPIView):
-    """Handles retrieving a single routine."""
+    #Handles retrieving a single routine.
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        """Only allow the user to retrieve their own routines."""
+        #Only allow the user to retrieve their own routines.
         return Routine.objects.filter(user=self.request.user)
 
 # Routine Update API View
@@ -1022,7 +1023,14 @@ class RoutineDeleteView(APIView):
 
     def delete(self, request, *args, **kwargs):
         routine = self.get_object()
+
+        # Delete all related routine exercises
+        routine_exercises = RoutineExercise.objects.filter(routine=routine)
+        routine_exercises.delete()
+
+        # Now delete the routine itself
         routine.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_object(self):
@@ -1032,20 +1040,66 @@ class RoutineDeleteView(APIView):
         return routine
 
 class RoutineExerciseListCreateView(generics.ListCreateAPIView):
-    """Handles listing all RoutineExercise objects and creating new ones."""
+    #Handles listing all RoutineExercise objects and creating new ones.
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
 
     def get_queryset(self):
-        """Filter exercises to only return those belonging to the logged-in user."""
+        #Filter exercises to only return those belonging to the logged-in user.
         return RoutineExercise.objects.filter(routine__user=self.request.user)
 
 
 class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Handles retrieving, updating, or deleting a specific RoutineExercise."""
+    # Handles retrieving, updating, or deleting a specific RoutineExercise.
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
 
     def get_queryset(self):
-        """Filter exercises so users can only modify their own routine exercises."""
+        # Filter exercises so users can only modify their own routine exercises.
         return RoutineExercise.objects.filter(routine__user=self.request.user)
+
+    def perform_destroy(self, instance):
+        #When an exercise is deleted, shift the order of the remaining ones.
+        routine = instance.routine
+        order_deleted = instance.order
+
+        # Delete the selected exercise
+        instance.delete()
+
+        # Shift all exercises that were below the deleted one
+        RoutineExercise.objects.filter(
+            routine=routine,
+            order__gt=order_deleted  # Only update exercises that were below the deleted one
+        ).update(order=F('order') - 1)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        new_order = request.data.get('order')
+
+        if new_order is None or new_order == instance.order:
+            return super().update(request, *args, **kwargs)  # No change needed
+
+        routine = instance.routine
+
+        # Shift exercises down if needed
+        if new_order < instance.order:
+            RoutineExercise.objects.filter(
+                routine=routine,
+                order__gte=new_order,
+                order__lt=instance.order
+            ).update(order=F('order') + 1)
+
+        elif new_order > instance.order:
+            RoutineExercise.objects.filter(
+                routine=routine,
+                order__gt=instance.order,
+                order__lte=new_order
+            ).update(order=F('order') - 1)
+
+        # Update the instance's order
+        instance.order = new_order
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
