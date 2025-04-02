@@ -499,16 +499,17 @@ class GenerateOTPView(generics.CreateAPIView):
             try:
                 new_otp = OTP.objects.get(user=target_user)
             except OTP.DoesNotExist:
-                new_otp = OTP.objects.create(user=target_user)
+                new_otp = OTP(user=target_user)
             except OTP.MultipleObjectsReturned:
                 # if there are somehow multiple instances of an OTP for a specific user
                 # simplest option is to cull all existing entries and create a new one
                 OTP.objects.get(user=target_user).delete()
-                new_otp = OTP.objects.create(user=target_user)
+                new_otp = OTP(user=target_user)
 
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
             new_otp.expiry_time = new_otp.created_at + timezone.timedelta(minutes=5)
+            print(new_otp.expiry_time)
             new_otp.verified = False
 
             # MAKE SURE TO SAVE WHEN UPDATING. 15 minutes of bugfixing to find out objects dont save without this lol
