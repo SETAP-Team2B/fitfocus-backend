@@ -36,6 +36,9 @@ from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
 
+import requests
+import utils.api_secrets as api_secrets
+
 
 # ensures all required attributes are in the request
 # reusable to all get/post functions
@@ -1194,3 +1197,19 @@ class UserDataCreateView(generics.CreateAPIView):
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
+    
+class RecommendConsumableView(generics.CreateAPIView):
+    serializer_class = ConsumableSerializer
+
+    # should be called when the size of the public meals database is 100 objects or less
+
+    def get_nutritionix_data(self):
+        try: 
+            response = requests.get(url="https://trackapi.nutritionix.com/v2/search/instant/?query=ham", headers={"x-app-id": api_secrets.NUTRITIONIX_APP_ID, "x-app-key": api_secrets.NUTRITIONIX_API_KEY})
+        except:
+            return api_error("Could not communicate with Nutritionix.")
+        
+        return JsonResponse(data=response.json(), safe=False)
+
+    def post(self, request):
+        return self.get_nutritionix_data()
