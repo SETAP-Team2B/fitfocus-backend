@@ -33,6 +33,22 @@ class RecommendedExerciseSerializer(serializers.ModelSerializer):
         model = RecommendedExercise
         fields = '__all__'
 
+
+class ConsumableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consumable
+        fields = '__all__'
+
+class LoggedConsumableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoggedConsumable
+        fields = '__all__'
+
+class UserDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserData
+        fields = '__all__'
+
 class RoutineExerciseSerializer(serializers.ModelSerializer):
     exercise_name = serializers.CharField(source='exercise.ex_name', read_only=True)
 

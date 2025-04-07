@@ -13,6 +13,7 @@ from utils.api import api_error, api_success, check_input
 from utils.exceptions import InvalidNameException, WeakPasswordError
 from utils.validator import Messages, validate_email, \
     validate_username, check_password, check_name
+from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
@@ -39,6 +40,25 @@ from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
+
+
+# ensures all required attributes are in the request
+# reusable to all get/post functions
+
+def check_all_required_keys_present(request, keys: list):
+    if type(request) != dict:
+        return api_error("Request was not a dictionary.")
+
+    # if the key is not present in request.data OR is an empty string where a string should be, raise an api error
+    for key in keys:
+        if key not in list(request.data.keys()):
+            return api_error(f"Request must contain (at least) the following: {', '.join(keys)}")
+        else:
+            if request.data[key] == "" or request.data[key] == None:
+                return api_error(f"{key} was found, but is empty.")
+
+    return
+
 
 # generates and returns token for user
 def get_tokens_for_user(user):
@@ -484,16 +504,17 @@ class GenerateOTPView(generics.CreateAPIView):
             try:
                 new_otp = OTP.objects.get(user=target_user)
             except OTP.DoesNotExist:
-                new_otp = OTP.objects.create(user=target_user)
+                new_otp = OTP(user=target_user)
             except OTP.MultipleObjectsReturned:
                 # if there are somehow multiple instances of an OTP for a specific user
                 # simplest option is to cull all existing entries and create a new one
                 OTP.objects.get(user=target_user).delete()
-                new_otp = OTP.objects.create(user=target_user)
+                new_otp = OTP(user=target_user)
 
             new_otp.otp = otp
             new_otp.created_at = timezone.now()
             new_otp.expiry_time = new_otp.created_at + timezone.timedelta(minutes=5)
+            print(new_otp.expiry_time)
             new_otp.verified = False
 
             # MAKE SURE TO SAVE WHEN UPDATING. 15 minutes of bugfixing to find out objects dont save without this lol
@@ -742,8 +763,24 @@ class ExerciseView(generics.CreateAPIView):
         
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
+
+
     # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
+        print("Headers:", request.headers)
+        print("Body:", request.body.decode('utf-8'))
+        try:
+        # Ensure request.data is a dictionary
+            data = request.data
+            if not data:
+                return api_error("No data provided.")
+
+        except json.JSONDecodeError:
+            return api_error("Invalid JSON format.")
+
+    # Check what data is being received
+        print("Request Data:", data)
+
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
         target_exercise = get_exercise_by_name(request)
@@ -812,20 +849,22 @@ class LogExerciseView(generics.CreateAPIView):
             
         # makes appropriate filters based on exercise attributes
         for attribute in all_fields:
-            if attribute in request.data.keys():
+            if attribute in request.query_params.keys():
                 match(attribute):
-                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.data["username"]))
-                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.data["email"]))
-                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.data["ex_name"]))
-                    case "date_logged": query_set = query_set.filter(date_logged=request.data["date_logged"])
-                    case "time_logged": query_set = query_set.filter(time_logged=request.data["time_logged"])
-                    case "sets": query_set = query_set.filter(sets=request.data["sets"])
-                    case "reps": query_set = query_set.filter(reps=request.data["reps"])
-                    case "distance": query_set = query_set.filter(distance=request.data["distance"])
-                    case "distance_units": query_set = query_set.filter(distance_units=request.data["distance_units"])
-                    case "duration": query_set = query_set.filter(duration=request.data["duration"])
-                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.data["equipment_weight"])
-                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.data["equipment_weight_units"])
+                    case "date_logged__gt": query_set = query_set.filter(date_logged__gt=request.query_params["date_logged__gt"])
+                    case "date_logged__lte": query_set = query_set.filter(date_logged__lte=request.query_params["date_logged__lte"])
+                    case "username": query_set = query_set.filter(user=User.objects.get(username=request.query_params["username"]))
+                    case "email": query_set = query_set.filter(user=User.objects.get(email=request.query_params["email"]))
+                    case "ex_name": query_set = query_set.filter(exercise=Exercise.objects.get(ex_name=request.query_params["ex_name"]))
+                    case "date_logged": query_set = query_set.filter(date_logged=request.query_params["date_logged"])
+                    case "time_logged": query_set = query_set.filter(time_logged=request.query_params["time_logged"])
+                    case "sets": query_set = query_set.filter(sets=request.query_params["sets"])
+                    case "reps": query_set = query_set.filter(reps=request.query_params["reps"])
+                    case "distance": query_set = query_set.filter(distance=request.query_params["distance"])
+                    case "distance_units": query_set = query_set.filter(distance_units=request.query_params["distance_units"])
+                    case "duration": query_set = query_set.filter(duration=request.query_params["duration"])
+                    case "equipment_weight": query_set = query_set.filter(equipment_weight=request.query_params["equipment_weight"])
+                    case "equipment_weight_units": query_set = query_set.filter(equipment_weight_units=request.query_params["equipment_weight_units"])
                     case _:
                         return api_error("Attribute not accounted for in filter.")
 
@@ -971,6 +1010,58 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
+class ConsumableView(generics.CreateAPIView):
+    serializer_class = ConsumableSerializer
+
+    # handles creating OR updating a consumable based on the name
+    def post(self, request, *args, **kwargs):
+        keys = [
+            "name",
+            "sample_size",
+            "sample_calories",
+        ]
+        check_all_required_keys_present(request, keys)
+
+        try:
+            consumable = Consumable.objects.get(name=request.data['name'])
+        except Consumable.DoesNotExist:
+            consumable = Consumable(name=request.data['name'])
+        except Consumable.MultipleObjectsReturned:
+            return api_error("Multiple ingredients with the same name were found.")
+
+        # if the ingredient did not exist beforehand, the user passed through is made the owner of this ingredient
+        consumable.sample_calories = request.data["sample_calories"]
+        consumable.sample_macros = request.data.get("sample_macros")
+        consumable.sample_size = request.data["sample_size"]
+        consumable.sample_units = request.data.get("sample_units") or "serving"
+
+        consumable.save()
+
+        return api_success("Consumable created!")
+
+'''
+The LogConsumable view takes in the following parameters:
+* refers to an optional parameter
+
+- username/email: a string which should identify a single user (if they exist)
+- consumable: a string, being the name of a consumable item,
+- amount_logged: the amount of the consumable above that was consumed,
+- date_logged: a string (date format YYYY-MM-DD), when the consumable was consumed
+- calories_logged: an integer of the total calories logged for the given consumable
+- *macros_logged: a dictionary (keys can only be from models.macro_keys, values are all numeric), containing the macronutrient total of the consumable
+'''
+class LogConsumableView(generics.CreateAPIView):
+    serializer_class = LoggedConsumableSerializer
+
+    def get(self, request, *args, **kwargs):
+        logged_consumable_queryset = LoggedConsumable.objects.get_queryset()
+
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+        logged_consumable_queryset.filter(user=target_user)
+
+        if request.query_params.get("date_logged"):
+            logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
 class RoutineListCreateView(generics.ListCreateAPIView):
     #Handles listing all routines and creating a new one.
     serializer_class = RoutineSerializer
@@ -1103,3 +1194,140 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+
+        serialized_consumables = []
+        for consum in logged_consumable_queryset:
+            serialized_model = dict()
+
+            # goes through every object in the recommended exercise object
+            # if it needs formatting/displaying in the serialized_model, format then add
+            # excludes all null values
+            for key, value in model_to_dict(consum).items():
+                if value != None and value != []:
+                    match(key):
+                        case "id": pass
+                        case "user": pass # don't need the username as that gets sent into the request anyways
+                        case _:
+                            serialized_model[key] = value
+
+            serialized_consumables.append(serialized_model)
+
+        return JsonResponse(serialized_consumables, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        keys = [
+            "consumable",
+            "amount_logged",
+            "date_logged",
+            "calories_logged"
+        ]
+
+        for key in keys:
+            if key not in list(request.data.keys()):
+                return api_error(f"One or more API fields were not included in the request.")
+            else:
+                if request.data[key] == "" or request.data[key] == None:
+                    return api_error(f"One or more required fields are empty.")
+
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        try:
+            amount_logged = request.data.get("amount_logged") or 1
+
+            new_consumable = False
+            try:
+                target_consumable = Consumable.objects.get(name=request.data["consumable"])
+            except Consumable.DoesNotExist:
+                new_consumable = True
+                target_consumable = Consumable(
+                    name=request.data["consumable"],
+                    sample_units=request.data.get("sample_units") or "serving"
+                )
+            if new_consumable:
+                target_consumable.sample_size = amount_logged
+                target_consumable.sample_calories = int(request.data["calories_logged"]) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
+                target_consumable.sample_macros = request.data.get("macros_logged")
+
+                target_consumable.save()
+
+
+            logged_consumable = LoggedConsumable(
+                user=target_user,
+                consumable=target_consumable, # index at 0 because get_or_create returns a tuple
+                amount_logged=amount_logged if not new_consumable else 1, # return 1 serving of the newly created consumable when logged
+                date_logged=request.data["date_logged"],
+                calories_logged=request.data["calories_logged"],
+            )
+            if request.data.get("macros_logged"): logged_consumable.macros_logged = request.data["macros_logged"]
+
+            logged_consumable.save()
+
+            return api_success("Consumable logged!")
+        except Exception as e:
+            return api_error(e.__str__())
+
+class UserDataCreateView(generics.CreateAPIView):
+    serializer_class = UserDataSerializer
+
+    # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
+    # this shouldn't happen, but isn't a problem because of user data cascade deletion
+    # can be useful for tracking weight over time, but height and/or sex history should not be stored
+    # TODO: potentially create another model for user weight and when that was logged, based off of this view
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        userData = UserData(user=target_user)
+
+
+        if request.data.get("user_age"):
+            try:
+                userData.user_age = int(request.data["user_age"])
+                if userData.user_age < 1: raise TypeError
+            except TypeError:
+                return api_error("Age can only be a whole number >= 1")
+        else:
+            return api_error("No age was provided.")
+
+        if request.data.get("user_sex"):
+            if request.data["user_sex"] not in ["M", "F", "X"]:
+                return api_error("User sex must be M, F, X or empty.")
+            else:
+                userData.user_sex = request.data["user_sex"]
+
+        if request.data.get("user_height"):
+            try:
+                userData.user_height = float(request.data["user_height"])
+                if userData.user_height <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Height must be a positive number.")
+        else:
+            return api_error("No height was provided.")
+
+        if request.data.get("user_height_units") != None:
+            if request.data["user_height_units"] not in ["in", "cm"]:
+                return api_error("Height units must be: \"in\" OR \"cm\".")
+            else:
+                userData.user_height_units = request.data["user_height_units"]
+        else:
+            return api_error("No height units were provided.")
+
+        if request.data.get("user_weight"):
+            try:
+                userData.user_weight = float(request.data["user_weight"])
+                if userData.user_weight <= 0.0: raise TypeError
+            except TypeError:
+                return api_error("Weight must be positive.")
+
+            if request.data.get("user_weight_units"):
+                if request.data["user_weight_units"] not in ["lb", "kg"]:
+                    return api_error("Weight units must be: \"lb\" OR \"kg\".")
+                else:
+                    userData.user_weight_units = request.data["user_weight_units"]
+            else:
+                return api_error("Weight units must be provided for a weight.")
+
+        userData.save()
+
+        return JsonResponse(model_to_dict(userData), safe=False)
