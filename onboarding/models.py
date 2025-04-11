@@ -125,7 +125,7 @@ class UserData(models.Model):
 class Consumable(models.Model):
     global macro_keys, positive_validator, validate_macros
 
-    name = models.CharField(max_length=50, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
+    name = models.CharField(max_length=150, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
     sample_size = models.FloatField(validators=[positive_validator])
     sample_units = models.CharField(max_length=20, default="serving")
     sample_calories = models.PositiveIntegerField()
