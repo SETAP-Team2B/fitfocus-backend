@@ -1201,15 +1201,45 @@ class UserDataCreateView(generics.CreateAPIView):
 class RecommendConsumableView(generics.CreateAPIView):
     serializer_class = ConsumableSerializer
 
-    # should be called when the size of the public meals database is 100 objects or less
+    # TODO: be called if the size of the consumable database is 100 objects or less? to be decided
+    def fill_consumable_dataset(self):
+        with open("utils/food_data/food.json") as f:
+            food_file_content: list[dict] = json.loads(f.read())
 
-    def get_nutritionix_data(self):
-        try: 
-            response = requests.get(url="https://trackapi.nutritionix.com/v2/search/instant/?query=ham", headers={"x-app-id": api_secrets.NUTRITIONIX_APP_ID, "x-app-key": api_secrets.NUTRITIONIX_API_KEY})
-        except:
-            return api_error("Could not communicate with Nutritionix.")
-        
-        return JsonResponse(data=response.json(), safe=False)
+            print("loaded json file")
+            
+            progress_counter = 0
+            progress_cap = len(food_file_content)
+
+            for food in food_file_content:
+                food_name: str = food["name"]
+
+                # find a consumable with the given name in the dataset, if not, create a new one
+                file_consumable = Consumable()
+                try:
+                    file_consumable = Consumable.objects.get(name=food_name)
+                except:
+                    file_consumable = Consumable(
+                        name=food_name
+                    )
+
+                # update all the nutrition information
+                file_consumable.sample_size = food["sample_size"]
+                file_consumable.sample_units = food["sample_units"]
+                file_consumable.sample_calories = food["sample_calories"]
+                file_consumable.sample_macros = food["sample_macros"]
+
+                # save the object
+                file_consumable.save()
+
+                # print a progress update every 10%(FOR DEBUGGING ONLY)
+                progress_counter += 1
+                if ((progress_counter - 1) / progress_cap) // 0.1 != (progress_counter / progress_cap) // 0.1:
+                    print(f"file {int((progress_counter / progress_cap) // 0.1 * 10)}% complete")
+
+            print("finished with json file")
+
+        return api_success("success")
 
     def post(self, request):
-        return self.get_nutritionix_data()
+        return self.fill_consumable_dataset()
