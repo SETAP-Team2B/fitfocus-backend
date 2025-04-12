@@ -1239,7 +1239,23 @@ class RecommendConsumableView(generics.CreateAPIView):
 
             print("finished with json file")
 
-        return api_success("success")
+        return api_success("dataset filled with foods")
 
+    # not sure whether to make this a GET or POST function, input parameters etc
     def post(self, request):
+        # how the algorithm works:
+        # - macro ratio = ratio between carbohydrates, fat and protein in that order.
+        # ----- example: a 100g cooked chicken breast has 0g carbs, 3.6g fat, 31g protein
+        # ----- this will return a ratio of 0:3.6:31 and will be converted to percentages
+        # ----- so this will return 0:10.4:89.6, which will then get rounded to 0:10:90, (nearest integer)
+        # - looks at the user's goals and consumed foods for the given date (if not present in the HTTP request, assume to be current date)
+        # - will sum up the total calories, carbohydrates, fat and protein, and subtract them from recommended daily intake values. results in an "ideal" intake.
+        # - this "ideal" intake will be multiplied by a decimal value, depending on:
+        # ----- the time of day (to determine the portion size of the meal)
+        # ----- the user's current mood/motivation (lower mood = less strict range of acceptable macro values)
+        # - takes a list of a random 10% sample of the consumables dataset, as well as every unique consumable logged by the user within the last 2 weeks
+        # - uses a 2D euclidean distance minimising algorithm to find the best consumable to recommend
+        # - returns the top X amount of meals with the least distance to this "ideal" intake
+        # - X can be determined in the request input, if not specified, then will be 1.
+
         return self.fill_consumable_dataset()
