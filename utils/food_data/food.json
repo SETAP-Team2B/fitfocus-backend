@@ -2611,7 +2611,7 @@
     {
         "name": "Babyfood, apple yogurt dessert, strained",
         "sample_size": 1.0,
-        "sample_units": "jar NFS",
+        "sample_units": "jar Beech-Nut Stage 2 (4 oz)",
         "sample_calories": 105,
         "sample_macros": {
             "protein_g": 0.9,
@@ -3209,7 +3209,7 @@
     {
         "name": "Babyfood, juice, apple - cherry",
         "sample_size": 1.0,
-        "sample_units": "bottle Beech-Nut Stage 2 (4 fl oz)",
+        "sample_units": "bottle Heinz Strained (4 fl oz)",
         "sample_calories": 58,
         "sample_macros": {
             "protein_g": 0.25,
@@ -9248,7 +9248,7 @@
     {
         "name": "Babyfood, dessert, peach yogurt",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Second Food (4 oz)",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 87,
         "sample_macros": {
             "protein_g": 1.02,
@@ -12075,8 +12075,8 @@
     },
     {
         "name": "HORMEL ALWAYS TENDER, Center Cut Chops, Fresh Pork",
-        "sample_size": 4.0,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "serving",
         "sample_calories": 187,
         "sample_macros": {
             "carbohydrates_g": 0.94,
@@ -12089,8 +12089,8 @@
     },
     {
         "name": "HORMEL ALWAYS TENDER, Boneless Pork Loin, Fresh Pork",
-        "sample_size": 1.0,
-        "sample_units": "serving",
+        "sample_size": 4.0,
+        "sample_units": "oz",
         "sample_calories": 162,
         "sample_macros": {
             "carbohydrates_g": 0.85,
@@ -18713,8 +18713,8 @@
     },
     {
         "name": "Beverages, almond milk, sweetened, vanilla flavor, ready-to-drink",
-        "sample_size": 8.0,
-        "sample_units": "fl oz",
+        "sample_size": 1.0,
+        "sample_units": "cup",
         "sample_calories": 91,
         "sample_macros": {
             "fat_g": 2.5,
@@ -35598,7 +35598,7 @@
     {
         "name": "Babyfood, fruit, tutti frutti, junior",
         "sample_size": 1.0,
-        "sample_units": "jar NFS",
+        "sample_units": "jar Heinz Junior-3 (6 oz)",
         "sample_calories": 117,
         "sample_macros": {
             "fat_g": 0.68,
@@ -46261,7 +46261,7 @@
     {
         "name": "Nuts, cashew nuts, oil roasted, without salt added",
         "sample_size": 1.0,
-        "sample_units": "cup, halves and pieces",
+        "sample_units": "cup, whole",
         "sample_calories": 748,
         "sample_macros": {
             "fiber_g": 4.26,
@@ -51917,7 +51917,7 @@
     {
         "name": "Babyfood, fruit, pears, junior",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Junior-3 (6 oz)",
         "sample_calories": 74,
         "sample_macros": {
             "saturates_g": 0.01,
@@ -51932,7 +51932,7 @@
     {
         "name": "Babyfood, fruit, plums with tapioca, without ascorbic acid, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 80,
         "sample_macros": {
             "sugars_g": 15.07,
@@ -51947,7 +51947,7 @@
     {
         "name": "Babyfood, fruit, plums with tapioca, without ascorbic acid, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Third Foods (6 oz)",
+        "sample_units": "jar",
         "sample_calories": 125,
         "sample_macros": {
             "sugars_g": 23.19,
@@ -51992,7 +51992,7 @@
     {
         "name": "Babyfood, fruit, applesauce and apricots, junior",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Junior-3 (6 oz)",
         "sample_calories": 79,
         "sample_macros": {
             "sugars_g": 14.82,
@@ -52097,7 +52097,7 @@
     {
         "name": "Babyfood, fruit, pears and pineapple, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 46,
         "sample_macros": {
             "saturates_g": 0.01,
@@ -52112,7 +52112,7 @@
     {
         "name": "Babyfood, fruit, bananas with apples and pears, strained",
         "sample_size": 1.0,
-        "sample_units": "jar NFS",
+        "sample_units": "jar Gerber Second Food (4 oz)",
         "sample_calories": 93,
         "sample_macros": {
             "fat_g": 0.25,
@@ -52484,7 +52484,7 @@
     {
         "name": "Babyfood, dessert, fruit pudding, pineapple, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Gerber Second Food (4 oz)",
         "sample_calories": 91,
         "sample_macros": {
             "saturates_g": 0.11,
@@ -57900,7 +57900,7 @@
     {
         "name": "Babyfood, fruit, pears, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 47,
         "sample_macros": {
             "saturates_g": 0.01,
@@ -57945,7 +57945,7 @@
     {
         "name": "Babyfood, fruit dessert, mango with tapioca",
         "sample_size": 1.0,
-        "sample_units": "jar, Gerber (4 oz)",
+        "sample_units": "jar",
         "sample_calories": 79,
         "sample_macros": {
             "fat_g": 0.23,
@@ -58228,8 +58228,8 @@
     },
     {
         "name": "Babyfood, cereal, oatmeal, with bananas, dry",
-        "sample_size": 0.5,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "serving",
         "sample_calories": 59,
         "sample_macros": {
             "saturates_g": 0.19,
@@ -58466,7 +58466,7 @@
     {
         "name": "Babyfood, dessert, fruit dessert, without ascorbic acid, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Third Foods (6 oz)",
+        "sample_units": "jar Heinz Junior-3 (6 oz)",
         "sample_calories": 107,
         "sample_macros": {
             "sugars_g": 20.4,
@@ -67549,7 +67549,7 @@
     {
         "name": "Crustaceans, shrimp, mixed species, canned",
         "sample_size": 1.0,
-        "sample_units": "can (4.5 oz), drained",
+        "sample_units": "cup",
         "sample_calories": 128,
         "sample_macros": {
             "sugars_g": 0.0,
@@ -71755,7 +71755,7 @@
     {
         "name": "Babyfood, meat, ham, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Second Foods (2.5 oz)",
+        "sample_units": "jar",
         "sample_calories": 68,
         "sample_macros": {
             "sugars_g": 0.0,
@@ -71785,7 +71785,7 @@
     {
         "name": "Babyfood, meat, chicken sticks, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Graduate (2.5 oz)",
+        "sample_units": "jar",
         "sample_calories": 133,
         "sample_macros": {
             "saturates_g": 2.91,
@@ -71800,7 +71800,7 @@
     {
         "name": "Babyfood, meat, turkey, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Strained-2 (2.5 oz)",
         "sample_calories": 78,
         "sample_macros": {
             "protein_g": 8.16,
@@ -71918,7 +71918,7 @@
     {
         "name": "Babyfood, dinner, beef noodle, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Heinz Strained-2 (4 oz)",
+        "sample_units": "jar Gerber Second Food (4 oz)",
         "sample_calories": 71,
         "sample_macros": {
             "sugars_g": 1.6,
@@ -71991,7 +71991,7 @@
     {
         "name": "Babyfood, dinner, chicken noodle, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Second Food (4 oz)",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 83,
         "sample_macros": {
             "cholesterol_g": 0.01,
@@ -72072,7 +72072,7 @@
     {
         "name": "Babyfood, dinner, turkey and rice, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Second Food (4 oz)",
+        "sample_units": "jar Beech-Nut Stage 2 (4 oz)",
         "sample_calories": 58,
         "sample_macros": {
             "sugars_g": 1.88,
@@ -72207,7 +72207,7 @@
     {
         "name": "Babyfood, fruit, applesauce, junior",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Beech-Nut Stage 3 (6 oz)",
         "sample_calories": 62,
         "sample_macros": {
             "sugars_g": 14.42,
@@ -72268,7 +72268,7 @@
     {
         "name": "Babyfood, fruit, bananas with tapioca, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Heinz Junior-3 (6 oz)",
+        "sample_units": "jar Gerber Third Foods (6 oz)",
         "sample_calories": 113,
         "sample_macros": {
             "saturates_g": 0.13,
@@ -72343,7 +72343,7 @@
     {
         "name": "Babyfood, dinner, apples and chicken, strained",
         "sample_size": 1.0,
-        "sample_units": "jar",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 73,
         "sample_macros": {
             "fat_g": 1.56,
@@ -80650,8 +80650,8 @@
     },
     {
         "name": "Turkey, ground, fat free, patties, broiled",
-        "sample_size": 3.0,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "patty",
         "sample_calories": 117,
         "sample_macros": {
             "fat_g": 2.11,
@@ -82229,8 +82229,8 @@
     },
     {
         "name": "Sausage, Polish, beef with chicken, hot",
-        "sample_size": 1.0,
-        "sample_units": "serving 5 pieces",
+        "sample_size": 5.0,
+        "sample_units": "pieces",
         "sample_calories": 142,
         "sample_macros": {
             "protein_g": 9.68,
@@ -90530,7 +90530,7 @@
     {
         "name": "Babyfood, dinner, macaroni and tomato and beef, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Beech-Nut Stage 2 (4 oz)",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 68,
         "sample_macros": {
             "carbohydrates_g": 10.68,
@@ -90545,7 +90545,7 @@
     {
         "name": "Babyfood, dinner, macaroni and tomato and beef, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Gerber Third Foods (6 oz)",
+        "sample_units": "jar",
         "sample_calories": 100,
         "sample_macros": {
             "saturates_g": 0.7,
@@ -90560,7 +90560,7 @@
     {
         "name": "Babyfood, dinner, spaghetti and tomato and meat, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Beech-Nut Stage 3 (6 oz)",
+        "sample_units": "jar Heinz Junior-3 (6 oz)",
         "sample_calories": 115,
         "sample_macros": {
             "cholesterol_g": 0.01,
@@ -90616,7 +90616,7 @@
     {
         "name": "Babyfood, dinner, chicken soup, strained",
         "sample_size": 1.0,
-        "sample_units": "jar Beech-Nut Stage 2 (4 oz)",
+        "sample_units": "jar Heinz Strained-2 (4 oz)",
         "sample_calories": 56,
         "sample_macros": {
             "saturates_g": 0.31,
@@ -90673,7 +90673,7 @@
     {
         "name": "Babyfood, dinner, turkey and rice, junior",
         "sample_size": 1.0,
-        "sample_units": "jar Beech-Nut Stage 3 (6 oz)",
+        "sample_units": "jar Gerber Third Foods (6 oz)",
         "sample_calories": 95,
         "sample_macros": {
             "cholesterol_g": 0.01,
@@ -90941,7 +90941,7 @@
     {
         "name": "Babyfood, carrots and beef, strained",
         "sample_size": 1.0,
-        "sample_units": "jar NFS",
+        "sample_units": "jar Gerber Second Food (4 oz)",
         "sample_calories": 66,
         "sample_macros": {
             "saturates_g": 1.08,
@@ -95379,8 +95379,8 @@
     },
     {
         "name": "Lamb, New Zealand, imported, rack - partly frenched, separable lean and fat, cooked, fast roasted",
-        "sample_size": 3.0,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "serving",
         "sample_calories": 215,
         "sample_macros": {
             "fat_g": 15.55,
@@ -96193,8 +96193,8 @@
     },
     {
         "name": "Lebanon bologna, beef",
-        "sample_size": 1.0,
-        "sample_units": "serving 2 slices",
+        "sample_size": 2.0,
+        "sample_units": "oz",
         "sample_calories": 98,
         "sample_macros": {
             "carbohydrates_g": 0.25,
@@ -96269,7 +96269,7 @@
     {
         "name": "Bologna, chicken, pork",
         "sample_size": 1.0,
-        "sample_units": "slice",
+        "sample_units": "serving",
         "sample_calories": 94,
         "sample_macros": {
             "carbohydrates_g": 1.17,
@@ -103427,8 +103427,8 @@
     },
     {
         "name": "Lamb, New Zealand, imported, fore-shank, separable lean only, cooked, braised",
-        "sample_size": 3.0,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "serving",
         "sample_calories": 177,
         "sample_macros": {
             "protein_g": 28.31,
@@ -109928,8 +109928,8 @@
     },
     {
         "name": "Beef, variety meats and by-products, tripe, cooked, simmered",
-        "sample_size": 3.0,
-        "sample_units": "oz",
+        "sample_size": 1.0,
+        "sample_units": "serving",
         "sample_calories": 79,
         "sample_macros": {
             "carbohydrates_g": 1.69,
@@ -114124,7 +114124,7 @@
     {
         "name": "Waffles, plain, frozen, ready -to-heat, toasted",
         "sample_size": 1.0,
-        "sample_units": "waffle, round (4\" dia)",
+        "sample_units": "waffle, square (4\" square)",
         "sample_calories": 102,
         "sample_macros": {
             "saturates_g": 0.54,
