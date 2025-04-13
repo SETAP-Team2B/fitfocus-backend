@@ -38,6 +38,7 @@ from statistics import median_low
 
 import requests
 import utils.api_secrets as api_secrets
+import datetime
 
 
 # ensures all required attributes are in the request
@@ -1242,20 +1243,60 @@ class RecommendConsumableView(generics.CreateAPIView):
         return api_success("dataset filled with foods")
 
     # not sure whether to make this a GET or POST function, input parameters etc
+    # request includes the following attributes:
+    # email/username - to identify the user
+    # (OPTIONAL) consumables_to_recommend - number of consumables to recommend to the user (default 1)
+    # (OPTIONAL) recommendation_date - date to look at when generating recommendation dataset (default today)
     def post(self, request):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        date_to_search: datetime.date = datetime.datetime.now().date().strftime("%Y-%m-%d")
+        if request.data.get("date_to_search") != None:
+            date_to_search = request.data["date_to_search"]
+
         # how the algorithm works:
         # - macro ratio = ratio between carbohydrates, fat and protein in that order.
         # ----- example: a 100g cooked chicken breast has 0g carbs, 3.6g fat, 31g protein
         # ----- this will return a ratio of 0:3.6:31 and will be converted to percentages
         # ----- so this will return 0:10.4:89.6, which will then get rounded to 0:10:90, (nearest integer)
-        # - looks at the user's goals and consumed foods for the given date (if not present in the HTTP request, assume to be current date)
-        # - will sum up the total calories, carbohydrates, fat and protein, and subtract them from recommended daily intake values. results in an "ideal" intake.
+        # - 1) looks at the user's goals and consumed foods for the given date (if not present in the HTTP request, assume to be current date)
+        # - 2) will sum up the total calories, carbohydrates, fat and protein, and subtract them from recommended daily intake values. results in an "ideal" intake.
         # - this "ideal" intake will be multiplied by a decimal value, depending on:
         # ----- the time of day (to determine the portion size of the meal)
         # ----- the user's current mood/motivation (lower mood = less strict range of acceptable macro values)
-        # - takes a list of a random 10% sample of the consumables dataset, as well as every unique consumable logged by the user within the last 2 weeks
-        # - uses a 2D euclidean distance minimising algorithm to find the best consumable to recommend
-        # - returns the top X amount of meals with the least distance to this "ideal" intake
+        # - 3) takes a list of a random 10% sample of the consumables dataset, as well as every unique consumable logged by the user within the last 2 weeks
+        # - 4) uses a 2D euclidean distance minimising algorithm to find the best consumable to recommend
+        # - 5) returns the top X amount of meals with the least distance to this "ideal" intake
         # - X can be determined in the request input, if not specified, then will be 1.
 
-        return self.fill_consumable_dataset()
+        # 1)
+        target_goals = [] # TODO: find target goals when they're *finally* implemented
+
+        # add current date's consumed meals
+        target_date_consumed_macros: dict = {
+            "calories": 0,
+            "fat_g": 0,
+            "protein_g": 0,
+            "carbohydrates_g": 0
+        }
+        for logged_consumable in LoggedConsumable.objects.get_queryset():
+            print(logged_consumable.date_logged.strftime("%Y-%m-%d"))
+            if logged_consumable.user == target_user and logged_consumable.date_logged.strftime("%Y-%m-%d") == date_to_search:
+                print("in")
+                for key in target_date_consumed_macros.keys():
+                    if key == "calories": 
+                        target_date_consumed_macros[key] += logged_consumable.calories_logged
+                    else:
+                        if type(logged_consumable.macros_logged) == dict:
+                            if key in logged_consumable.macros_logged.keys():
+                                target_date_consumed_macros[key] += logged_consumable.macros_logged[key]
+
+        # 2)
+
+
+        # 3)
+        # 4)
+        # 5)
+
+        return JsonResponse(target_date_consumed_macros, safe=False)
