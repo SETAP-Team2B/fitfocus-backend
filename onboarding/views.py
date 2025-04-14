@@ -4,6 +4,11 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from django.http import Http404
+from django.db.models import F
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from utils.api import api_error, api_success, check_input
 from utils.exceptions import InvalidNameException, WeakPasswordError
 from utils.validator import Messages, validate_email, \
@@ -51,7 +56,7 @@ def check_all_required_keys_present(request, keys: list):
         else:
             if request.data[key] == "" or request.data[key] == None:
                 return api_error(f"{key} was found, but is empty.")
-    
+
     return
 
 
@@ -759,7 +764,7 @@ class ExerciseView(generics.CreateAPIView):
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
 
-    
+
     # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
         print("Headers:", request.headers)
@@ -774,7 +779,7 @@ class LogExerciseView(generics.CreateAPIView):
             return api_error("Invalid JSON format.")
 
     # Check what data is being received
-        print("Request Data:", data) 
+        print("Request Data:", data)
 
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
@@ -1023,7 +1028,7 @@ class ConsumableView(generics.CreateAPIView):
             consumable = Consumable(name=request.data['name'])
         except Consumable.MultipleObjectsReturned:
             return api_error("Multiple ingredients with the same name were found.")
-        
+
         # if the ingredient did not exist beforehand, the user passed through is made the owner of this ingredient
         consumable.sample_calories = request.data["sample_calories"]
         consumable.sample_macros = request.data.get("sample_macros")
@@ -1047,16 +1052,148 @@ The LogConsumable view takes in the following parameters:
 '''
 class LogConsumableView(generics.CreateAPIView):
     serializer_class = LoggedConsumableSerializer
-    
+
     def get(self, request, *args, **kwargs):
         logged_consumable_queryset = LoggedConsumable.objects.get_queryset()
-        
+
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
         logged_consumable_queryset.filter(user=target_user)
 
         if request.query_params.get("date_logged"):
             logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
+class RoutineListCreateView(generics.ListCreateAPIView):
+    #Handles listing all routines and creating a new one.
+    serializer_class = RoutineSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+    #Only return routines belonging to the logged-in user.
+        return Routine.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        ##Associate the created routine with the logged-in user.
+        serializer.save(user=self.request.user)
+
+
+class RoutineDetailView(generics.RetrieveAPIView):
+    #Handles retrieving a single routine.
+    serializer_class = RoutineSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        #Only allow the user to retrieve their own routines.
+        return Routine.objects.filter(user=self.request.user)
+
+# Routine Update API View
+class RoutineUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        routine = self.get_object()
+
+        data = request.data.copy()
+        if "name" not in data or not data["name"].strip():
+            data["name"] = "My Routine"
+
+        serializer = RoutineUpdateSerializer(routine, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self):
+        routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
+        if not routine:
+            raise Http404("Routine not found or you do not have permission to edit it")
+        return routine
+
+# Routine Delete API View
+class RoutineDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        routine = self.get_object()
+
+        # Delete all related routine exercises
+        routine_exercises = RoutineExercise.objects.filter(routine=routine)
+        routine_exercises.delete()
+
+        # Now delete the routine itself
+        routine.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_object(self):
+        routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
+        if not routine:
+            raise Http404("Routine not found or you do not have permission to delete it")
+        return routine
+
+class RoutineExerciseListCreateView(generics.ListCreateAPIView):
+    #Handles listing all RoutineExercise objects and creating new ones.
+    queryset = RoutineExercise.objects.all()
+    serializer_class = RoutineExerciseSerializer
+
+    def get_queryset(self):
+        #Filter exercises to only return those belonging to the logged-in user.
+        return RoutineExercise.objects.filter(routine__user=self.request.user)
+
+
+class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
+    # Handles retrieving, updating, or deleting a specific RoutineExercise.
+    queryset = RoutineExercise.objects.all()
+    serializer_class = RoutineExerciseSerializer
+
+    def get_queryset(self):
+        # Filter exercises so users can only modify their own routine exercises.
+        return RoutineExercise.objects.filter(routine__user=self.request.user)
+
+    def perform_destroy(self, instance):
+        #When an exercise is deleted, shift the order of the remaining ones.
+        routine = instance.routine
+        order_deleted = instance.order
+
+        # Delete the selected exercise
+        instance.delete()
+
+        # Shift all exercises that were below the deleted one
+        RoutineExercise.objects.filter(
+            routine=routine,
+            order__gt=order_deleted  # Only update exercises that were below the deleted one
+        ).update(order=F('order') - 1)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        new_order = request.data.get('order')
+
+        if new_order is None or new_order == instance.order:
+            return super().update(request, *args, **kwargs)  # No change needed
+
+        routine = instance.routine
+
+        # Shift exercises down if needed
+        if new_order < instance.order:
+            RoutineExercise.objects.filter(
+                routine=routine,
+                order__gte=new_order,
+                order__lt=instance.order
+            ).update(order=F('order') + 1)
+
+        elif new_order > instance.order:
+            RoutineExercise.objects.filter(
+                routine=routine,
+                order__gt=instance.order,
+                order__lte=new_order
+            ).update(order=F('order') - 1)
+
+        # Update the instance's order
+        instance.order = new_order
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
         serialized_consumables = []
         for consum in logged_consumable_queryset:
@@ -1074,7 +1211,7 @@ class LogConsumableView(generics.CreateAPIView):
                             serialized_model[key] = value
 
             serialized_consumables.append(serialized_model)
-            
+
         return JsonResponse(serialized_consumables, safe=False)
 
     def post(self, request, *args, **kwargs):
@@ -1084,7 +1221,7 @@ class LogConsumableView(generics.CreateAPIView):
             "date_logged",
             "calories_logged"
         ]
-        
+
         for key in keys:
             if key not in list(request.data.keys()):
                 return api_error(f"One or more API fields were not included in the request.")
@@ -1117,7 +1254,7 @@ class LogConsumableView(generics.CreateAPIView):
 
             logged_consumable = LoggedConsumable(
                 user=target_user,
-                consumable=target_consumable, # index at 0 because get_or_create returns a tuple 
+                consumable=target_consumable, # index at 0 because get_or_create returns a tuple
                 amount_logged=amount_logged if not new_consumable else 1, # return 1 serving of the newly created consumable when logged
                 date_logged=request.data["date_logged"],
                 calories_logged=request.data["calories_logged"],
@@ -1129,7 +1266,7 @@ class LogConsumableView(generics.CreateAPIView):
             return api_success("Consumable logged!")
         except Exception as e:
             return api_error(e.__str__())
-        
+
 class UserDataCreateView(generics.CreateAPIView):
     serializer_class = UserDataSerializer
 
@@ -1150,7 +1287,7 @@ class UserDataCreateView(generics.CreateAPIView):
                 if userData.user_age < 1: raise TypeError
             except TypeError:
                 return api_error("Age can only be a whole number >= 1")
-        else: 
+        else:
             return api_error("No age was provided.")
 
         if request.data.get("user_sex"):
@@ -1165,7 +1302,7 @@ class UserDataCreateView(generics.CreateAPIView):
                 if userData.user_height <= 0.0: raise TypeError
             except TypeError:
                 return api_error("Height must be a positive number.")
-        else: 
+        else:
             return api_error("No height was provided.")
 
         if request.data.get("user_height_units") != None:
@@ -1173,7 +1310,7 @@ class UserDataCreateView(generics.CreateAPIView):
                 return api_error("Height units must be: \"in\" OR \"cm\".")
             else:
                 userData.user_height_units = request.data["user_height_units"]
-        else: 
+        else:
             return api_error("No height units were provided.")
 
         if request.data.get("user_weight"):
@@ -1207,3 +1344,63 @@ class UserDataCreateView(generics.CreateAPIView):
 
         return JsonResponse(model_to_dict(userData), safe=False)
 
+
+
+
+class UserMoodView(generics.CreateAPIView):
+    serializer_class = UserMoodSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        user_mood = UserMood(user=target_user)
+
+        if request.data.get("mood_level") != None:
+            try:
+                user_mood.mood_level = int(request.data["mood_level"])
+                if user_mood.mood_level not in [-2, -1, 0, 1, 2]: raise TypeError
+            except TypeError:
+                return api_error("Mood level must be an integer between -2 and 2")
+        else: 
+            return api_error("No mood was provided.")
+        
+        if request.data.get("datetime_recorded"):
+            try:
+                user_mood.datetime_recorded = timedelta(request.data["datetime_recorded"])
+            except TypeError:
+                return api_error("DateTime is in the incorrect format")
+        else:
+            user_mood.datetime_recorded = timezone.now()
+        
+        user_mood.save()
+
+        return api_success({
+            "mood_level": user_mood.mood_level,
+            "datetime_recorded": user_mood.datetime_recorded
+        })
+        
+    def get(self, request, *args, **kwargs):
+        user_mood_queryset = UserMood.objects.get_queryset()
+
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        user_mood_queryset = user_mood_queryset.filter(user=target_user)
+
+        if user_mood_queryset.order_by("datetime_recorded").__len__() > 0:
+            latest_user_mood = user_mood_queryset.order_by("-datetime_recorded")[0]
+        else:
+            latest_user_mood = UserMood(
+                user=target_user,
+                mood_level=0,
+                datetime_recorded=timezone.datetime.strptime("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+            )
+
+            latest_user_mood.save()
+
+        return Response({
+            "mood_level": latest_user_mood.mood_level,
+            "datetime_recorded" : timezone.datetime.strftime(latest_user_mood.datetime_recorded, "%Y-%m-%d %H:%M:%S"),
+        })
+    

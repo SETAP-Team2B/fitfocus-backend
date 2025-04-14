@@ -103,6 +103,25 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Routine',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=255)),
+                ('description', models.TextField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='RoutineExercise',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('order', models.PositiveIntegerField()),
+                ('exercise', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='onboarding.exercise')),
+                ('routine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='routine_exercises', to='onboarding.routine')),
+            ],
+        ),
+        migrations.CreateModel(
             name='UserData',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
