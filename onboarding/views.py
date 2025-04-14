@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.http import Http404
 from django.db.models import F
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from utils.api import api_error, api_success, check_input
 from utils.exceptions import InvalidNameException, WeakPasswordError
@@ -640,7 +641,7 @@ class ExerciseView(generics.CreateAPIView):
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
-    body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]    
+    body_area_types = ["Back", "Cardio", "Chest", "Lower Arms", "Lower Legs", "Neck", "Shoulders", "Upper Arms", "Upper Legs", "Core", "Flexibility"]
     muscle_types = ["Abdominals", "Abductors", "Abs", "Adductors", "Ankle Stabilizers", "Ankles", "Back", "Biceps", "Brachialis", "Cavles", "Cardio",
                     "Chest", "Core", "Deltoids", "Delts", "Feet", "Forearms", "Glutes", "Grip Muscles", "Groin", "Hamstrings", "Hands", "Hip Flexors",
                     "Inner Thighs", "Latissimus Dorsi", "Lats", "Levator Scapulae", "Lower Abs", "Lower Back", "Obliques", "Pectorals", "Quadriceps", "Quads",
@@ -651,9 +652,9 @@ class ExerciseView(generics.CreateAPIView):
         exercise: Exercise
         # response if one of the exercise fields are empty
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
-            return api_error("Necessary Field(s) are empty")   
-        
-        ex_name = request.data['ex_name']        
+            return api_error("Necessary Field(s) are empty")
+
+        ex_name = request.data['ex_name']
         ex_type = request.data['ex_type']
         ex_body_area = request.data['ex_body_area']
         equipment_needed = request.data['equipment_needed']
@@ -664,12 +665,12 @@ class ExerciseView(generics.CreateAPIView):
         else:
             ex_target_muscle = "none"
         if 'ex_secondary_muscle_1' in request.data:
-            ex_secondary_muscle_1 = request.data['ex_secondary_muscle_1']   
+            ex_secondary_muscle_1 = request.data['ex_secondary_muscle_1']
         else:
-            ex_secondary_muscle_1 = "none"    
+            ex_secondary_muscle_1 = "none"
         if 'ex_secondary_muscle_2' in request.data:
             ex_secondary_muscle_2 = request.data['ex_secondary_muscle_2']
-        
+
 
         # validates target muscle input
         if ex_type == "Muscle":
@@ -685,7 +686,7 @@ class ExerciseView(generics.CreateAPIView):
         # validates body area input
         if ex_body_area not in self.body_area_types:
             return api_error("Inavlid Body Area Type")
-        
+
         # creates Exercise instance and saves to database
         exercise = Exercise(
             ex_name=ex_name,
@@ -722,25 +723,57 @@ class ExerciseView(generics.CreateAPIView):
         # returns an error if there are any filter attributes not known
         # while unknown attributes could just be ignored, best to not have them altogether
         all_exercise_fields = [f.name for f in Exercise._meta.get_fields()]
-        for attribute in request.data.keys():
-            if attribute not in all_exercise_fields:
+        for attribute in request.GET.keys():
+            if attribute not in all_exercise_fields and attribute not in ['limit', 'offset']:
                 return api_error("Unexpected filter name encountered.")
-            
-        # makes appropriate filters based on exercise attributes
-        for attribute in all_exercise_fields:
-            if attribute in request.data.keys():
-                match(attribute):
-                    case "ex_name": query_set = query_set.filter(ex_name=request.data[attribute])
-                    case "ex_type": query_set = query_set.filter(ex_type=request.data[attribute])
-                    case "ex_body_area": query_set = query_set.filter(ex_body_area=request.data[attribute])
-                    case "equipment_needed": query_set = query_set.filter(equipment_needed=request.data[attribute])
-                    case "ex_target_muscle": query_set = query_set.filter(ex_target_muscle=request.data[attribute])
-                    case _:
-                        return api_error("Attribute not accounted for in filter.")
 
-        # return filtered queryset
-        return JsonResponse(list(query_set), safe=False)
-    
+        # Apply filters based on query parameters in GET request
+        for attribute in all_exercise_fields:
+            if attribute in request.GET:
+                filter_value = request.GET[attribute]
+                if filter_value:
+                    if attribute == "ex_name":
+                        query_set = query_set.filter(ex_name__icontains=filter_value)
+                    elif attribute == "ex_type":
+                        query_set = query_set.filter(ex_type=filter_value)
+                    elif attribute == "ex_body_area":
+                        query_set = query_set.filter(ex_body_area=filter_value)
+                    elif attribute == "equipment_needed":
+                        query_set = query_set.filter(equipment_needed=filter_value)
+                    elif attribute == "ex_target_muscle":
+                        query_set = query_set.filter(ex_target_muscle=filter_value)
+                    elif attribute == "ex_secondary_muscle_1":
+                        query_set = query_set.filter(ex_secondary_muscle_1=filter_value)
+                    elif attribute == "ex_secondary_muscle_2":
+                        query_set = query_set.filter(ex_secondary_muscle_2=filter_value)
+
+        # Pagination with limit and offset
+        try:
+            limit = int(request.GET.get('limit', 20))  # Default to 20 if not provided
+            offset = int(request.GET.get('offset', 0))  # Default to 0 if not provided
+            if limit < 1 or offset < 0:
+                raise ValueError
+        except ValueError:
+            return api_error("Invalid pagination parameters: limit and offset must be positive integers.")
+
+        # Create the paginator with the limit value
+        paginator = Paginator(query_set, limit)
+
+        # Calculate the page number from the offset
+        page_number = (offset // limit) + 1
+
+        try:
+            exercises_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            # If page number is not an integer, return first page
+            exercises_page = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range, return empty result
+            exercises_page = paginator.page(paginator.num_pages)
+
+        # Return paginated exercises
+        return JsonResponse(list(exercises_page.object_list.values()), safe=False)
+
     def ExerciseFile(self):
         exercise: Exercise
 
@@ -760,7 +793,7 @@ class ExerciseView(generics.CreateAPIView):
             )
             exercise.save()
         exercise_list.close()
-        
+
 class LogExerciseView(generics.CreateAPIView):
     serializer_class = LoggedExerciseSerializer
 
@@ -1062,6 +1095,7 @@ class LogConsumableView(generics.CreateAPIView):
 
         if request.query_params.get("date_logged"):
             logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
+
 class RoutineListCreateView(generics.ListCreateAPIView):
     #Handles listing all routines and creating a new one.
     serializer_class = RoutineSerializer
@@ -1331,3 +1365,131 @@ class UserDataCreateView(generics.CreateAPIView):
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
+
+
+class LogRoutineView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        logged_routine_id = request.data.get('id')
+        if not logged_routine_id:
+            return Response({"error": "Logged routine ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            logged_routine = LoggedRoutine.objects.get(id=logged_routine_id, user=request.user)
+        except LoggedRoutine.DoesNotExist:
+            return Response({"error": "Logged routine not found or you don't have permission to delete it."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        logged_routine.delete()
+        return Response({"success": "Logged routine deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+    def get(self, request, *args, **kwargs):
+        logged_routines = LoggedRoutine.objects.filter(user=request.user).order_by('-completed_at')
+        serializer = LoggedRoutineSerializer(logged_routines, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        routine_id = request.data.get('routine_id')
+        notes = request.data.get('notes', '')
+        duration_str = request.data.get('duration', None)
+        progress = request.data.get('progress', {})
+        exercises_data = progress.get('exercises', [])
+
+        # Convert routine duration if provided
+        if duration_str:
+            try:
+                duration = pd.Timedelta("0 days " + duration_str).to_pytimedelta()
+            except ValueError:
+                return Response({"error": "Invalid duration format. Please use 'hh:mm:ss'."},
+                                status=status.HTTP_400_BAD_REQUEST)
+        else:
+            duration = None
+
+        try:
+            routine = Routine.objects.get(id=routine_id, user=request.user)
+        except Routine.DoesNotExist:
+            return Response({"error": "Routine not found or you do not have permission to log it."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Validate all exercises first
+        validated_exercises = []
+        for exercise_data in exercises_data:
+            exercise_id = exercise_data.get('exercise_id')
+            sets = exercise_data.get('sets')
+            reps = exercise_data.get('reps')
+            distance = exercise_data.get('distance')
+            distance_units = exercise_data.get('distance_units')
+            time_str = exercise_data.get('duration')
+
+            try:
+                time = pd.Timedelta("0 days " + time_str).to_pytimedelta() if time_str else None
+            except ValueError:
+                return Response({"error": "Invalid exercise duration format. Please use 'hh:mm:ss'."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                exercise = Exercise.objects.get(id=exercise_id)
+            except Exercise.DoesNotExist:
+                return Response({"error": f"Exercise {exercise_id} not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if exercise_id not in [r.exercise.id for r in routine.routine_exercises.all()]:
+                return Response({"error": f"Exercise {exercise_id} is not part of this routine."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            if exercise.ex_type == 'Cardio':
+                if distance is None or not distance_units:
+                    return Response({"error": f"Cardio exercise {exercise_id} missing distance or unit."},
+                                    status=status.HTTP_400_BAD_REQUEST)
+                if time is None:
+                    return Response({"error": f"Cardio exercise {exercise_id} missing duration."},
+                                    status=status.HTTP_400_BAD_REQUEST)
+            else:
+                if distance or distance_units:
+                    return Response({"error": f"Distance is not required for strength exercise {exercise_id}."},
+                                    status=status.HTTP_400_BAD_REQUEST)
+                if sets is None or reps is None or not exercise_data.get('weight'):
+                    return Response({"error": f"Strength exercise {exercise_id} missing sets, reps, or weight."},
+                                    status=status.HTTP_400_BAD_REQUEST)
+
+            # All validations passed for this exercise
+            validated_exercises.append({
+                'exercise': exercise,
+                'sets': sets,
+                'reps': reps,
+                'distance': distance,
+                'distance_units': distance_units,
+                'duration': time,
+            })
+
+        # ✅ Everything valid — now save
+        logged_routine = LoggedRoutine.objects.create(
+            routine=routine,
+            user=request.user,
+            notes=notes,
+            duration=duration,
+            progress=progress
+        )
+
+        for ex in validated_exercises:
+            LoggedExercise.objects.create(
+                user=request.user,
+                logged_routine=logged_routine,
+                exercise=ex['exercise'],
+                sets=ex['sets'],
+                reps=ex['reps'],
+                distance=ex['distance'],
+                distance_units=ex['distance_units'],
+                duration=ex['duration']
+            )
+
+        serializer = LoggedRoutineSerializer(logged_routine)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        # Return the logged routine data with the appropriate serializer
+        serializer = LoggedRoutineSerializer(logged_routine)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class ExerciseDetailView(RetrieveAPIView):
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
