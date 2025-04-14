@@ -117,7 +117,7 @@ class UserData(models.Model):
     user_weight = models.FloatField(null=True)
     user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')], null=True)
     user_target_weight = models.FloatField(null=True)
-    user_body_goals = models.TextField(null=True)
+    user_body_goals = models.JSONField(null=True)
     
     def __str__(self):
         return f"User Data for {self.user.username}"
