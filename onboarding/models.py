@@ -108,18 +108,18 @@ class UserData(models.Model):
         ('F', 'Female'),
         ('X', 'Prefer not to say/Other'),
     ]
-    
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # User is a foreign key, not null
     user_age = models.PositiveSmallIntegerField()  # Positive int (must be >= 0)
     user_sex = models.CharField(max_length=1, choices=SEX_CHOICES, null=True, blank=True)
-    user_height = models.FloatField()  
-    user_height_units = models.CharField(max_length=2, choices=[('in', 'Inches'), ('cm', 'Centimeters')]) 
-    user_weight = models.FloatField(null=True)  
+    user_height = models.FloatField()
+    user_height_units = models.CharField(max_length=2, choices=[('in', 'Inches'), ('cm', 'Centimeters')])
+    user_weight = models.FloatField(null=True)
     user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')], null=True)
-    
+
     def __str__(self):
         return f"User Data for {self.user.username}"
-    
+
 # this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
 # i tried thinking about how to make it from other consumables but it broke my brain
 class Consumable(models.Model):
@@ -141,6 +141,24 @@ class LoggedConsumable(models.Model):
     date_logged = models.DateField() # this is NOT when the instance was created, but when the consumable was consumed.
     calories_logged = models.PositiveIntegerField()
     macros_logged = models.JSONField(validators=[validate_macros], null=True)
+
+class Routine(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Each routine belongs to a user
+    name = models.CharField(max_length=255)  # Routine name
+    description = models.TextField(blank=True, null=True)  # Optional description
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set timestamp
+
+    def __str__(self):
+        return f"{self.name} ({self.user.username})"
+
+# RoutineExercise model
+class RoutineExercise(models.Model):
+    routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name="routine_exercises")
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.exercise.ex_name} in {self.routine.name} (Order: {self.order})"
 
 class UserMood(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
