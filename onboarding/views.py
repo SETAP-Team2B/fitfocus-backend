@@ -1206,3 +1206,4 @@ class UserDataCreateView(generics.CreateAPIView):
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
+
