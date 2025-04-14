@@ -1282,13 +1282,23 @@ class UserDataCreateView(generics.CreateAPIView):
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
-        userData = UserData.get(user=target_user)
+        user_data = UserData(user=target_user)
+        try:
+            user_data = UserData.objects.get(user=target_user)
+        except UserData.DoesNotExist:
+            user_data = UserData(user=target_user)
+        except UserData.MultipleObjectsReturned:
+            # delete all instances except the latest record
+            latest = UserData.objects.filter(user=target_user).order_by("-id")[0]
+            UserData.objects.filter(user=target_user).delete()
+
+            latest.save()
 
 
         if request.data.get("user_age"):
             try:
-                userData.user_age = int(request.data["user_age"])
-                if userData.user_age < 1: raise TypeError
+                user_data.user_age = int(request.data["user_age"])
+                if user_data.user_age < 1: raise TypeError
             except TypeError:
                 return api_error("Age can only be a whole number >= 1")
         else:
@@ -1298,12 +1308,12 @@ class UserDataCreateView(generics.CreateAPIView):
             if request.data["user_sex"] not in ["M", "F", "X"]:
                 return api_error("User sex must be M, F, X or empty.")
             else:
-                userData.user_sex = request.data["user_sex"]
+                user_data.user_sex = request.data["user_sex"]
 
         if request.data.get("user_height"):
             try:
-                userData.user_height = float(request.data["user_height"])
-                if userData.user_height <= 0.0: raise TypeError
+                user_data.user_height = float(request.data["user_height"])
+                if user_data.user_height <= 0.0: raise TypeError
             except TypeError:
                 return api_error("Height must be a positive number.")
         else:
@@ -1313,14 +1323,14 @@ class UserDataCreateView(generics.CreateAPIView):
             if request.data["user_height_units"] not in ["in", "cm"]:
                 return api_error("Height units must be: \"in\" OR \"cm\".")
             else:
-                userData.user_height_units = request.data["user_height_units"]
+                user_data.user_height_units = request.data["user_height_units"]
         else:
             return api_error("No height units were provided.")
 
         if request.data.get("user_weight"):
             try:
-                userData.user_weight = float(request.data["user_weight"])
-                if userData.user_weight <= 0.0: raise TypeError
+                user_data.user_weight = float(request.data["user_weight"])
+                if user_data.user_weight <= 0.0: raise TypeError
             except TypeError:
                 return api_error("Weight must be positive.")
 
@@ -1328,14 +1338,14 @@ class UserDataCreateView(generics.CreateAPIView):
                 if request.data["user_weight_units"] not in ["lb", "kg"]:
                     return api_error("Weight units must be: \"lb\" OR \"kg\".")
                 else:
-                    userData.user_weight_units = request.data["user_weight_units"]
+                    user_data.user_weight_units = request.data["user_weight_units"]
             else:
                 return api_error("Weight units must be provided for a weight.")
 
         if request.data.get("user_target_weight"):
             try:
-                userData.user_target_weight = float(request.data["user_target_weight"])
-                if userData.user_target_weight <= 0.0: raise ValueError
+                user_data.user_target_weight = float(request.data["user_target_weight"])
+                if user_data.user_target_weight <= 0.0: raise ValueError
             except ValueError:
                 return api_error("Target weight must be a positive number.")
 
@@ -1343,10 +1353,10 @@ class UserDataCreateView(generics.CreateAPIView):
             if not isinstance(request.data["user_body_goals"], list):
                 return api_error("Body goals must be given as a list.")
             else:
-                userData.user_body_goals = request.data["user_body_goals"]
-        userData.save()
+                user_data.user_body_goals = request.data["user_body_goals"]
+        user_data.save()
 
-        return JsonResponse(model_to_dict(userData), safe=False)
+        return JsonResponse(model_to_dict(user_data), safe=False)
 
 
 
@@ -1493,7 +1503,7 @@ class RecommendConsumableView(generics.CreateAPIView):
             "Boosting Metabolism"
         ]
         try:
-            target_goals: list[str] = json.loads(UserData.objects.get(user=target_user).user_body_goals)
+            target_goals: list[str] = UserData.objects.get(user=target_user).user_body_goals
         except:
             target_goals = []
 
@@ -1657,6 +1667,9 @@ class RecommendConsumableView(generics.CreateAPIView):
 
             if meal.sample_macros != None:
                 if type(meal.sample_macros) == dict:
+                    # TODO: TWEAK THESE THREE TO REDUCE SCORE FOR MULTIPLIER_VALUE BETWEEN 0.5-1.0
+                    # TODO: TWEAK THESE TO INCREASE SCORE OUTSIDE OF THIS RANGE
+
                     if "protein_g" in meal.sample_macros:
                         if min_protein_g > 0.0:
                             multiplier_value = meal.sample_macros["protein_g"] / min_protein_g
@@ -1687,6 +1700,8 @@ class RecommendConsumableView(generics.CreateAPIView):
                             recommendation_dict[meal.name] += 4
                     else:
                         recommendation_dict[meal.name] += 1
+
+
                 else:
                     recommendation_dict[meal.name] += 3
             else:
