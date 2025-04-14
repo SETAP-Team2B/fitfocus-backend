@@ -1282,7 +1282,7 @@ class UserDataCreateView(generics.CreateAPIView):
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
-        userData = UserData(user=target_user)
+        userData = UserData.get(user=target_user)
 
 
         if request.data.get("user_age"):
@@ -1505,9 +1505,7 @@ class RecommendConsumableView(generics.CreateAPIView):
             "carbohydrates_g": 0
         }
         for logged_consumable in LoggedConsumable.objects.get_queryset():
-            print(logged_consumable.date_logged.strftime("%Y-%m-%d"))
             if logged_consumable.user == target_user and logged_consumable.date_logged.strftime("%Y-%m-%d") == date_to_search:
-                print("in")
                 for key in target_date_consumed_macros.keys():
                     if key == "calories": 
                         target_date_consumed_macros[key] += logged_consumable.calories_logged
@@ -1620,22 +1618,95 @@ class RecommendConsumableView(generics.CreateAPIView):
         max_fat_g = int(max_fat_g / remaining_meals)
 
 
-        # 3)
-
-        if Consumable.objects.count() < 100:
-            self.fill_consumable_dataset()
-
-
-            
-
-        # 4)
-        # 5)
-
-        return Response({
+        print({
             "max_calories": max_calories,
             "max_carbs_g": max_carbs_g,
             "min_protein_g": min_protein_g,
             "max_fat_g": max_fat_g,
         })
 
-        return JsonResponse(target_date_consumed_macros, safe=False)
+
+        # 3)
+        if Consumable.objects.count() < 100:
+            self.fill_consumable_dataset()
+
+        recommendation_meal_set: set[Consumable] = set()
+        consumable_limit = Consumable.objects.count() // 10
+        # because random.sample doesn't work, use this instead
+        # every meal in the Consumable table has a 10% chance of being added
+        # stops once 10% limit has been hit
+        for meal in Consumable.objects.all():
+            if randint(1, 10) == 1:
+                recommendation_meal_set.add(meal)
+                if len(recommendation_meal_set) == consumable_limit:
+                    break
+
+        for meal in LoggedConsumable.objects.filter(user=target_user).filter(date_logged__gte=timezone.datetime.strftime(timezone.now().__add__(timedelta(weeks=2)), "%Y-%m-%d")):
+            recommendation_meal_set.add(meal.consumable)
+
+        # cannot be subscripted, so convert set back to a list
+        recommendation_meal_set = list(recommendation_meal_set)
+
+        # 4)
+        # HIGHER SCORE IS WORSE
+        recommendation_dict: dict[str, float] = {}
+        for meal in recommendation_meal_set:
+            calorie_diff = (meal.sample_calories / max_calories) ** 2
+            recommendation_dict[meal.name] = calorie_diff 
+
+
+            if meal.sample_macros != None:
+                if type(meal.sample_macros) == dict:
+                    if "protein_g" in meal.sample_macros:
+                        if min_protein_g > 0.0:
+                            multiplier_value = meal.sample_macros["protein_g"] / min_protein_g
+                            if multiplier_value < 1.0:
+                                if multiplier_value == 0:
+                                    multiplier_value = 10000 # absurdly high but gets the point across
+                                else:
+                                    multiplier_value = 1 / multiplier_value
+
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                            
+
+                    if "carbohydrates_g" in meal.sample_macros:
+                        if max_carbs_g > 0.0:
+                            multiplier_value = meal.sample_macros["carbohydrates_g"] - max_carbs_g
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                        
+
+                    if "fat_g" in meal.sample_macros:
+                        if max_fat_g > 0.0:
+                            multiplier_value = meal.sample_macros["fat_g"] - max_fat_g
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                    else:
+                        recommendation_dict[meal.name] += 1
+                else:
+                    recommendation_dict[meal.name] += 3
+            else:
+                # if no value for the 3 macros can be found, assume all to be 1, and add them on
+                recommendation_dict[meal.name] += 3
+
+        # 5)
+        sorted_recommendation_dict = dict(sorted(recommendation_dict.items(), key=lambda item: item[1]))
+        consumables_to_recommend = min(len(sorted_recommendation_dict), request.data.get("consumables_to_recommend", 1))
+
+        final_recommendations = []
+        for name in [*sorted_recommendation_dict]:
+            if random.randint(1, 10) <= 8: # 80% chance of being added
+                final_recommendations.append(
+                    model_to_dict(
+                        Consumable.objects.get(name=name),
+                        exclude="logged_user"
+                    )
+                )
+                if len(final_recommendations) == consumables_to_recommend:
+                    break
+
+        return JsonResponse(final_recommendations, safe=False)
