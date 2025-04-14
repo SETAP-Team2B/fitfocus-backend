@@ -1362,9 +1362,83 @@ class UserDataCreateView(generics.CreateAPIView):
             else:
                 return api_error("Weight units must be provided for a weight.")
 
+        if request.data.get("user_target_weight"):
+            try:
+                userData.user_target_weight = float(request.data["user_target_weight"])
+                if userData.user_target_weight <= 0.0: raise ValueError
+            except ValueError:
+                return api_error("Target weight must be a positive number.")
+
+        if request.data.get("user_body_goals"):
+            if not isinstance(request.data["user_body_goals"], list):
+                return api_error("Body goals must be given as a list.")
+            else:
+                userData.user_body_goals = request.data["user_body_goals"]
         userData.save()
 
         return JsonResponse(model_to_dict(userData), safe=False)
+
+
+
+
+class UserMoodView(generics.CreateAPIView):
+    serializer_class = UserMoodSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        user_mood = UserMood(user=target_user)
+
+        if request.data.get("mood_level") != None:
+            try:
+                user_mood.mood_level = int(request.data["mood_level"])
+                if user_mood.mood_level not in [-2, -1, 0, 1, 2]: raise TypeError
+            except TypeError:
+                return api_error("Mood level must be an integer between -2 and 2")
+        else:
+            return api_error("No mood was provided.")
+
+        if request.data.get("datetime_recorded"):
+            try:
+                user_mood.datetime_recorded = timedelta(request.data["datetime_recorded"])
+            except TypeError:
+                return api_error("DateTime is in the incorrect format")
+        else:
+            user_mood.datetime_recorded = timezone.now()
+
+        user_mood.save()
+
+        return api_success({
+            "mood_level": user_mood.mood_level,
+            "datetime_recorded": user_mood.datetime_recorded
+        })
+
+    def get(self, request, *args, **kwargs):
+        user_mood_queryset = UserMood.objects.get_queryset()
+
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        user_mood_queryset = user_mood_queryset.filter(user=target_user)
+
+        if user_mood_queryset.order_by("datetime_recorded").__len__() > 0:
+            latest_user_mood = user_mood_queryset.order_by("-datetime_recorded")[0]
+        else:
+            latest_user_mood = UserMood(
+                user=target_user,
+                mood_level=0,
+                datetime_recorded=timezone.datetime.strptime("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+            )
+
+            latest_user_mood.save()
+
+        return Response({
+            "mood_level": latest_user_mood.mood_level,
+            "datetime_recorded" : timezone.datetime.strftime(latest_user_mood.datetime_recorded, "%Y-%m-%d %H:%M:%S"),
+        })
+
+
 
 
 class LogRoutineView(APIView):

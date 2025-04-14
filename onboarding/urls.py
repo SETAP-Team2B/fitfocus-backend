@@ -26,4 +26,5 @@ urlpatterns = [
     path("routine-exercises/", views.RoutineExerciseListCreateView.as_view(), name="routine-exercise-list"),
     path("routine-exercises/<int:pk>/", views.RoutineExerciseDetailView.as_view(), name="routine-exercise-detail"),
     path('log-routine/', views.LogRoutineView.as_view(), name='log-routine'),
+    path("user-mood/", views.UserMoodView().as_view(), name="user-mood"),
 ]
