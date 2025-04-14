@@ -144,5 +144,5 @@ class LoggedConsumable(models.Model):
 
 class UserMood(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    mood_level = models.SmallIntegerField(default=0, choices=[-2, -1, 0, 1, 2])
+    mood_level = models.SmallIntegerField(default=0)
     datetime_recorded = models.DateTimeField(default=timezone.now)

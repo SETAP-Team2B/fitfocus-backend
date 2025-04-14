@@ -18,4 +18,5 @@ urlpatterns = [
     path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("create-consumable/", views.ConsumableView().as_view(), name="create-consumable"),
     path("log-consumable/", views.LogConsumableView().as_view(), name="log-consumable"),
+    path("user-mood/", views.UserMoodView().as_view(), name="user-mood"),
 ]

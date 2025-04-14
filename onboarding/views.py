@@ -1220,7 +1220,7 @@ class UserMoodView(generics.CreateAPIView):
             except TypeError:
                 return api_error("DateTime is in the incorrect format")
         else:
-            return api_error("No Datetime was recorded")
+            user_mood.datetime_recorded = timezone.now()
         
         user_mood.save()
 
@@ -1273,8 +1273,8 @@ class UserMoodView(generics.CreateAPIView):
 
             latest_user_mood.save()
 
-        return JsonResponse({
+        return Response({
             "mood_level": latest_user_mood.mood_level,
             "datetime_recorded" : latest_user_mood.datetime_recorded,
-        }, safe=False)
+        })
     
