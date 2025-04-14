@@ -1243,13 +1243,13 @@ class UserMoodView(generics.CreateAPIView):
             latest_user_mood = UserMood(
                 user=target_user,
                 mood_level=0,
-                datetime_recorded="1970-01-01 00:00:00"
+                datetime_recorded=timezone.datetime.strptime("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
             )
 
             latest_user_mood.save()
 
         return Response({
             "mood_level": latest_user_mood.mood_level,
-            "datetime_recorded" : latest_user_mood.datetime_recorded,
+            "datetime_recorded" : timezone.datetime.strftime(latest_user_mood.datetime_recorded, "%Y-%m-%d %H:%M:%S"),
         })
     
