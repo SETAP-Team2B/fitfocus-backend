@@ -1256,12 +1256,12 @@ class RecommendConsumableView(generics.CreateAPIView):
             date_to_search = request.data["date_to_search"]
 
         # how the algorithm works:
-        # - macro ratio = ratio between carbohydrates, fat and protein in that order.
-        # ----- example: a 100g cooked chicken breast has 0g carbs, 3.6g fat, 31g protein
-        # ----- this will return a ratio of 0:3.6:31 and will be converted to percentages
-        # ----- so this will return 0:10.4:89.6, which will then get rounded to 0:10:90, (nearest integer)
+        # - macro ratio = ratio between carbohydrates, protein and fat in that order.
+        # ----- example: a 100g cooked chicken breast has 0g carbs, 31g protein, 3.6g fat
+        # ----- this will return a ratio of 0:31:3.6 and will be converted to percentages
+        # ----- so this will return 0:89.6:10.4, which will then get rounded to 0:90:10, (nearest integer)
         # - 1) looks at the user's goals and consumed foods for the given date (if not present in the HTTP request, assume to be current date)
-        # - 2) will sum up the total calories, carbohydrates, fat and protein, and subtract them from recommended daily intake values. results in an "ideal" intake.
+        # - 2) will sum up the total calories, carbohydrates, protein and fat, and subtract them from recommended daily intake values. results in an "ideal" intake.
         # - this "ideal" intake will be multiplied by a decimal value, depending on:
         # ----- the time of day (to determine the portion size of the meal)
         # ----- the user's current mood/motivation (lower mood = less strict range of acceptable macro values)
@@ -1293,6 +1293,73 @@ class RecommendConsumableView(generics.CreateAPIView):
                                 target_date_consumed_macros[key] += logged_consumable.macros_logged[key]
 
         # 2)
+        # recommended minimum calories: (Harris-Benedict equation)
+        # - if the user has provided their weight:
+        # ----- if the user is male: 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * age)
+        # ----- else if the user is female: 447.593 + (9.247 * weight_kg) + (3.098 * height_cm) - (4.330 * age)
+        # ----- else (other/don't want to say): take the average of the above 2
+        # - else 2000
+
+        recommended_daily_calories = 2000
+        try:
+            target_user_data = UserData.objects.get(user=target_user)
+
+            if target_user_data.user_weight != None:
+                weight_kg = target_user_data.user_weight if target_user_data.user_weight_units == "kg" else target_user_data.user_weight * 0.454 # converts to kg if weight is in lb
+                height_cm = target_user_data.user_height if target_user_data.user_weight_units == "cm" else target_user_data.user_weight * 2.54 # converts to cm if height is in inches 
+
+                male_calories = 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * target_user_data.user_age)
+                female_calories = 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * target_user_data.user_age)
+
+                if target_user_data.user_sex[0] == "M":
+                    recommended_daily_calories = int(male_calories)
+                elif target_user_data.user_sex[0] == "F":
+                    recommended_daily_calories = int(female_calories)
+                else:
+                    recommended_daily_calories = int((male_calories + female_calories) / 2)
+
+        except:
+            # if there is no user data, assume daily calories to be 2000
+            pass
+
+        # recommended daily macronutrients: (very heavily depends on user goals)
+        # TODO: above once user goals are implemented
+        # TODO: change below ratio based on user goals
+        # based on a normal diet, these are the proportion of CALORIES made up of nutrients
+        recommended_daily_macros = {
+            "carbs": 0.55, # where 1g carbs = 4 calories
+            "protein": 0.25, # where 1g protein = 4 calories
+            "fat": 0.2 # where 1g fat = 9 calories
+        }
+
+
+        # subtract consumed macros from recommended daily amounts to get MAXIMUM recommended intake for the meal
+        # caps at 0 if the consumed amount is more than the recommended daily amount
+        max_calories = max(int(recommended_daily_calories - target_date_consumed_macros["calories"]), 0)
+        max_carbs_g = max(int(recommended_daily_calories * recommended_daily_macros["carbs"] / 4 - target_date_consumed_macros["carbohydrates_g"]), 0)
+        min_protein_g = max(int(recommended_daily_calories * recommended_daily_macros["protein"] / 4 - target_date_consumed_macros["protein_g"]), 0)
+        max_fat_g = max(int(recommended_daily_calories * recommended_daily_macros["fat"] / 9 - target_date_consumed_macros["fat_g"]), 0)
+
+
+        # given user mood and motivation level, multiply (or divide) the target intake by a factor
+        # -2 = lower targets (multiply by 0.7-0.9)
+        # 0 = keep the same 
+        # 2 = higher targets (multiply by 1.1-1.3)
+        
+        user_mood = 0 # TODO: this once user mood is finally implemented
+        mood_multipliers = {
+            -2: 0.7, 
+            -1: 0.9, 
+            0: 1, 
+            1: 1.1, 
+            2: 1.3, 
+        }
+
+        # calories intentionally left out because macro per calorie ratio multiplier would be squared, can be too lenient
+        max_carbs_g = int(max_carbs_g / mood_multipliers[user_mood])
+        min_protein_g = int(min_protein_g * mood_multipliers[user_mood])
+        max_fat_g = int(max_fat_g / mood_multipliers[user_mood])
+
 
 
         # 3)
