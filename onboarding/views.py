@@ -1237,31 +1237,6 @@ class UserMoodView(generics.CreateAPIView):
 
         user_mood_queryset = user_mood_queryset.filter(user=target_user)
 
-        '''
-        if request.query_params.get("mood_level") in user_mood_queryset and request.query_params.get("datetime_recorded") in user_mood_queryset:
-            mood_id = user_mood_queryset.latest() #may need'id' in latest
-            mood_level = user_mood_queryset.filter(id=mood_id).get("mood_level")
-            datetime_recorded = user_mood_queryset.filter(id=mood_id).get("datetime_recorded")
-        
-        else:
-
-            if request.query_params.get("mood_level"):
-                try:
-                    mood_level = user_mood_queryset["mood_level"]
-                except TypeError:
-                    return api_error("Mood level must be an integer between -2 and 2")
-            else:
-                mood_level = 0
-
-            if request.query_params.get("datetime_recorded"):
-                try:
-                    datetime_recorded = user_mood_queryset["datetime_recorded"]
-                except TypeError:
-                    return api_error("Datetime is in the incorrect format")
-            else:
-                datetime_recorded = "1970-01-01 00:00:00"
-        '''
-
         if user_mood_queryset.order_by("datetime_recorded").__len__() > 0:
             latest_user_mood = user_mood_queryset.order_by("-datetime_recorded")[0]
         else:
