@@ -18,5 +18,12 @@ urlpatterns = [
     path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("create-consumable/", views.ConsumableView().as_view(), name="create-consumable"),
     path("log-consumable/", views.LogConsumableView().as_view(), name="log-consumable"),
+    path("routines/", views.RoutineListCreateView.as_view(), name="routines"),
+    path("routines/<int:pk>/", views.RoutineDetailView.as_view(), name="routine-detail"),
+    path("routines/<int:pk>/update/", views.RoutineUpdateView.as_view(), name="routine-update"),
+    path("routines/<int:pk>/delete/", views.RoutineDeleteView.as_view(), name="routine-delete"),
+    path("routine-exercises/", views.RoutineExerciseListCreateView.as_view(), name="routine-exercise-list"),
+    path("routine-exercises/<int:pk>/", views.RoutineExerciseDetailView.as_view(), name="routine-exercise-detail"),
+    path("user-mood/", views.UserMoodView().as_view(), name="user-mood"),
     path("recommend-consumable/", views.RecommendConsumableView().as_view(), name="recommend-consumable"),
 ]
