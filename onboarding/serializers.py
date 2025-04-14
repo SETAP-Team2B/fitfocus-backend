@@ -77,3 +77,9 @@ class RoutineUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Routine
         fields = ['name', 'description']
+
+
+class UserMoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserMood
+        fields = '__all__'

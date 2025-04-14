@@ -159,3 +159,8 @@ class RoutineExercise(models.Model):
 
     def __str__(self):
         return f"{self.exercise.ex_name} in {self.routine.name} (Order: {self.order})"
+
+class UserMood(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mood_level = models.SmallIntegerField(default=0)
+    datetime_recorded = models.DateTimeField(default=timezone.now)
