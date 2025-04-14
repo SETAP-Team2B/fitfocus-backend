@@ -159,3 +159,14 @@ class RoutineExercise(models.Model):
 
     def __str__(self):
         return f"{self.exercise.ex_name} in {self.routine.name} (Order: {self.order})"
+
+class LoggedRoutine(models.Model):
+    routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name='logged_routines')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    completed_at = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+    duration = models.DurationField(null=True, blank=True)
+    progress = models.JSONField(default=dict)
+
+    def __str__(self):
+        return f"{self.user.username} completed {self.routine.name} on {self.completed_at}"
