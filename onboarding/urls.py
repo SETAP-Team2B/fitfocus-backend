@@ -27,4 +27,5 @@ urlpatterns = [
     path("routine-exercises/<int:pk>/", views.RoutineExerciseDetailView.as_view(), name="routine-exercise-detail"),
     path('log-routine/', views.LogRoutineView.as_view(), name='log-routine'),
     path("user-mood/", views.UserMoodView().as_view(), name="user-mood"),
+    path("recommend-consumable/", views.RecommendConsumableView().as_view(), name="recommend-consumable"),
 ]

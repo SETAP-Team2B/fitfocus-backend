@@ -42,6 +42,10 @@ from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
 
+import requests
+import utils.api_secrets as api_secrets
+import datetime
+
 
 # ensures all required attributes are in the request
 # reusable to all get/post functions
@@ -1096,6 +1100,79 @@ class LogConsumableView(generics.CreateAPIView):
         if request.query_params.get("date_logged"):
             logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
 
+
+        serialized_consumables = []
+        for consum in logged_consumable_queryset:
+            serialized_model = dict()
+
+            # goes through every object in the recommended exercise object
+            # if it needs formatting/displaying in the serialized_model, format then add
+            # excludes all null values
+            for key, value in model_to_dict(consum).items():
+                if value != None and value != []:
+                    match(key):
+                        case "id": pass
+                        case "user": pass # don't need the username as that gets sent into the request anyways
+                        case _:
+                            serialized_model[key] = value
+
+            serialized_consumables.append(serialized_model)
+
+        return JsonResponse(serialized_consumables, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        keys = [
+            "consumable",
+            "amount_logged",
+            "date_logged",
+            "calories_logged"
+        ]
+
+        for key in keys:
+            if key not in list(request.data.keys()):
+                return api_error(f"One or more API fields were not included in the request.")
+            else:
+                if request.data[key] == "" or request.data[key] == None:
+                    return api_error(f"One or more required fields are empty.")
+
+        target_user = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        try:
+            amount_logged = request.data.get("amount_logged") or 1
+
+            new_consumable = False
+            try:
+                target_consumable = Consumable.objects.get(name=request.data["consumable"])
+            except Consumable.DoesNotExist:
+                new_consumable = True
+                target_consumable = Consumable(
+                    name=request.data["consumable"],
+                    sample_units=request.data.get("sample_units") or "serving"
+                )
+            if new_consumable:
+                target_consumable.sample_size = amount_logged
+                target_consumable.sample_calories = int(request.data["calories_logged"]) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
+                target_consumable.sample_macros = request.data.get("macros_logged")
+
+                target_consumable.save()
+
+
+            logged_consumable = LoggedConsumable(
+                user=target_user,
+                consumable=target_consumable, # index at 0 because get_or_create returns a tuple
+                amount_logged=amount_logged if not new_consumable else 1, # return 1 serving of the newly created consumable when logged
+                date_logged=request.data["date_logged"],
+                calories_logged=request.data["calories_logged"],
+            )
+            if request.data.get("macros_logged"): logged_consumable.macros_logged = request.data["macros_logged"]
+
+            logged_consumable.save()
+
+            return api_success("Consumable logged!")
+        except Exception as e:
+            return api_error(e.__str__())
+
 class RoutineListCreateView(generics.ListCreateAPIView):
     #Handles listing all routines and creating a new one.
     serializer_class = RoutineSerializer
@@ -1228,79 +1305,6 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-
-        serialized_consumables = []
-        for consum in logged_consumable_queryset:
-            serialized_model = dict()
-
-            # goes through every object in the recommended exercise object
-            # if it needs formatting/displaying in the serialized_model, format then add
-            # excludes all null values
-            for key, value in model_to_dict(consum).items():
-                if value != None and value != []:
-                    match(key):
-                        case "id": pass
-                        case "user": pass # don't need the username as that gets sent into the request anyways
-                        case _:
-                            serialized_model[key] = value
-
-            serialized_consumables.append(serialized_model)
-
-        return JsonResponse(serialized_consumables, safe=False)
-
-    def post(self, request, *args, **kwargs):
-        keys = [
-            "consumable",
-            "amount_logged",
-            "date_logged",
-            "calories_logged"
-        ]
-
-        for key in keys:
-            if key not in list(request.data.keys()):
-                return api_error(f"One or more API fields were not included in the request.")
-            else:
-                if request.data[key] == "" or request.data[key] == None:
-                    return api_error(f"One or more required fields are empty.")
-
-        target_user = get_user_by_email_username(request)
-        if type(target_user) == Response: return target_user
-
-        try:
-            amount_logged = request.data.get("amount_logged") or 1
-
-            new_consumable = False
-            try:
-                target_consumable = Consumable.objects.get(name=request.data["consumable"])
-            except Consumable.DoesNotExist:
-                new_consumable = True
-                target_consumable = Consumable(
-                    name=request.data["consumable"],
-                    sample_units=request.data.get("sample_units") or "serving"
-                )
-            if new_consumable:
-                target_consumable.sample_size = amount_logged
-                target_consumable.sample_calories = int(request.data["calories_logged"]) # because the user will log an amount, set "1 serving" equal to the total calories / amount logged
-                target_consumable.sample_macros = request.data.get("macros_logged")
-
-                target_consumable.save()
-
-
-            logged_consumable = LoggedConsumable(
-                user=target_user,
-                consumable=target_consumable, # index at 0 because get_or_create returns a tuple
-                amount_logged=amount_logged if not new_consumable else 1, # return 1 serving of the newly created consumable when logged
-                date_logged=request.data["date_logged"],
-                calories_logged=request.data["calories_logged"],
-            )
-            if request.data.get("macros_logged"): logged_consumable.macros_logged = request.data["macros_logged"]
-
-            logged_consumable.save()
-
-            return api_success("Consumable logged!")
-        except Exception as e:
-            return api_error(e.__str__())
-
 class UserDataCreateView(generics.CreateAPIView):
     serializer_class = UserDataSerializer
 
@@ -1312,13 +1316,23 @@ class UserDataCreateView(generics.CreateAPIView):
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
-        userData = UserData(user=target_user)
+        user_data = UserData(user=target_user)
+        try:
+            user_data = UserData.objects.get(user=target_user)
+        except UserData.DoesNotExist:
+            user_data = UserData(user=target_user)
+        except UserData.MultipleObjectsReturned:
+            # delete all instances except the latest record
+            latest = UserData.objects.filter(user=target_user).order_by("-id")[0]
+            UserData.objects.filter(user=target_user).delete()
+
+            latest.save()
 
 
         if request.data.get("user_age"):
             try:
-                userData.user_age = int(request.data["user_age"])
-                if userData.user_age < 1: raise TypeError
+                user_data.user_age = int(request.data["user_age"])
+                if user_data.user_age < 1: raise TypeError
             except TypeError:
                 return api_error("Age can only be a whole number >= 1")
         else:
@@ -1328,12 +1342,12 @@ class UserDataCreateView(generics.CreateAPIView):
             if request.data["user_sex"] not in ["M", "F", "X"]:
                 return api_error("User sex must be M, F, X or empty.")
             else:
-                userData.user_sex = request.data["user_sex"]
+                user_data.user_sex = request.data["user_sex"]
 
         if request.data.get("user_height"):
             try:
-                userData.user_height = float(request.data["user_height"])
-                if userData.user_height <= 0.0: raise TypeError
+                user_data.user_height = float(request.data["user_height"])
+                if user_data.user_height <= 0.0: raise TypeError
             except TypeError:
                 return api_error("Height must be a positive number.")
         else:
@@ -1343,14 +1357,14 @@ class UserDataCreateView(generics.CreateAPIView):
             if request.data["user_height_units"] not in ["in", "cm"]:
                 return api_error("Height units must be: \"in\" OR \"cm\".")
             else:
-                userData.user_height_units = request.data["user_height_units"]
+                user_data.user_height_units = request.data["user_height_units"]
         else:
             return api_error("No height units were provided.")
 
         if request.data.get("user_weight"):
             try:
-                userData.user_weight = float(request.data["user_weight"])
-                if userData.user_weight <= 0.0: raise TypeError
+                user_data.user_weight = float(request.data["user_weight"])
+                if user_data.user_weight <= 0.0: raise TypeError
             except TypeError:
                 return api_error("Weight must be positive.")
 
@@ -1358,14 +1372,14 @@ class UserDataCreateView(generics.CreateAPIView):
                 if request.data["user_weight_units"] not in ["lb", "kg"]:
                     return api_error("Weight units must be: \"lb\" OR \"kg\".")
                 else:
-                    userData.user_weight_units = request.data["user_weight_units"]
+                    user_data.user_weight_units = request.data["user_weight_units"]
             else:
                 return api_error("Weight units must be provided for a weight.")
 
         if request.data.get("user_target_weight"):
             try:
-                userData.user_target_weight = float(request.data["user_target_weight"])
-                if userData.user_target_weight <= 0.0: raise ValueError
+                user_data.user_target_weight = float(request.data["user_target_weight"])
+                if user_data.user_target_weight <= 0.0: raise ValueError
             except ValueError:
                 return api_error("Target weight must be a positive number.")
 
@@ -1373,10 +1387,10 @@ class UserDataCreateView(generics.CreateAPIView):
             if not isinstance(request.data["user_body_goals"], list):
                 return api_error("Body goals must be given as a list.")
             else:
-                userData.user_body_goals = request.data["user_body_goals"]
-        userData.save()
+                user_data.user_body_goals = request.data["user_body_goals"]
+        user_data.save()
 
-        return JsonResponse(model_to_dict(userData), safe=False)
+        return JsonResponse(model_to_dict(user_data), safe=False)
 
 
 
@@ -1567,3 +1581,309 @@ class LogRoutineView(APIView):
 class ExerciseDetailView(RetrieveAPIView):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
+    
+class RecommendConsumableView(generics.CreateAPIView):
+    serializer_class = ConsumableSerializer
+
+    # TODO: be called if the size of the consumable database is 100 objects or less? to be decided
+    def fill_consumable_dataset(self):
+        with open("utils/food_data/food.json") as f:
+            food_file_content: list[dict] = json.loads(f.read())
+
+            print("loaded json file")
+            
+            progress_counter = 0
+            progress_cap = len(food_file_content)
+
+            for food in food_file_content:
+                food_name: str = food["name"]
+
+                # find a consumable with the given name in the dataset, if not, create a new one
+                file_consumable = Consumable()
+                try:
+                    file_consumable = Consumable.objects.get(name=food_name)
+                except:
+                    file_consumable = Consumable(
+                        name=food_name
+                    )
+
+                # update all the nutrition information
+                file_consumable.sample_size = food["sample_size"]
+                file_consumable.sample_units = food["sample_units"]
+                file_consumable.sample_calories = food["sample_calories"]
+                file_consumable.sample_macros = food["sample_macros"]
+
+                # save the object
+                file_consumable.save()
+
+                # print a progress update every 10%(FOR DEBUGGING ONLY)
+                progress_counter += 1
+                if ((progress_counter - 1) / progress_cap) // 0.1 != (progress_counter / progress_cap) // 0.1:
+                    print(f"file {int((progress_counter / progress_cap) // 0.1 * 10)}% complete")
+
+            print("finished with json file")
+
+        return api_success("dataset filled with foods")
+
+    # not sure whether to make this a GET or POST function, input parameters etc
+    # request includes the following attributes:
+    # email/username - to identify the user
+    # (OPTIONAL) consumables_to_recommend - number of consumables to recommend to the user (default 1)
+    # (OPTIONAL) recommendation_date - date to look at when generating recommendation dataset (default today)
+    def post(self, request):
+        target_user: User | Response = get_user_by_email_username(request)
+        if type(target_user) == Response: return target_user
+
+        date_to_search: datetime.date = datetime.datetime.now().date().strftime("%Y-%m-%d")
+        if request.data.get("date_to_search") != None:
+            date_to_search = request.data["date_to_search"]
+
+        # how the algorithm works:
+        # - macro ratio = ratio between carbohydrates, protein and fat in that order.
+        # ----- example: a 100g cooked chicken breast has 0g carbs, 31g protein, 3.6g fat
+        # ----- this will return a ratio of 0:31:3.6 and will be converted to percentages
+        # ----- so this will return 0:89.6:10.4, which will then get rounded to 0:90:10, (nearest integer)
+        # - 1) looks at the user's goals and consumed foods for the given date (if not present in the HTTP request, assume to be current date)
+        # - 2) will sum up the total calories, carbohydrates, protein and fat, and subtract them from recommended daily intake values. results in an "ideal" intake.
+        # - this "ideal" intake will be multiplied by a decimal value, depending on:
+        # ----- the time of day (to determine the portion size of the meal)
+        # ----- the user's current mood/motivation (lower mood = less strict range of acceptable macro values)
+        # - 3) takes a list of a random 10% sample of the consumables dataset, as well as every unique consumable logged by the user within the last 2 weeks
+        # - 4) uses a 2D euclidean distance minimising algorithm to find the best consumable to recommend
+        # - 5) returns the top X amount of meals with the least distance to this "ideal" intake
+        # - X can be determined in the request input, if not specified, then will be 1.
+
+        # 1)
+
+
+        all_target_goal_types = [
+            "Reducing Body Fat",
+            "Increasing Body Fat",
+            "Building Muscle Mass",
+            "Body Maintenance",
+            "Muscle Toning",
+            "Boosting Metabolism"
+        ]
+        try:
+            target_goals: list[str] = UserData.objects.get(user=target_user).user_body_goals
+        except:
+            target_goals = []
+
+        # add current date's consumed meals
+        target_date_consumed_macros: dict = {
+            "calories": 0,
+            "fat_g": 0,
+            "protein_g": 0,
+            "carbohydrates_g": 0
+        }
+        for logged_consumable in LoggedConsumable.objects.get_queryset():
+            if logged_consumable.user == target_user and logged_consumable.date_logged.strftime("%Y-%m-%d") == date_to_search:
+                for key in target_date_consumed_macros.keys():
+                    if key == "calories": 
+                        target_date_consumed_macros[key] += logged_consumable.calories_logged
+                    else:
+                        if type(logged_consumable.macros_logged) == dict:
+                            if key in logged_consumable.macros_logged.keys():
+                                target_date_consumed_macros[key] += logged_consumable.macros_logged[key]
+
+        # 2)
+        # recommended minimum calories: (Harris-Benedict equation)
+        # - if the user has provided their weight:
+        # ----- if the user is male: 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * age)
+        # ----- else if the user is female: 447.593 + (9.247 * weight_kg) + (3.098 * height_cm) - (4.330 * age)
+        # ----- else (other/don't want to say): take the average of the above 2
+        # - else 2000
+
+        recommended_daily_calories = 2000
+        try:
+            target_user_data = UserData.objects.get(user=target_user)
+
+            if target_user_data.user_weight != None:
+                weight_kg = target_user_data.user_weight if target_user_data.user_weight_units == "kg" else target_user_data.user_weight * 0.454 # converts to kg if weight is in lb
+                height_cm = target_user_data.user_height if target_user_data.user_height_units == "cm" else target_user_data.user_weight * 2.54 # converts to cm if height is in inches 
+
+                male_calories = 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * target_user_data.user_age)
+                female_calories = 447.593 + (9.247 * weight_kg) + (3.098 * height_cm) - (4.330 * target_user_data.user_age)
+
+                if target_user_data.user_sex[0] == "M":
+                    recommended_daily_calories = int(male_calories)
+                elif target_user_data.user_sex[0] == "F":
+                    recommended_daily_calories = int(female_calories)
+                else:
+                    recommended_daily_calories = int((male_calories + female_calories) / 2)
+
+        except:
+            # if there is no user data, assume daily calories to be 2000
+            pass
+
+        # recommended daily macronutrients: (very heavily depends on user goals)
+        # based on a normal diet, these are the proportion of CALORIES made up of nutrients
+        recommended_daily_macros = {
+            "carbs": 0.55, # where 1g carbs = 4 calories
+            "protein": 0.25, # where 1g protein = 4 calories
+            "fat": 0.2 # where 1g fat = 9 calories
+        }
+
+        for goal in target_goals:
+            if goal in all_target_goal_types:
+                match (goal):
+                    case "Reducing Body Fat":
+                        recommended_daily_macros["carbs"] -= 0.1
+                        recommended_daily_macros["fat"] -= 0.05
+                    case "Increasing Body Fat":
+                        recommended_daily_macros["carbs"] += 0.1
+                        recommended_daily_macros["fat"] += 0.05
+                    case "Building Muscle Mass":
+                        recommended_daily_macros["protein"] += 0.1
+                        pass
+                    case "Body Maintenance":
+                        recommended_daily_macros["protein"] += 0.1
+                        pass
+                    case "Muscle Toning" | "Boosting Metabolism":
+                        recommended_daily_macros["carbs"] -= 0.2
+                        recommended_daily_macros["protein"] += 0.1
+                        recommended_daily_macros["fat"] -= 0.1
+                        pass
+
+        recommended_daily_macros["carbs"] = max(0.2, recommended_daily_macros["carbs"]) # 0-carb diets may not be healthy, so keep this at a minimum of 20% caloric intake
+        recommended_daily_macros["protein"] = max(0.1, recommended_daily_macros["protein"]) # always try and consume SOME protein
+        recommended_daily_macros["fat"] = max(0, recommended_daily_macros["fat"]) # while fat is necessary, cutting all fat has a lot of upsides, and no 0-carb diet can make up for that
+        
+        # subtract consumed macros from recommended daily amounts to get MAXIMUM recommended intake for the meal
+        # caps at 0 if the consumed amount is more than the recommended daily amount
+        max_calories = max(int(recommended_daily_calories - target_date_consumed_macros["calories"]), 0)
+        max_carbs_g = max(int(recommended_daily_calories * recommended_daily_macros["carbs"] / 4 - target_date_consumed_macros["carbohydrates_g"]), 0)
+        min_protein_g = max(int(recommended_daily_calories * recommended_daily_macros["protein"] / 4 - target_date_consumed_macros["protein_g"]), 0)
+        max_fat_g = max(int(recommended_daily_calories * recommended_daily_macros["fat"] / 9 - target_date_consumed_macros["fat_g"]), 0)
+
+
+        # given user mood and motivation level, multiply (or divide) the target intake by a factor
+        # -2 = lower targets (multiply by 0.7-0.9)
+        # 0 = keep the same 
+        # 2 = higher targets (multiply by 1.1-1.3)
+
+        user_mood = UserMoodView().get(request).data["mood_level"]
+        mood_multipliers = {
+            -2: 0.7, 
+            -1: 0.9, 
+            0: 1, 
+            1: 1.1, 
+            2: 1.3, 
+        }
+
+        # calories intentionally left out because macro per calorie ratio multiplier would be squared, can be too lenient
+        max_carbs_g = int(max_carbs_g / mood_multipliers[user_mood])
+        min_protein_g = int(min_protein_g * mood_multipliers[user_mood])
+        max_fat_g = int(max_fat_g / mood_multipliers[user_mood])
+
+
+        # try and estimate how many remaining meals to take, assuming 1 meal falls in the range of 400-600 calories (inclusive)
+        # assumes a max of 3 meals per day
+        if max_calories > 600:
+            remaining_meals = 1
+            while max_calories / remaining_meals > 600 and remaining_meals < 3:
+                remaining_meals += 1
+
+        max_calories = int(max_calories / remaining_meals)
+        max_carbs_g = int(max_carbs_g / remaining_meals)
+        min_protein_g = int(min_protein_g / remaining_meals)
+        max_fat_g = int(max_fat_g / remaining_meals)
+
+
+        print({
+            "max_calories": max_calories,
+            "max_carbs_g": max_carbs_g,
+            "min_protein_g": min_protein_g,
+            "max_fat_g": max_fat_g,
+        })
+
+
+        # 3)
+        if Consumable.objects.count() < 100:
+            self.fill_consumable_dataset()
+
+        recommendation_meal_set: set[Consumable] = set()
+        consumable_limit = Consumable.objects.count() // 10
+        # because random.sample doesn't work, use this instead
+        # every meal in the Consumable table has a 10% chance of being added
+        # stops once 10% limit has been hit
+        for meal in Consumable.objects.all():
+            if randint(1, 10) == 1:
+                recommendation_meal_set.add(meal)
+                if len(recommendation_meal_set) == consumable_limit:
+                    break
+
+        for meal in LoggedConsumable.objects.filter(user=target_user).filter(date_logged__gte=timezone.datetime.strftime(timezone.now().__add__(timedelta(weeks=2)), "%Y-%m-%d")):
+            recommendation_meal_set.add(meal.consumable)
+
+        # cannot be subscripted, so convert set back to a list
+        recommendation_meal_set = list(recommendation_meal_set)
+
+        # 4)
+        # HIGHER SCORE IS WORSE
+        recommendation_dict: dict[str, float] = {}
+        for meal in recommendation_meal_set:
+            calorie_diff = (meal.sample_calories / max_calories) ** 2
+            recommendation_dict[meal.name] = calorie_diff 
+
+
+            if meal.sample_macros != None:
+                if type(meal.sample_macros) == dict:
+                    # TODO: TWEAK THESE THREE TO REDUCE SCORE FOR MULTIPLIER_VALUE BETWEEN 0.5-1.0
+                    # TODO: TWEAK THESE TO INCREASE SCORE OUTSIDE OF THIS RANGE
+
+                    if "protein_g" in meal.sample_macros:
+                        if min_protein_g > 0.0:
+                            multiplier_value = meal.sample_macros["protein_g"] / min_protein_g
+                            if multiplier_value < 1.0:
+                                if multiplier_value == 0:
+                                    multiplier_value = 10000 # absurdly high but gets the point across
+                                else:
+                                    multiplier_value = 1 / multiplier_value
+
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                            
+
+                    if "carbohydrates_g" in meal.sample_macros:
+                        if max_carbs_g > 0.0:
+                            multiplier_value = meal.sample_macros["carbohydrates_g"] - max_carbs_g
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                        
+
+                    if "fat_g" in meal.sample_macros:
+                        if max_fat_g > 0.0:
+                            multiplier_value = meal.sample_macros["fat_g"] - max_fat_g
+                            recommendation_dict[meal.name] += multiplier_value ** 2
+                        else:
+                            recommendation_dict[meal.name] += 4
+                    else:
+                        recommendation_dict[meal.name] += 1
+
+
+                else:
+                    recommendation_dict[meal.name] += 3
+            else:
+                # if no value for the 3 macros can be found, assume all to be 1, and add them on
+                recommendation_dict[meal.name] += 3
+
+        # 5)
+        sorted_recommendation_dict = dict(sorted(recommendation_dict.items(), key=lambda item: item[1]))
+        consumables_to_recommend = min(len(sorted_recommendation_dict), request.data.get("consumables_to_recommend", 1))
+
+        final_recommendations = []
+        for name in [*sorted_recommendation_dict]:
+            if random.randint(1, 10) <= 8: # 80% chance of being added
+                final_recommendations.append(
+                    model_to_dict(
+                        Consumable.objects.get(name=name),
+                        exclude="logged_user"
+                    )
+                )
+                if len(final_recommendations) == consumables_to_recommend:
+                    break
+
+        return JsonResponse(final_recommendations, safe=False)

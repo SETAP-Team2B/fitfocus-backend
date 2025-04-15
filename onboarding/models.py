@@ -117,8 +117,8 @@ class UserData(models.Model):
     user_weight = models.FloatField(null=True)
     user_weight_units = models.CharField(max_length=2, choices=[('lb', 'Pounds'), ('kg', 'Kilograms')], null=True)
     user_target_weight = models.FloatField(null=True)
-    user_body_goals = models.TextField(null=True)
-
+    user_body_goals = models.JSONField(null=True)
+    
     def __str__(self):
         return f"User Data for {self.user.username}"
 
@@ -127,7 +127,7 @@ class UserData(models.Model):
 class Consumable(models.Model):
     global macro_keys, positive_validator, validate_macros
 
-    name = models.CharField(max_length=50, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
+    name = models.CharField(max_length=150, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
     sample_size = models.FloatField(validators=[positive_validator])
     sample_units = models.CharField(max_length=20, default="serving")
     sample_calories = models.PositiveIntegerField()
