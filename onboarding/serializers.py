@@ -78,6 +78,14 @@ class RoutineUpdateSerializer(serializers.ModelSerializer):
         model = Routine
         fields = ['name', 'description']
 
+class LoggedRoutineSerializer(serializers.ModelSerializer):
+    routine_name = serializers.CharField(source='routine.name', read_only=True)
+    user_name = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = LoggedRoutine
+        fields = ['id', 'routine', 'user', 'completed_at', 'notes', 'duration', 'progress', 'routine_name', 'user_name']
+        extra_kwargs = {'user': {'read_only': True}}
 
 class UserMoodSerializer(serializers.ModelSerializer):
     class Meta:

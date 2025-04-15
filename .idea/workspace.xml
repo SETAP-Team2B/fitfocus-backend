@@ -4,9 +4,114 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3c0d7c8-8488-433b-bec2-3d75f5955b75" name="Changes" comment="">
+    <list default="true" id="e3c0d7c8-8488-433b-bec2-3d75f5955b75" name="Changes" comment="Add LogRoutineView to handle logging, retrieving, and deleting logged routines&#10;Add ExerciseDetailView to get exercise by ID&#10;Edited ExerciseView to support GET pagination and filter improvements:&#10;&#10;- Switched GET request filters from body to query parameters for flexibility.&#10;- Implemented pagination using 'limit' and 'offset' query parameters.&#10;- Updated exercise retrieval logic to support case-insensitive name search.&#10;- Fixed bug in filtering mechanism to allow valid filters only.">
+      <change afterPath="$PROJECT_DIR$/onboarding/migrations/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Fitfocus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fitfocus.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/validator.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/validator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/admin/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/admin/migrations/0002_logentry_remove_auto_add.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/admin/migrations/0003_logentry_add_action_flag_choices.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0002_alter_permission_name_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0003_alter_user_email_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0004_alter_user_username_opts.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0005_alter_user_last_login_null.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0006_require_contenttypes_0002.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0008_alter_user_username_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0009_alter_user_last_name_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0010_alter_group_name_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0011_update_proxy_permissions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/auth/migrations/0012_alter_user_first_name_max_length.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/contenttypes/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/contenttypes/migrations/0002_remove_content_type_name.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/flatpages/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/redirects/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/redirects/migrations/0002_alter_redirect_new_path_help_text.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/sessions/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/sites/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/contrib/sites/migrations/0002_alter_domain_unique.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/autodetector.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/exceptions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/executor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/graph.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/loader.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/migration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/operations/base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/operations/fields.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/operations/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/operations/special.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/optimizer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/questioner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/recorder.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/serializer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/state.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/django/db/migrations/writer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework/authtoken/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework/authtoken/migrations/0002_auto_20160226_1747.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework/authtoken/migrations/0003_tokenproxy.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework/authtoken/migrations/0004_alter_tokenproxy_options.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0002_outstandingtoken_jti_hex.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0003_auto_20171017_2007.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0004_auto_20171017_2013.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0005_remove_outstandingtoken_jti.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0006_auto_20171017_2113.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0007_auto_20171017_2214.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0008_migrate_to_bigautofield.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0010_fix_migrate_to_bigautofield.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0011_linearizes_history.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/Lib/site-packages/rest_framework_simplejwt/token_blacklist/migrations/0012_alter_outstandingtoken_user.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0002_rename_user_id_otp_user_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0003_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0004_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0005_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0006_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0006_otp_verified_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0007_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0008_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0009_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0010_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0011_merge_20250220_1631.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0012_exercise_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0013_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0014_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0015_alter_exercise_ex_body_area_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0016_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0017_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0018_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0019_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0020_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0021_remove_exercise_equiptment_needed_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0022_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0023_alter_exercise_ex_secondary_muscle_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0024_exercise_ex_id_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0025_remove_exercise_ex_id_alter_exercise_ex_body_area_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0026_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0027_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0028_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0029_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0030_alter_otp_expiry_time.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0030_alter_otp_expiry_time_loggedexercise.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0031_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0032_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0033_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0034_alter_loggedexercise_date_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0035_alter_loggedexercise_date_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0036_alter_loggedexercise_date_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0037_alter_loggedexercise_date_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0038_alter_loggedexercise_distance_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0039_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0040_merge_20250228_2125.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0041_rename_ex_secondary_muscle_exercise_ex_secondary_muscle_1_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0042_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0043_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0044_alter_loggedexercise_date_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0045_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/onboarding/migrations/0046_alter_loggedexercise_time_logged_and_more.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +126,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="routine-merge-backup" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -33,15 +143,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "preferences.startup.tasks"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;routine-merge&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.startup.tasks&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="validator" type="PythonConfigurationType" factoryName="Python" singleton="false" nameIsGenerated="true">
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -77,6 +189,71 @@
       <option name="presentableId" value="Default" />
       <updated>1740007707699</updated>
     </task>
+    <task id="LOCAL-00001" summary="commit before merge">
+      <option name="closed" value="true" />
+      <created>1744018655194</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744018655194</updated>
+    </task>
+    <task id="LOCAL-00002" summary="commit before merge">
+      <option name="closed" value="true" />
+      <created>1744018666019</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1744018666019</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Merge conflicts resolved">
+      <option name="closed" value="true" />
+      <created>1744020384274</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1744020384274</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Logged routine migration">
+      <option name="closed" value="true" />
+      <created>1744660063075</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744660063075</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add LoggedRoutine model for tracking completed routines">
+      <option name="closed" value="true" />
+      <created>1744660257422</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1744660257422</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add LoggedRoutineSerializer with routine and user name fields">
+      <option name="closed" value="true" />
+      <created>1744660337150</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1744660337150</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Add urls for logging routine and GET exercise by ID">
+      <option name="closed" value="true" />
+      <created>1744660378665</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1744660378665</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add LogRoutineView to handle logging, retrieving, and deleting logged routines&#10;Add ExerciseDetailView to get exercise by ID&#10;Edited ExerciseView to support GET pagination and filter improvements:&#10;&#10;- Switched GET request filters from body to query parameters for flexibility.&#10;- Implemented pagination using 'limit' and 'offset' query parameters.&#10;- Updated exercise retrieval logic to support case-insensitive name search.&#10;- Fixed bug in filtering mechanism to allow valid filters only.">
+      <option name="closed" value="true" />
+      <created>1744660986378</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1744660986379</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,5 +266,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit before merge" />
+    <MESSAGE value="Merge conflicts resolved" />
+    <MESSAGE value="Logged routine migration" />
+    <MESSAGE value="Add LoggedRoutine model for tracking completed routines" />
+    <MESSAGE value="Add LoggedRoutineSerializer with routine and user name fields" />
+    <MESSAGE value="Add urls for logging routine and GET exercise by ID" />
+    <MESSAGE value="Add LogRoutineView to handle logging, retrieving, and deleting logged routines&#10;Add ExerciseDetailView to get exercise by ID&#10;Edited ExerciseView to support GET pagination and filter improvements:&#10;&#10;- Switched GET request filters from body to query parameters for flexibility.&#10;- Implemented pagination using 'limit' and 'offset' query parameters.&#10;- Updated exercise retrieval logic to support case-insensitive name search.&#10;- Fixed bug in filtering mechanism to allow valid filters only." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add LogRoutineView to handle logging, retrieving, and deleting logged routines&#10;Add ExerciseDetailView to get exercise by ID&#10;Edited ExerciseView to support GET pagination and filter improvements:&#10;&#10;- Switched GET request filters from body to query parameters for flexibility.&#10;- Implemented pagination using 'limit' and 'offset' query parameters.&#10;- Updated exercise retrieval logic to support case-insensitive name search.&#10;- Fixed bug in filtering mechanism to allow valid filters only." />
   </component>
 </project>
