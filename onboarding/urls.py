@@ -11,6 +11,7 @@ urlpatterns = [
     path("validate-otp/", views.ValidateOTPView().as_view(), name="validate-otp"),
     path("reset-password/", views.ResetPasswordView().as_view(), name="reset-password"),
     path("create-exercise/", views.ExerciseView().as_view(), name="create-exercise"),
+    path('create-exercise/<int:pk>/', views.ExerciseDetailView.as_view(), name ="get-exercise-by-ID"),
     path("log-exercise/", views.LogExerciseView().as_view(), name="log-exercise"),
     path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("recommend-exercise/", views.RecommendExerciseView.as_view(), name="recommend-exercise"),
@@ -24,6 +25,7 @@ urlpatterns = [
     path("routines/<int:pk>/delete/", views.RoutineDeleteView.as_view(), name="routine-delete"),
     path("routine-exercises/", views.RoutineExerciseListCreateView.as_view(), name="routine-exercise-list"),
     path("routine-exercises/<int:pk>/", views.RoutineExerciseDetailView.as_view(), name="routine-exercise-detail"),
+    path('log-routine/', views.LogRoutineView.as_view(), name='log-routine'),
     path("user-mood/", views.UserMoodView().as_view(), name="user-mood"),
     path("recommend-consumable/", views.RecommendConsumableView().as_view(), name="recommend-consumable"),
 ]
