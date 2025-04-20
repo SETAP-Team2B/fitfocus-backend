@@ -1750,11 +1750,12 @@ class RecommendConsumableView(generics.CreateAPIView):
         recommended_daily_macros["fat"] = max(0, recommended_daily_macros["fat"]) # while fat is necessary, cutting all fat has a lot of upsides, and no 0-carb diet can make up for that
         
         # subtract consumed macros from recommended daily amounts to get MAXIMUM recommended intake for the meal
-        # caps at 0 if the consumed amount is more than the recommended daily amount
-        max_calories = max(int(recommended_daily_calories - target_date_consumed_macros["calories"]), 0)
-        max_carbs_g = max(int(recommended_daily_calories * recommended_daily_macros["carbs"] / 4 - target_date_consumed_macros["carbohydrates_g"]), 0)
-        min_protein_g = max(int(recommended_daily_calories * recommended_daily_macros["protein"] / 4 - target_date_consumed_macros["protein_g"]), 0)
-        max_fat_g = max(int(recommended_daily_calories * recommended_daily_macros["fat"] / 9 - target_date_consumed_macros["fat_g"]), 0)
+        # caps at 1* if the consumed amount is more than the recommended daily amount
+        # * was goign to be 0, but division by 0 can occur later on so set to 1 for prevention
+        max_calories = max(int(recommended_daily_calories - target_date_consumed_macros["calories"]), 1)
+        max_carbs_g = max(int(recommended_daily_calories * recommended_daily_macros["carbs"] / 4 - target_date_consumed_macros["carbohydrates_g"]), 1)
+        min_protein_g = max(int(recommended_daily_calories * recommended_daily_macros["protein"] / 4 - target_date_consumed_macros["protein_g"]), 1)
+        max_fat_g = max(int(recommended_daily_calories * recommended_daily_macros["fat"] / 9 - target_date_consumed_macros["fat_g"]), 1)
 
 
         # given user mood and motivation level, multiply (or divide) the target intake by a factor
@@ -1779,8 +1780,8 @@ class RecommendConsumableView(generics.CreateAPIView):
 
         # try and estimate how many remaining meals to take, assuming 1 meal falls in the range of 400-600 calories (inclusive)
         # assumes a max of 3 meals per day
+        remaining_meals = 1
         if max_calories > 600:
-            remaining_meals = 1
             while max_calories / remaining_meals > 600 and remaining_meals < 3:
                 remaining_meals += 1
 
