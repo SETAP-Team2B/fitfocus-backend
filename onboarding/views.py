@@ -212,6 +212,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                         round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
                         if all_duration_mins != [0] \
                         else None
+                    if minutes == None: minutes = 0
                     recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
 
                     # TODO: factor in user mood when it comes to the random multiplier at the end
@@ -653,6 +654,10 @@ class ExerciseView(generics.CreateAPIView):
                     "Trapezius", "Traps", "Triceps", "Upper Back", "Upper Chest", "Wrist Extensors", "Wrist Flexors", "Wrists"]
 
     def post(self, request, *args, **kwargs):
+        # if no exercise objects, generate all from csv file
+        if Exercise.objects.count() == 0:
+            self.ExerciseFile()
+
         exercise: Exercise
         # response if one of the exercise fields are empty
         if 'ex_name' not in request.data or 'ex_type' not in request.data or 'ex_body_area' not in request.data or 'equipment_needed' not in request.data:
@@ -681,7 +686,7 @@ class ExerciseView(generics.CreateAPIView):
             if ex_target_muscle == "none":
                 return api_error("Strength exercises must have at least 1 target muscle")
             if ex_target_muscle not in self.muscle_types or ex_secondary_muscle_1 not in self.muscle_types or ex_secondary_muscle_2 not in self.muscle_types:
-                return api_error("Inavlid Muscle Type")
+                return api_error("Invalid Muscle Type")
 
         # validates exercise type input
         if ex_type not in self.exercise_type:
@@ -689,7 +694,7 @@ class ExerciseView(generics.CreateAPIView):
 
         # validates body area input
         if ex_body_area not in self.body_area_types:
-            return api_error("Inavlid Body Area Type")
+            return api_error("Invalid Body Area Type")
 
         # creates Exercise instance and saves to database
         exercise = Exercise(
@@ -1095,7 +1100,7 @@ class LogConsumableView(generics.CreateAPIView):
 
         target_user = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
-        logged_consumable_queryset.filter(user=target_user)
+        logged_consumable_queryset = logged_consumable_queryset.filter(user=target_user)
 
         if request.query_params.get("date_logged"):
             logged_consumable_queryset = logged_consumable_queryset.filter(date_logged=request.query_params["date_logged"])
@@ -1415,7 +1420,8 @@ class UserMoodView(generics.CreateAPIView):
 
         if request.data.get("datetime_recorded"):
             try:
-                user_mood.datetime_recorded = timedelta(request.data["datetime_recorded"])
+                #user_mood.datetime_recorded = datetime(request.data["datetime_recorded"])
+                user_mood.datetime_recorded = datetime.datetime.strptime(request.data["datetime_recorded"], "%Y-%m-%d %H:%M:%S")
             except TypeError:
                 return api_error("DateTime is in the incorrect format")
         else:
