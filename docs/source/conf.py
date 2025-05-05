@@ -7,8 +7,14 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../../onboarding/"))
-sys.path.insert(0, os.path.abspath("../../utils/"))
+sys.path.insert(0, os.path.abspath("../.."))
+sys.path.insert(0, os.path.abspath("../../utils"))
+sys.path.insert(0, os.path.abspath("../../onboarding"))
+sys.path.insert(0, os.path.abspath("../../onboarding/testing"))
+
+
+# Set the DJANGO_SETTINGS_MODULE
+os.environ['DJANGO_SETTINGS_MODULE'] = 'fitfocus.settings'
 
 
 # -- Project information -----------------------------------------------------
