@@ -18,8 +18,8 @@ from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
-from .models import *
-from .serializers import *
+from onboarding.models import *
+from onboarding.serializers import *
 
 from random import randint
 import smtplib
