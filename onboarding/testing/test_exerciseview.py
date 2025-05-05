@@ -6,7 +6,7 @@ from onboarding.models import Exercise
 
 class ExerciseViewTests(APITestCase):
     def setUp(self):
-        self.url = reverse('create-exercise') n
+        self.url = reverse('create-exercise')
 
     def test_create_exercise_success(self):
         data = {

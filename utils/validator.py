@@ -51,7 +51,7 @@ def check_name(name: str):
 def check_password(password: str):
     """Password checker function for valid strength.
 
-    :param password: _description_
+    :param password: The password to be checked.
     :type password: str
     :raises WeakPasswordError: if the valid strength for a password has not been met.
     :return: returns `password`
