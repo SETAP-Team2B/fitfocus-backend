@@ -1,5 +1,4 @@
 from rest_framework.response import Response
-
 from utils.validator import Status, Messages
 
 
@@ -31,6 +30,13 @@ def check_input(values: dict):
 
 
 def api_success(value):
+    """ A successful API response value.
+
+    :param value: The data to be included in the output.
+    :type value: Any valid JSON data type.
+    :return: Returns a `rest_framework.Response` object containing a "data" attribute, and "status" attribute, always set to 200.
+    :rtype: `rest_framework.Response`
+    """
     return Response(data={"data": value}, status=Status.SUCCESS, )
 
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+import onboarding.views as views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # URL patterns that connect the views to a URL/sub-URL for the domain

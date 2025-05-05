@@ -49,6 +49,14 @@ def check_name(name: str):
 # must contain at least 1 special character (NOT alphanumeric AND NOT an underscore)
 # must not contain any whitespace at all i.e. space, tab, form/line feed
 def check_password(password: str):
+    """Password checker function for valid strength.
+
+    :param password: The password to be checked.
+    :type password: str
+    :raises WeakPasswordError: if the valid strength for a password has not been met.
+    :return: returns `password`
+    :rtype: str
+    """
     if len(password) >= 6 and re.search(r'\d+', password) and re.search(r'[a-z]+', password) \
             and re.search(r'[A-Z]+', password) \
             and re.search(r'\W+', password) \
