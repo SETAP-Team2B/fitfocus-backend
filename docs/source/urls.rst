@@ -1,7 +1,7 @@
-api module
-==========
+urls module
+===========
 
-.. automodule:: utils.api
+.. automodule:: urls
    :members:
    :show-inheritance:
    :undoc-members:

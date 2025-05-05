@@ -1,7 +1,7 @@
-api module
-==========
+views module
+============
 
-.. automodule:: utils.api
+.. automodule:: views
    :members:
    :show-inheritance:
    :undoc-members:
