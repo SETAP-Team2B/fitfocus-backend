@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>testing &mdash; FitFocus 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="views module" href="views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FitFocus
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">onboarding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_createaccountview">test_createaccountview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_email_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_invalid_email()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_missing_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_success"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_weak_password()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_exerciseview">test_exerciseview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.test_create_exercise_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.test_invalid_body_area_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.test_invalid_exercise_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.test_invalid_muscle_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.test_missing_required_fields()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_generateotpview">test_generateotpview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.test_email_sending_failure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.test_generate_otp_success()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_logexerciseview">test_logexerciseview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.test_log_exercise_success"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.test_log_exercise_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.test_missing_date"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.test_missing_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.test_no_exercise_info"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.test_no_exercise_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.test_user_not_found"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.test_user_not_found()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_loginview">test_loginview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_loginview.LoginViewTests"><code class="docutils literal notranslate"><span class="pre">LoginViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_incorrect_password"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_incorrect_password()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_login_success"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_login_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_missing_credentials"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_missing_credentials()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_multiple_users_found"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_multiple_users_found()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_unverified_user"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_unverified_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_loginview.LoginViewTests.test_user_not_found"><code class="docutils literal notranslate"><span class="pre">LoginViewTests.test_user_not_found()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_resetpasswordview">test_resetpasswordview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_otp_not_verified"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests.test_otp_not_verified()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_reset_password_success"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests.test_reset_password_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_setting_current_password"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests.test_setting_current_password()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_weak_password"><code class="docutils literal notranslate"><span class="pre">ResetPasswordViewTests.test_weak_password()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_validateotpview">test_validateotpview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.test_incorrect_otp"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.test_incorrect_otp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.test_no_otp_provided"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.test_no_otp_provided()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.test_otp_already_verified"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.test_otp_already_verified()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.test_otp_expired"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.test_otp_expired()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_validateotpview.ValidateOTPViewTests.test_validate_otp_success"><code class="docutils literal notranslate"><span class="pre">ValidateOTPViewTests.test_validate_otp_success()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FitFocus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">testing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/testing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testing">
+<h1>testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
+<section id="module-testing.test_createaccountview">
+<span id="test-createaccountview-module"></span><h2>test_createaccountview module<a class="headerlink" href="#module-testing.test_createaccountview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_createaccountview.</span></span><span class="sig-name descname"><span class="pre">CreateAccountViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists">
+<span class="sig-name descname"><span class="pre">test_create_account_email_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email">
+<span class="sig-name descname"><span class="pre">test_create_account_invalid_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields">
+<span class="sig-name descname"><span class="pre">test_create_account_missing_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_success">
+<span class="sig-name descname"><span class="pre">test_create_account_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password">
+<span class="sig-name descname"><span class="pre">test_create_account_weak_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_exerciseview">
+<span id="test-exerciseview-module"></span><h2>test_exerciseview module<a class="headerlink" href="#module-testing.test_exerciseview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_exerciseview.</span></span><span class="sig-name descname"><span class="pre">ExerciseViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success">
+<span class="sig-name descname"><span class="pre">test_create_exercise_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type">
+<span class="sig-name descname"><span class="pre">test_invalid_body_area_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type">
+<span class="sig-name descname"><span class="pre">test_invalid_exercise_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type">
+<span class="sig-name descname"><span class="pre">test_invalid_muscle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields">
+<span class="sig-name descname"><span class="pre">test_missing_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_generateotpview">
+<span id="test-generateotpview-module"></span><h2>test_generateotpview module<a class="headerlink" href="#module-testing.test_generateotpview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_generateotpview.</span></span><span class="sig-name descname"><span class="pre">GenerateOTPViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure">
+<span class="sig-name descname"><span class="pre">test_email_sending_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_smtp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success">
+<span class="sig-name descname"><span class="pre">test_generate_otp_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_smtp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_logexerciseview">
+<span id="test-logexerciseview-module"></span><h2>test_logexerciseview module<a class="headerlink" href="#module-testing.test_logexerciseview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_logexerciseview.</span></span><span class="sig-name descname"><span class="pre">LogExerciseViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests.test_log_exercise_success">
+<span class="sig-name descname"><span class="pre">test_log_exercise_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_exercise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests.test_log_exercise_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests.test_missing_date">
+<span class="sig-name descname"><span class="pre">test_missing_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_exercise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests.test_missing_date" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests.test_no_exercise_info">
+<span class="sig-name descname"><span class="pre">test_no_exercise_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_exercise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests.test_no_exercise_info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_logexerciseview.LogExerciseViewTests.test_user_not_found">
+<span class="sig-name descname"><span class="pre">test_user_not_found</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_logexerciseview.LogExerciseViewTests.test_user_not_found" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_loginview">
+<span id="test-loginview-module"></span><h2>test_loginview module<a class="headerlink" href="#module-testing.test_loginview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_loginview.</span></span><span class="sig-name descname"><span class="pre">LoginViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_incorrect_password">
+<span class="sig-name descname"><span class="pre">test_incorrect_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_incorrect_password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_login_success">
+<span class="sig-name descname"><span class="pre">test_login_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_login_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_missing_credentials">
+<span class="sig-name descname"><span class="pre">test_missing_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_missing_credentials" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_multiple_users_found">
+<span class="sig-name descname"><span class="pre">test_multiple_users_found</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_multiple_users_found" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_unverified_user">
+<span class="sig-name descname"><span class="pre">test_unverified_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_unverified_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_loginview.LoginViewTests.test_user_not_found">
+<span class="sig-name descname"><span class="pre">test_user_not_found</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_loginview.LoginViewTests.test_user_not_found" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_resetpasswordview">
+<span id="test-resetpasswordview-module"></span><h2>test_resetpasswordview module<a class="headerlink" href="#module-testing.test_resetpasswordview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_resetpasswordview.</span></span><span class="sig-name descname"><span class="pre">ResetPasswordViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests.test_otp_not_verified">
+<span class="sig-name descname"><span class="pre">test_otp_not_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_otp_not_verified" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests.test_reset_password_success">
+<span class="sig-name descname"><span class="pre">test_reset_password_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_reset_password_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests.test_setting_current_password">
+<span class="sig-name descname"><span class="pre">test_setting_current_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_setting_current_password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_resetpasswordview.ResetPasswordViewTests.test_weak_password">
+<span class="sig-name descname"><span class="pre">test_weak_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_resetpasswordview.ResetPasswordViewTests.test_weak_password" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-testing.test_validateotpview">
+<span id="test-validateotpview-module"></span><h2>test_validateotpview module<a class="headerlink" href="#module-testing.test_validateotpview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_validateotpview.</span></span><span class="sig-name descname"><span class="pre">ValidateOTPViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.test_incorrect_otp">
+<span class="sig-name descname"><span class="pre">test_incorrect_otp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.test_incorrect_otp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.test_no_otp_provided">
+<span class="sig-name descname"><span class="pre">test_no_otp_provided</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.test_no_otp_provided" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.test_otp_already_verified">
+<span class="sig-name descname"><span class="pre">test_otp_already_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.test_otp_already_verified" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.test_otp_expired">
+<span class="sig-name descname"><span class="pre">test_otp_expired</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.test_otp_expired" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_validateotpview.ValidateOTPViewTests.test_validate_otp_success">
+<span class="sig-name descname"><span class="pre">test_validate_otp_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get_user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_validateotpview.ValidateOTPViewTests.test_validate_otp_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="views.html" class="btn btn-neutral float-left" title="views module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SETAP-Team2B(2).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

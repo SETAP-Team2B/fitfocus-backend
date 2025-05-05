@@ -1,0 +1,10 @@
+onboarding.migrations package
+=============================
+
+Module contents
+---------------
+
+.. automodule:: onboarding.migrations
+   :members:
+   :show-inheritance:
+   :undoc-members:

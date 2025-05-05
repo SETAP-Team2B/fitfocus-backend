@@ -1,0 +1,63 @@
+onboarding.testing namespace
+============================
+
+.. py:module:: onboarding.testing
+
+Submodules
+----------
+
+onboarding.testing.test\_createaccountview module
+-------------------------------------------------
+
+.. automodule:: onboarding.testing.test_createaccountview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_exerciseview module
+--------------------------------------------
+
+.. automodule:: onboarding.testing.test_exerciseview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_generateotpview module
+-----------------------------------------------
+
+.. automodule:: onboarding.testing.test_generateotpview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_logexerciseview module
+-----------------------------------------------
+
+.. automodule:: onboarding.testing.test_logexerciseview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_loginview module
+-----------------------------------------
+
+.. automodule:: onboarding.testing.test_loginview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_resetpasswordview module
+-------------------------------------------------
+
+.. automodule:: onboarding.testing.test_resetpasswordview
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+onboarding.testing.test\_validateotpview module
+-----------------------------------------------
+
+.. automodule:: onboarding.testing.test_validateotpview
+   :members:
+   :show-inheritance:
+   :undoc-members:

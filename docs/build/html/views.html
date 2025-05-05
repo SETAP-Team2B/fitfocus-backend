@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>views module &mdash; FitFocus 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="testing" href="testing.html" />
+    <link rel="prev" title="urls module" href="urls.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            FitFocus
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="onboarding.html">onboarding</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serializers.html">serializers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html">urls module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#views.ConsumableView"><code class="docutils literal notranslate"><span class="pre">ConsumableView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.ConsumableView.post"><code class="docutils literal notranslate"><span class="pre">ConsumableView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ConsumableView.serializer_class"><code class="docutils literal notranslate"><span class="pre">ConsumableView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.CreateAccountView"><code class="docutils literal notranslate"><span class="pre">CreateAccountView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.CreateAccountView.delete"><code class="docutils literal notranslate"><span class="pre">CreateAccountView.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.CreateAccountView.post"><code class="docutils literal notranslate"><span class="pre">CreateAccountView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.CreateAccountView.serializer_class"><code class="docutils literal notranslate"><span class="pre">CreateAccountView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.ExerciseDetailView"><code class="docutils literal notranslate"><span class="pre">ExerciseDetailView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseDetailView.queryset"><code class="docutils literal notranslate"><span class="pre">ExerciseDetailView.queryset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseDetailView.serializer_class"><code class="docutils literal notranslate"><span class="pre">ExerciseDetailView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.ExerciseView"><code class="docutils literal notranslate"><span class="pre">ExerciseView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.ExerciseFile"><code class="docutils literal notranslate"><span class="pre">ExerciseView.ExerciseFile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.body_area_types"><code class="docutils literal notranslate"><span class="pre">ExerciseView.body_area_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.exercise_type"><code class="docutils literal notranslate"><span class="pre">ExerciseView.exercise_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.get"><code class="docutils literal notranslate"><span class="pre">ExerciseView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.muscle_types"><code class="docutils literal notranslate"><span class="pre">ExerciseView.muscle_types</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.post"><code class="docutils literal notranslate"><span class="pre">ExerciseView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ExerciseView.serializer_class"><code class="docutils literal notranslate"><span class="pre">ExerciseView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.GenerateOTPView"><code class="docutils literal notranslate"><span class="pre">GenerateOTPView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.GenerateOTPView.post"><code class="docutils literal notranslate"><span class="pre">GenerateOTPView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.GenerateOTPView.serializer_class"><code class="docutils literal notranslate"><span class="pre">GenerateOTPView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.LogConsumableView"><code class="docutils literal notranslate"><span class="pre">LogConsumableView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogConsumableView.get"><code class="docutils literal notranslate"><span class="pre">LogConsumableView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogConsumableView.post"><code class="docutils literal notranslate"><span class="pre">LogConsumableView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogConsumableView.serializer_class"><code class="docutils literal notranslate"><span class="pre">LogConsumableView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.LogExerciseView"><code class="docutils literal notranslate"><span class="pre">LogExerciseView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogExerciseView.get"><code class="docutils literal notranslate"><span class="pre">LogExerciseView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogExerciseView.post"><code class="docutils literal notranslate"><span class="pre">LogExerciseView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogExerciseView.serializer_class"><code class="docutils literal notranslate"><span class="pre">LogExerciseView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.LogRoutineView"><code class="docutils literal notranslate"><span class="pre">LogRoutineView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogRoutineView.delete"><code class="docutils literal notranslate"><span class="pre">LogRoutineView.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogRoutineView.get"><code class="docutils literal notranslate"><span class="pre">LogRoutineView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogRoutineView.permission_classes"><code class="docutils literal notranslate"><span class="pre">LogRoutineView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.LogRoutineView.post"><code class="docutils literal notranslate"><span class="pre">LogRoutineView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.LoginView"><code class="docutils literal notranslate"><span class="pre">LoginView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.LoginView.post"><code class="docutils literal notranslate"><span class="pre">LoginView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RecommendConsumableView"><code class="docutils literal notranslate"><span class="pre">RecommendConsumableView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RecommendConsumableView.fill_consumable_dataset"><code class="docutils literal notranslate"><span class="pre">RecommendConsumableView.fill_consumable_dataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RecommendConsumableView.post"><code class="docutils literal notranslate"><span class="pre">RecommendConsumableView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RecommendConsumableView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RecommendConsumableView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RecommendExerciseView"><code class="docutils literal notranslate"><span class="pre">RecommendExerciseView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RecommendExerciseView.get"><code class="docutils literal notranslate"><span class="pre">RecommendExerciseView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RecommendExerciseView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RecommendExerciseView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.ResetPasswordView"><code class="docutils literal notranslate"><span class="pre">ResetPasswordView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.ResetPasswordView.post"><code class="docutils literal notranslate"><span class="pre">ResetPasswordView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ResetPasswordView.serializer_class"><code class="docutils literal notranslate"><span class="pre">ResetPasswordView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineDeleteView"><code class="docutils literal notranslate"><span class="pre">RoutineDeleteView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDeleteView.delete"><code class="docutils literal notranslate"><span class="pre">RoutineDeleteView.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDeleteView.get_object"><code class="docutils literal notranslate"><span class="pre">RoutineDeleteView.get_object()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDeleteView.permission_classes"><code class="docutils literal notranslate"><span class="pre">RoutineDeleteView.permission_classes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineDetailView"><code class="docutils literal notranslate"><span class="pre">RoutineDetailView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDetailView.get_queryset"><code class="docutils literal notranslate"><span class="pre">RoutineDetailView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDetailView.permission_classes"><code class="docutils literal notranslate"><span class="pre">RoutineDetailView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineDetailView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RoutineDetailView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineExerciseDetailView"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseDetailView.get_queryset"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseDetailView.perform_destroy"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView.perform_destroy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseDetailView.queryset"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView.queryset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseDetailView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView.serializer_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseDetailView.update"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseDetailView.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineExerciseListCreateView"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseListCreateView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseListCreateView.get_queryset"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseListCreateView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseListCreateView.queryset"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseListCreateView.queryset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineExerciseListCreateView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseListCreateView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineListCreateView"><code class="docutils literal notranslate"><span class="pre">RoutineListCreateView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineListCreateView.get_queryset"><code class="docutils literal notranslate"><span class="pre">RoutineListCreateView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineListCreateView.perform_create"><code class="docutils literal notranslate"><span class="pre">RoutineListCreateView.perform_create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineListCreateView.permission_classes"><code class="docutils literal notranslate"><span class="pre">RoutineListCreateView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineListCreateView.serializer_class"><code class="docutils literal notranslate"><span class="pre">RoutineListCreateView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.RoutineUpdateView"><code class="docutils literal notranslate"><span class="pre">RoutineUpdateView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineUpdateView.get_object"><code class="docutils literal notranslate"><span class="pre">RoutineUpdateView.get_object()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineUpdateView.permission_classes"><code class="docutils literal notranslate"><span class="pre">RoutineUpdateView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.RoutineUpdateView.put"><code class="docutils literal notranslate"><span class="pre">RoutineUpdateView.put()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.UpdateRecommendedExerciseView"><code class="docutils literal notranslate"><span class="pre">UpdateRecommendedExerciseView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.UpdateRecommendedExerciseView.post"><code class="docutils literal notranslate"><span class="pre">UpdateRecommendedExerciseView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.UpdateRecommendedExerciseView.serializer_class"><code class="docutils literal notranslate"><span class="pre">UpdateRecommendedExerciseView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.UserDataCreateView"><code class="docutils literal notranslate"><span class="pre">UserDataCreateView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.UserDataCreateView.post"><code class="docutils literal notranslate"><span class="pre">UserDataCreateView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.UserDataCreateView.serializer_class"><code class="docutils literal notranslate"><span class="pre">UserDataCreateView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.UserMoodView"><code class="docutils literal notranslate"><span class="pre">UserMoodView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.UserMoodView.get"><code class="docutils literal notranslate"><span class="pre">UserMoodView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.UserMoodView.post"><code class="docutils literal notranslate"><span class="pre">UserMoodView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.UserMoodView.serializer_class"><code class="docutils literal notranslate"><span class="pre">UserMoodView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.ValidateOTPView"><code class="docutils literal notranslate"><span class="pre">ValidateOTPView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#views.ValidateOTPView.post"><code class="docutils literal notranslate"><span class="pre">ValidateOTPView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#views.ValidateOTPView.serializer_class"><code class="docutils literal notranslate"><span class="pre">ValidateOTPView.serializer_class</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views.check_all_required_keys_present"><code class="docutils literal notranslate"><span class="pre">check_all_required_keys_present()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views.get_exercise_by_name"><code class="docutils literal notranslate"><span class="pre">get_exercise_by_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views.get_tokens_for_user"><code class="docutils literal notranslate"><span class="pre">get_tokens_for_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views.get_user_by_email_username"><code class="docutils literal notranslate"><span class="pre">get_user_by_email_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views.recommend_exercises"><code class="docutils literal notranslate"><span class="pre">recommend_exercises()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">testing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">FitFocus</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="onboarding.html">onboarding</a></li>
+      <li class="breadcrumb-item active">views module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/views.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-views">
+<span id="views-module"></span><h1>views module<a class="headerlink" href="#module-views" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="views.ConsumableView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">ConsumableView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ConsumableView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ConsumableView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ConsumableView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ConsumableView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.ConsumableView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ConsumableSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.CreateAccountView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">CreateAccountView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.CreateAccountView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.CreateAccountView.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.CreateAccountView.delete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.CreateAccountView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.CreateAccountView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.CreateAccountView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.CreateAccountView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">UserSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.ExerciseDetailView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">ExerciseDetailView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ExerciseDetailView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RetrieveAPIView</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseDetailView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(1)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(2)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(3)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(4)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(5)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(6)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(7)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(8)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(9)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(10)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(11)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(12)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(13)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(14)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(15)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(16)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(17)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(18)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(19)&gt;,</span> <span class="pre">&lt;Exercise:</span> <span class="pre">Exercise</span> <span class="pre">object</span> <span class="pre">(20)&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#views.ExerciseDetailView.queryset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseDetailView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.ExerciseDetailView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.ExerciseView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">ExerciseView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ExerciseView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ExerciseView.ExerciseFile">
+<span class="sig-name descname"><span class="pre">ExerciseFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.ExerciseView.ExerciseFile" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseView.body_area_types">
+<span class="sig-name descname"><span class="pre">body_area_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Back',</span> <span class="pre">'Cardio',</span> <span class="pre">'Chest',</span> <span class="pre">'Lower</span> <span class="pre">Arms',</span> <span class="pre">'Lower</span> <span class="pre">Legs',</span> <span class="pre">'Neck',</span> <span class="pre">'Shoulders',</span> <span class="pre">'Upper</span> <span class="pre">Arms',</span> <span class="pre">'Upper</span> <span class="pre">Legs',</span> <span class="pre">'Core',</span> <span class="pre">'Flexibility']</span></em><a class="headerlink" href="#views.ExerciseView.body_area_types" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseView.exercise_type">
+<span class="sig-name descname"><span class="pre">exercise_type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Muscle',</span> <span class="pre">'Cardio',</span> <span class="pre">'Flexibility']</span></em><a class="headerlink" href="#views.ExerciseView.exercise_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ExerciseView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ExerciseView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseView.muscle_types">
+<span class="sig-name descname"><span class="pre">muscle_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Abdominals',</span> <span class="pre">'Abductors',</span> <span class="pre">'Abs',</span> <span class="pre">'Adductors',</span> <span class="pre">'Ankle</span> <span class="pre">Stabilizers',</span> <span class="pre">'Ankles',</span> <span class="pre">'Back',</span> <span class="pre">'Biceps',</span> <span class="pre">'Brachialis',</span> <span class="pre">'Cavles',</span> <span class="pre">'Cardio',</span> <span class="pre">'Chest',</span> <span class="pre">'Core',</span> <span class="pre">'Deltoids',</span> <span class="pre">'Delts',</span> <span class="pre">'Feet',</span> <span class="pre">'Forearms',</span> <span class="pre">'Glutes',</span> <span class="pre">'Grip</span> <span class="pre">Muscles',</span> <span class="pre">'Groin',</span> <span class="pre">'Hamstrings',</span> <span class="pre">'Hands',</span> <span class="pre">'Hip</span> <span class="pre">Flexors',</span> <span class="pre">'Inner</span> <span class="pre">Thighs',</span> <span class="pre">'Latissimus</span> <span class="pre">Dorsi',</span> <span class="pre">'Lats',</span> <span class="pre">'Levator</span> <span class="pre">Scapulae',</span> <span class="pre">'Lower</span> <span class="pre">Abs',</span> <span class="pre">'Lower</span> <span class="pre">Back',</span> <span class="pre">'Obliques',</span> <span class="pre">'Pectorals',</span> <span class="pre">'Quadriceps',</span> <span class="pre">'Quads',</span> <span class="pre">'Rear</span> <span class="pre">Deltoids',</span> <span class="pre">'Rhomboids',</span> <span class="pre">'Rotator</span> <span class="pre">Cuff',</span> <span class="pre">'Serratus</span> <span class="pre">Anterior',</span> <span class="pre">'Shins',</span> <span class="pre">'Shoulders',</span> <span class="pre">'Soleus',</span> <span class="pre">'Spine',</span> <span class="pre">'Sternocleidomastoid',</span> <span class="pre">'Trapezius',</span> <span class="pre">'Traps',</span> <span class="pre">'Triceps',</span> <span class="pre">'Upper</span> <span class="pre">Back',</span> <span class="pre">'Upper</span> <span class="pre">Chest',</span> <span class="pre">'Wrist</span> <span class="pre">Extensors',</span> <span class="pre">'Wrist</span> <span class="pre">Flexors',</span> <span class="pre">'Wrists']</span></em><a class="headerlink" href="#views.ExerciseView.muscle_types" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ExerciseView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ExerciseView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ExerciseView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.ExerciseView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.GenerateOTPView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">GenerateOTPView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.GenerateOTPView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.GenerateOTPView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_otp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.GenerateOTPView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.GenerateOTPView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.GenerateOTPView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">OTPSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.LogConsumableView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">LogConsumableView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogConsumableView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogConsumableView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogConsumableView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogConsumableView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogConsumableView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.LogConsumableView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.LogConsumableView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedConsumableSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.LogExerciseView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">LogExerciseView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogExerciseView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogExerciseView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogExerciseView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogExerciseView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogExerciseView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.LogExerciseView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.LogExerciseView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.LogRoutineView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">LogRoutineView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogRoutineView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogRoutineView.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogRoutineView.delete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogRoutineView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogRoutineView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.LogRoutineView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#views.LogRoutineView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LogRoutineView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LogRoutineView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.LoginView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">LoginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LoginView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.LoginView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.LoginView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RecommendConsumableView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RecommendConsumableView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RecommendConsumableView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RecommendConsumableView.fill_consumable_dataset">
+<span class="sig-name descname"><span class="pre">fill_consumable_dataset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RecommendConsumableView.fill_consumable_dataset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RecommendConsumableView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RecommendConsumableView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RecommendConsumableView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RecommendConsumableView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ConsumableSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RecommendExerciseView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RecommendExerciseView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RecommendExerciseView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RecommendExerciseView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RecommendExerciseView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RecommendExerciseView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RecommendExerciseView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RecommendedExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.ResetPasswordView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">ResetPasswordView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ResetPasswordView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ResetPasswordView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ResetPasswordView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ResetPasswordView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.ResetPasswordView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">UserSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineDeleteView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineDeleteView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineDeleteView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineDeleteView.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineDeleteView.delete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineDeleteView.get_object">
+<span class="sig-name descname"><span class="pre">get_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineDeleteView.get_object" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineDeleteView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#views.RoutineDeleteView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineDetailView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineDetailView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineDetailView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RetrieveAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineDetailView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineDetailView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <cite>self.queryset</cite>.</p>
+<p>This method should always be used rather than accessing <cite>self.queryset</cite>
+directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineDetailView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#views.RoutineDetailView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineDetailView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RoutineDetailView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineExerciseDetailView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseDetailView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RetrieveUpdateDestroyAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseDetailView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <cite>self.queryset</cite>.</p>
+<p>This method should always be used rather than accessing <cite>self.queryset</cite>
+directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView.perform_destroy">
+<span class="sig-name descname"><span class="pre">perform_destroy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseDetailView.perform_destroy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#views.RoutineExerciseDetailView.queryset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RoutineExerciseDetailView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineExerciseSerializer</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineExerciseDetailView.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseDetailView.update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineExerciseListCreateView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineExerciseListCreateView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseListCreateView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineExerciseListCreateView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineExerciseListCreateView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <cite>self.queryset</cite>.</p>
+<p>This method should always be used rather than accessing <cite>self.queryset</cite>
+directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineExerciseListCreateView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#views.RoutineExerciseListCreateView.queryset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineExerciseListCreateView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RoutineExerciseListCreateView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineListCreateView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineListCreateView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineListCreateView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineListCreateView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineListCreateView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <cite>self.queryset</cite>.</p>
+<p>This method should always be used rather than accessing <cite>self.queryset</cite>
+directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineListCreateView.perform_create">
+<span class="sig-name descname"><span class="pre">perform_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">serializer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineListCreateView.perform_create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineListCreateView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#views.RoutineListCreateView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineListCreateView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.RoutineListCreateView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.RoutineUpdateView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">RoutineUpdateView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineUpdateView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineUpdateView.get_object">
+<span class="sig-name descname"><span class="pre">get_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineUpdateView.get_object" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.RoutineUpdateView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#views.RoutineUpdateView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.RoutineUpdateView.put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.RoutineUpdateView.put" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.UpdateRecommendedExerciseView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">UpdateRecommendedExerciseView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UpdateRecommendedExerciseView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.UpdateRecommendedExerciseView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UpdateRecommendedExerciseView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.UpdateRecommendedExerciseView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.UpdateRecommendedExerciseView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">RecommendedExerciseSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.UserDataCreateView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">UserDataCreateView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UserDataCreateView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.UserDataCreateView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UserDataCreateView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.UserDataCreateView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.UserDataCreateView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">UserDataSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.UserMoodView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">UserMoodView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UserMoodView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.UserMoodView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UserMoodView.get" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="views.UserMoodView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.UserMoodView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.UserMoodView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.UserMoodView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">UserMoodSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="views.ValidateOTPView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">ValidateOTPView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ValidateOTPView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="views.ValidateOTPView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.ValidateOTPView.post" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="views.ValidateOTPView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#views.ValidateOTPView.serializer_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">OTPSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="views.check_all_required_keys_present">
+<span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">check_all_required_keys_present</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.check_all_required_keys_present" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="views.get_exercise_by_name">
+<span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">get_exercise_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.get_exercise_by_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="views.get_tokens_for_user">
+<span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">get_tokens_for_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.get_tokens_for_user" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="views.get_user_by_email_username">
+<span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">get_user_by_email_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.get_user_by_email_username" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="views.recommend_exercises">
+<span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">recommend_exercises</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">User</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exercises_to_recommend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truly_random</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bad_recommendation_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_neighbours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equipment_weight_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#views.recommend_exercises" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="urls.html" class="btn btn-neutral float-left" title="urls module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="testing.html" class="btn btn-neutral float-right" title="testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SETAP-Team2B(2).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
