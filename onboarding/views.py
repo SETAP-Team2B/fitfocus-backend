@@ -42,8 +42,6 @@ from django.forms.models import model_to_dict
 from django.core import serializers
 from statistics import median_low
 
-import requests
-import utils.api_secrets as api_secrets
 import datetime
 
 
