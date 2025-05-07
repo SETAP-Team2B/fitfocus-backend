@@ -1,6 +1,6 @@
 from django.db.utils import IntegrityError
 
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -9,12 +9,11 @@ from rest_framework import status
 from django.http import Http404
 from django.db.models import F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
-from utils.api import api_error, api_success, check_input
+from rest_framework.generics import RetrieveAPIView
+from utils.api import api_error, api_success
 from utils.exceptions import InvalidNameException, WeakPasswordError
-from utils.validator import Messages, validate_email, \
+from utils.validator import validate_email, \
     validate_username, check_password, check_name
-from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
@@ -33,13 +32,12 @@ import csv
 
 # for exercise recommendation
 import random
-from django.db.models import Avg, Count
+from django.db.models import Avg
 from math import floor
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
-from django.core import serializers
 from statistics import median_low
 
 import datetime
