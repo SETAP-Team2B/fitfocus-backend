@@ -67,6 +67,20 @@ def check_all_required_keys_present(request, keys: list):
 
 # generates and returns token for user
 def get_tokens_for_user(user):
+    """
+    Generates JWT refresh and access tokens for a given user.
+
+    Args:
+        user (User): The Django user instance to generate tokens for.
+
+    Returns:
+            - 'refresh' (str): The refresh token.
+            - 'access' (str): The access token used for authenticated requests.
+
+    Example:
+        >>> get_tokens_for_user(request.user)
+        {'refresh': '...', 'access': '...'}
+    """
     refresh = RefreshToken.for_user(user)
     return {
         'refresh': str(refresh),  # Refresh token (Used to get a new access token)
@@ -396,7 +410,37 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error("Incorrect Details")
 
 class LoginView(APIView):
+    """
+    Handles the login process by authenticating a user based on username or email
+    and returning JWT tokens upon successful authentication.
+
+    Process:
+        1. Checks if both username/email and password are provided.
+        2. Attempts to find the user by email or username.
+        3. Verifies if the user is registered and authenticated.
+        4. If the user is not verified, a verification object is created.
+        5. Generates and returns access and refresh JWT tokens for the authenticated user.
+
+    Methods:
+        post(request): Authenticates the user and returns JWT tokens.
+    """
     def post(self, request):
+        """
+        Authenticates the user based on the provided username/email and password.
+
+        Args:
+            request (Request): The HTTP request object containing the user's credentials.
+
+        Returns:
+            Response: A response object containing either the authentication tokens or an error message.
+
+        Error Responses:
+            - "Username/Email and password are required" if either is missing.
+            - "User not found with given email." if no user is found with the email.
+            - "User not verified." if the user has not been verified.
+            - "Incorrect password." if the provided password is incorrect.
+            - "Invalid username or password." if authentication fails.
+        """
         identifier = request.data.get('username') or request.data.get('email')  # Check if username or email is provided
         password = request.data.get('password')
 
@@ -1179,33 +1223,96 @@ class LogConsumableView(generics.CreateAPIView):
             return api_error(e.__str__())
 
 class RoutineListCreateView(generics.ListCreateAPIView):
-    #Handles listing all routines and creating a new one.
+    """
+    Handles listing all routines for the logged-in user and creating new routines.
+
+    This view supports the following actions:
+        1. Listing all routines associated with the logged-in user.
+        2. Creating a new routine and associating it with the logged-in user.
+
+    Attributes:
+        serializer_class (RoutineSerializer): The serializer used to validate and serialize routine data.
+        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
+
+    Methods:
+        get_queryset(): Filters the routines to return only those belonging to the logged-in user.
+        perform_create(serializer): Saves a new routine and associates it with the logged-in user.
+    """
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-    #Only return routines belonging to the logged-in user.
+        """
+        Returns a queryset of routines belonging to the logged-in user.
+
+        Returns:
+            QuerySet: A filtered queryset of routines associated with the authenticated user.
+        """
         return Routine.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        ##Associate the created routine with the logged-in user.
+        """
+        Associates the newly created routine with the logged-in user and saves it.
+
+        Args:
+            serializer (RoutineSerializer): The validated data to save as a new routine.
+        """
         serializer.save(user=self.request.user)
 
 
 class RoutineDetailView(generics.RetrieveAPIView):
-    #Handles retrieving a single routine.
+    """
+    Handles retrieving a single routine for the logged-in user.
+
+    This view allows the authenticated user to retrieve details of a specific routine they own.
+
+    Attributes:
+        serializer_class (RoutineSerializer): The serializer used to serialize routine data.
+        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
+
+    Methods:
+        get_queryset(): Filters the routines to return only the routine belonging to the logged-in user.
+    """
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        #Only allow the user to retrieve their own routines.
+        """
+        Returns a queryset containing only the routine associated with the logged-in user.
+
+        Returns:
+            QuerySet: A filtered queryset containing the routine for the authenticated user.
+        """
         return Routine.objects.filter(user=self.request.user)
 
 # Routine Update API View
 class RoutineUpdateView(APIView):
+    """
+    Handles updating an existing routine for the logged-in user.
+
+    This view supports updating the details of a routine, including setting a default name if not provided.
+
+    Attributes:
+        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
+
+    Methods:
+        put(): Handles updating an existing routine with new data.
+        get_object(): Retrieves the routine to be updated, ensuring the logged-in user owns it.
+    """
     permission_classes = [IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
+        """
+        Updates an existing routine with the provided data.
+
+        If the routine name is not provided or is empty, it sets the default name "My Routine".
+
+        Args:
+            request (Request): The incoming request containing the updated routine data.
+
+        Returns:
+            Response: A response containing the updated routine data or validation errors.
+        """
         routine = self.get_object()
 
         data = request.data.copy()
@@ -1219,76 +1326,162 @@ class RoutineUpdateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_object(self):
+        """
+        Retrieves the routine to be updated, ensuring it belongs to the logged-in user.
+
+        Raises:
+            Http404: If the routine is not found or if the logged-in user does not own the routine.
+
+        Returns:
+            Routine: The routine object to be updated.
+        """
         routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
         if not routine:
             raise Http404("Routine not found or you do not have permission to edit it")
         return routine
 
-# Routine Delete API View
 class RoutineDeleteView(APIView):
+    """
+    API view to delete a routine and all of its associated routine exercises.
+
+    Only the authenticated owner of the routine can delete it. This view first deletes
+    all RoutineExercise entries associated with the routine, then deletes the routine itself.
+
+    Attributes:
+        permission_classes (list): Ensures only authenticated users can access this view.
+
+    Methods:
+        delete(request, *args, **kwargs): Deletes the routine and its related exercises.
+        get_object(): Retrieves the routine instance owned by the requesting user.
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
+        """
+        Deletes the routine and all related RoutineExercise instances.
+
+        Args:
+            request (Request): The HTTP request object.
+            *args: Additional positional arguments.
+            **kwargs: Keyword arguments including the routine primary key ('pk').
+
+        Returns:
+            Response: HTTP 204 NO CONTENT if deletion is successful.
+        """
         routine = self.get_object()
 
-        # Delete all related routine exercises
         routine_exercises = RoutineExercise.objects.filter(routine=routine)
         routine_exercises.delete()
 
-        # Now delete the routine itself
         routine.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_object(self):
+        """
+        Retrieves the routine instance owned by the authenticated user.
+
+        Returns:
+            Routine: The routine object if found.
+
+        Raises:
+            Http404: If the routine does not exist or does not belong to the user.
+        """
         routine = Routine.objects.filter(user=self.request.user, pk=self.kwargs['pk']).first()
         if not routine:
             raise Http404("Routine not found or you do not have permission to delete it")
         return routine
 
 class RoutineExerciseListCreateView(generics.ListCreateAPIView):
-    #Handles listing all RoutineExercise objects and creating new ones.
+    """
+    API view to list and create RoutineExercise objects for the logged-in user.
+
+    This view allows users to retrieve a list of routine exercises that belong to them,
+    and to add new exercises to their routines.
+
+    Attributes:
+        serializer_class (RoutineExerciseSerializer): Serializer used for routine exercises.
+        queryset (QuerySet): The base queryset, overridden by get_queryset.
+
+    Methods:
+        get_queryset(): Filters the RoutineExercise objects to only those owned by the user.
+    """
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
 
     def get_queryset(self):
-        #Filter exercises to only return those belonging to the logged-in user.
+        """
+        Returns only the routine exercises that belong to the authenticated user.
+
+        Returns:
+            QuerySet: Filtered RoutineExercise objects for the user's routines.
+        """
         return RoutineExercise.objects.filter(routine__user=self.request.user)
 
 
 class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
-    # Handles retrieving, updating, or deleting a specific RoutineExercise.
+    """
+    API view to retrieve, update, or delete a specific RoutineExercise object.
+
+    Ensures that the user can only access and modify exercises associated with their own routines.
+    Includes logic to update the order of exercises when one is deleted or reordered.
+
+    Attributes:
+        serializer_class (RoutineExerciseSerializer): Serializer used for routine exercises.
+        queryset (QuerySet): The base queryset, overridden by get_queryset.
+
+    Methods:
+        get_queryset(): Filters exercises to ensure user can only modify their own.
+        perform_destroy(instance): Adjusts the order of remaining exercises when one is deleted.
+        update(request, *args, **kwargs): Reorders other exercises as necessary when order is changed.
+    """
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
 
     def get_queryset(self):
-        # Filter exercises so users can only modify their own routine exercises.
+        """
+        Returns only the routine exercises that belong to the authenticated user.
+
+        Returns:
+            QuerySet: Filtered RoutineExercise objects for the user's routines.
+        """
         return RoutineExercise.objects.filter(routine__user=self.request.user)
 
     def perform_destroy(self, instance):
-        #When an exercise is deleted, shift the order of the remaining ones.
+        """
+        Deletes a RoutineExercise and shifts the order of exercises below it up by 1.
+
+        Args:
+            instance (RoutineExercise): The exercise instance to delete.
+        """
         routine = instance.routine
         order_deleted = instance.order
 
-        # Delete the selected exercise
         instance.delete()
 
-        # Shift all exercises that were below the deleted one
         RoutineExercise.objects.filter(
             routine=routine,
-            order__gt=order_deleted  # Only update exercises that were below the deleted one
+            order__gt=order_deleted
         ).update(order=F('order') - 1)
 
     def update(self, request, *args, **kwargs):
+        """
+        Updates a RoutineExercise. If the order is changed, reorders other exercises accordingly.
+
+        Args:
+            request (Request): The incoming request with new data.
+
+        Returns:
+            Response: The updated routine exercise data or validation errors.
+        """
         instance = self.get_object()
         new_order = request.data.get('order')
 
         if new_order is None or new_order == instance.order:
-            return super().update(request, *args, **kwargs)  # No change needed
+            return super().update(request, *args, **kwargs)
 
         routine = instance.routine
 
-        # Shift exercises down if needed
         if new_order < instance.order:
             RoutineExercise.objects.filter(
                 routine=routine,
@@ -1303,7 +1496,6 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
                 order__lte=new_order
             ).update(order=F('order') - 1)
 
-        # Update the instance's order
         instance.order = new_order
         instance.save()
 
@@ -1462,9 +1654,32 @@ class UserMoodView(generics.CreateAPIView):
 
 
 class LogRoutineView(APIView):
+    """
+    API view to manage logging of completed routines.
+
+    Supports:
+    - POST: Log a completed routine with associated exercise data.
+    - GET: Retrieve a list of logged routines for the authenticated user.
+    - DELETE: Delete a specific logged routine by ID (sent in request body).
+
+    Only authenticated users can interact with this view.
+    """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
+        """
+        Deletes a logged routine for the authenticated user.
+
+        Expects:
+            {
+                "id": <logged_routine_id>
+            }
+
+        Returns:
+            - 204 NO CONTENT on success.
+            - 400 BAD REQUEST if ID is missing.
+            - 404 NOT FOUND if the logged routine does not exist or is unauthorized.
+        """
         logged_routine_id = request.data.get('id')
         if not logged_routine_id:
             return Response({"error": "Logged routine ID is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -1479,18 +1694,54 @@ class LogRoutineView(APIView):
         return Response({"success": "Logged routine deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieves a list of all logged routines for the authenticated user, ordered by completion time (most recent first).
+
+        Returns:
+            - 200 OK with serialized list of logged routines.
+        """
         logged_routines = LoggedRoutine.objects.filter(user=request.user).order_by('-completed_at')
         serializer = LoggedRoutineSerializer(logged_routines, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        """
+        Logs a completed routine for the authenticated user with exercise data.
+
+        Expects JSON:
+        {
+            "routine_id": <int>,
+            "notes": <optional str>,
+            "duration": <optional "hh:mm:ss">,
+            "progress": {
+                "exercises": [
+                    {
+                        "exercise_id": <int>,
+                        "sets": <int>,             # for strength
+                        "reps": <int>,             # for strength
+                        "weight": <float>,         # for strength
+                        "distance": <float>,       # for cardio
+                        "distance_units": <str>,   # for cardio
+                        "duration": "hh:mm:ss"     # required for cardio
+                    },
+                    ...
+                ]
+            }
+        }
+
+        Validates all input before logging. If any validation fails, the entire log is rejected.
+
+        Returns:
+            - 201 CREATED with logged routine data.
+            - 400 BAD REQUEST if any validation fails.
+            - 404 NOT FOUND if the routine does not exist or is not owned by the user.
+        """
         routine_id = request.data.get('routine_id')
         notes = request.data.get('notes', '')
         duration_str = request.data.get('duration', None)
         progress = request.data.get('progress', {})
         exercises_data = progress.get('exercises', [])
 
-        # Convert routine duration if provided
         if duration_str:
             try:
                 duration = pd.Timedelta("0 days " + duration_str).to_pytimedelta()
@@ -1506,7 +1757,6 @@ class LogRoutineView(APIView):
             return Response({"error": "Routine not found or you do not have permission to log it."},
                             status=status.HTTP_404_NOT_FOUND)
 
-        # Validate all exercises first
         validated_exercises = []
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise_id')
@@ -1546,7 +1796,6 @@ class LogRoutineView(APIView):
                     return Response({"error": f"Strength exercise {exercise_id} missing sets, reps, or weight."},
                                     status=status.HTTP_400_BAD_REQUEST)
 
-            # All validations passed for this exercise
             validated_exercises.append({
                 'exercise': exercise,
                 'sets': sets,
@@ -1556,7 +1805,6 @@ class LogRoutineView(APIView):
                 'duration': time,
             })
 
-        # ✅ Everything valid — now save
         logged_routine = LoggedRoutine.objects.create(
             routine=routine,
             user=request.user,
@@ -1580,11 +1828,16 @@ class LogRoutineView(APIView):
         serializer = LoggedRoutineSerializer(logged_routine)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        # Return the logged routine data with the appropriate serializer
-        serializer = LoggedRoutineSerializer(logged_routine)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 class ExerciseDetailView(RetrieveAPIView):
+    """
+    Retrieves details of a specific Exercise instance by its primary key.
+
+    Accessible to any authenticated user.
+
+    Attributes:
+        queryset (QuerySet): All Exercise instances.
+        serializer_class (Serializer): Serializes Exercise objects.
+    """
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
     
