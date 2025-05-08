@@ -103,6 +103,20 @@ class RecommendedExercise(models.Model):
             "good": 1 if self.good_recommendation else 0,
         }
 class UserData(models.Model):
+    """Stores user data for the user 
+
+    Attributes:
+        user (User) : The user who this data belongs to, foreign key to the User model
+        user_age (int) : The age of the user, must be a positive integer
+        user_sex (str) : The sex of the user, M / F / X (Other/Prefer not to say) 
+        user_height (float) : The height of the user
+        user_height_units (str) : The units of the users height, choices (in / cm)
+        user_weight (float) : The weight of the user
+        user_weight_units (str) : The units of the users weight, choices (lb / kg)
+        user_target_weight (float) : The target weight of which the user aims to achieve
+        user_body_goals (JSON) : The body goals of the user, JSON field (stored as a multiple choice field)
+    """
+    
     SEX_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -119,6 +133,12 @@ class UserData(models.Model):
     user_target_weight = models.FloatField(null=True)
     user_body_goals = models.JSONField(null=True)
     
+    """
+    Function for the UserData model which returns a string representation of the user data.
+
+    Returns:
+        str: A string representation of the user data in the format of "User Data for {username}"
+    """
     def __str__(self):
         return f"User Data for {self.user.username}"
 
