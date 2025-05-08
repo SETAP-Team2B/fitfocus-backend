@@ -43,10 +43,16 @@ from statistics import median_low
 import datetime
 
 
-# ensures all required attributes are in the request
-# reusable to all get/post functions
+def check_all_required_keys_present(request, keys: list[str]):
+    """A function to check that all the required keys for a given HTTP request are present in the request data.
 
-def check_all_required_keys_present(request, keys: list):
+    :param request: The HTTP request serialized via Django.
+    :type request: django.http.HttpRequest
+    :param keys: An array containing each key to check for within the request data.
+    :type keys: list[str]
+    :return: A HTTP 400 error if a key is not present within the request data. Otherwise returns None.
+    :rtype: None or django.http.Response
+    """
     if type(request) != dict:
         return api_error("Request was not a dictionary.")
 
@@ -75,6 +81,17 @@ def get_tokens_for_user(user):
 # should either return a User object or call an api_error.
 # ALSO LOOKS THROUGH QUERY PARAMS AS THAT IS THE ONLY WAY TO HANDLE IT IN DART
 def get_user_by_email_username(request):
+    """Finds a User model that corresponds to a given user identifier within an HTTP request.
+
+    Valid parameters to get a user by:
+    * username: the username of the User.
+    * email: the email address of the User.
+
+    :param request: The request to identify a user
+    :type request: django.http.HttpRequest
+    :return: A User object if a User can be found. If a user cannot be found, returns a Response with HTTP status code 400.
+    :rtype: django.auth.contrib.models.User or django.http.Response
+    """
     target_user: User | None = None
 
     # following if/elif/else statements find the user based on the inputted email/username
@@ -443,27 +460,53 @@ class LoginView(APIView):
 
 
 class GenerateOTPView(generics.CreateAPIView):
+    """A view which is used to generate One-Time Passwords to a given user.
+
+    This view accepts the following request types:
+        * POST
+    """
+
     serializer_class = OTPSerializer
 
     # function which uses the OTP model
 
     # input should be:
     # - valid username/email
-    # - a custom OTP (optional, probably never useful)
 
     # output should be (no actual values are necessary to be returned, only for debug purposes):
     # - SUCCESS if the following conditions are met:
     # ----- there exists a user with the inputted username and/or email address
     # ----- the email is succesfully sent
     # - FAIL if any of the above conditions are not met
-    def post(self, request, custom_otp: str = None, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        """The function which generates a one-time password for a given user.
+
+        The request accepts the following parameters:
+        
+        =========  ====  ====================
+        Parameter  Type  Description
+        =========  ====  ====================
+        username   str   Identifies the user.
+        email      str   Identifies the user.
+        =========  ====  ====================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then an OTP will be sent to the user's email.
+        This OTP will last for 5 minutes from sending the email.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "API sent." If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
             return target_user
 
         # generates OTP and send to user, contains 6 digits from 0-9
-        otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
+        otp = f"{randint(0, 999999):06d}"
 
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
@@ -530,6 +573,11 @@ class GenerateOTPView(generics.CreateAPIView):
 
 
 class ValidateOTPView(generics.CreateAPIView):
+    """A view which is used to validate a requested One-Time Password for a given user.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = OTPSerializer
 
     # post should include:
@@ -543,6 +591,32 @@ class ValidateOTPView(generics.CreateAPIView):
     # ----- attempted OTP = stored OTP
     # - "fail" OR an error description if any of the above conditions are not met
     def post(self, request, *args, **kwargs):
+        """The function which validates a one-time password for a given user.
+
+        The request accepts the following parameters:
+        
+        =========  ====  ==================================
+        Parameter  Type  Description
+        =========  ====  ==================================
+        username   str   Identifies the user.
+        email      str   Identifies the user.
+        otp        str   The one-time password to validate.
+        =========  ====  ==================================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then the given one-time password will be checked against the database.
+        If the OTP is correct and has not expired (5 minutes from requesting an OTP), then the OTP will be verified and
+        the user can proceed with a specific task. If the user has not yet verified their account, this will
+        also verify their account. If the given OTP has already been verified before, then the request will
+        be unsuccessful, and the user will have to generate a new OTP.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "success". If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
@@ -588,9 +662,44 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_error("The OTP you entered is incorrect.")
         
 class ResetPasswordView(generics.CreateAPIView):
+    """A view which is used to reset a given user's password.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
+        """The function which changes a given user's password.
+
+        The request accepts the following parameters:
+        
+        ================  ====  =================================
+        Parameter         Type  Description
+        ================  ====  =================================
+        username          str   Identifies the user.
+        email             str   Identifies the user.
+        new_password      str   The new password for the user.
+        confirm_password  str   Confirmation of the new password.
+        ================  ====  =================================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then it will check if the OTP for the user has been verified.
+        If the OTP has not been verified, it will raise an error.
+        It will then compare the "new_password" and "confirm_password" parameters.
+        If they do not match, an error will be raised.
+        If they do match, then these values will be checked to ensure the passwords are strong enough,
+        and if they are not strong enough, then an error will be raised.
+        If the new password is strong enough, the user's OTP will be changed and unverified, preventing
+        repeated OTP verification without explicitly requesting a new one.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Password Successfully Changed". If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
@@ -625,10 +734,11 @@ class ResetPasswordView(generics.CreateAPIView):
             target_user.set_password(raw_password=new_password)
             target_user.save()
 
-            # sets the current OTP to become invalid, otherwise this would make the user able to change their password an unlimited amount of times through the API
+            # change the user's OTP and un-verify it, because otherwise the user can repetitively validate the same OTP to reset a password without explicitly requesting a new one
             # while not possible in the app as changing the password redirects the user to the login/home screen
             # very rare scenario but good for security
             currentOTP: OTP = OTP.objects.get(user=target_user)
+            currentOTP.otp = f"{randint(0, 999999):06d}"
             currentOTP.verified = False
             currentOTP.save()
 
@@ -1027,9 +1137,38 @@ class RecommendExerciseView(generics.CreateAPIView):
         )
     
 class UpdateRecommendedExerciseView(generics.CreateAPIView):
+    """A view which is used to update whether a recommended exercise was a good recommendation or not.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = RecommendedExerciseSerializer
 
     def post(self, request, *args, **kwargs):
+        """The function which updates a given recommended exercise.
+
+        The request accepts the following parameters:
+        
+        ===================  ====  ==============================================
+        Parameter            Type  Description
+        ===================  ====  ==============================================
+        rec_ex_id            int   The ID for the given recommended exercise.
+        good_recommendation  bool  If the recommended exercise was "good" or not.
+        ===================  ====  ==============================================
+        
+
+        The function will attempt to find a recommended exercise given by the **rec_ex_id** parameter.
+        If a single recommended exercise cannot be found, an error will be raised.
+        If **good_recommendation** can be parsed to a boolean, then the *good_recommendation* property
+        of the recommended exercise will be set to this **good_recommendation** request parameter.
+        If it cannot be parsed, it will always be set to **True**.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Recommended exercise successfully updated." If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         print(request.data)
         rec_ex_id = request.data.get("rec_ex_id")
         good_recommendation = request.data.get("good_recommendation")
@@ -1042,17 +1181,50 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
             rec_ex.good_recommendation = good_recommendation if type(good_recommendation) == bool else True
             rec_ex.save()
 
-            return api_success("Exercise successfully updated.")
+            return api_success("Recommended exercise successfully updated.")
         except RecommendedExercise.DoesNotExist:
             return api_error("A recommended exercise could not be found.")
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
 class ConsumableView(generics.CreateAPIView):
+    """A view which handles the creation and updates of consumable items.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = ConsumableSerializer
 
-    # handles creating OR updating a consumable based on the name
     def post(self, request, *args, **kwargs):
+        """The function which creates or updates a given consumable item.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ======================================================================
+        Parameter                 Type   Description
+        ========================  =====  ======================================================================
+        name                      str    The name of the consumable item. (e.g. apple, water)
+        sample_size               float  The amount of a given sample to store.
+        sample_calories           int    The amount of calories in the given sample.
+        sample_units (optional)   str    The units of the sample (e.g. portion, slice). Defaults to "serving".
+        sample_macros (optional)  dict   A dictionary of macro-nutrient values of the sample. Defaults to None.
+        ========================  =====  ======================================================================
+        
+        The function attempts to find a consumable with the given **name** parameter input.
+        If one cannot be found, then a new consumable will be created from scratch.
+        If multiple consumables are found, then an error will be raised.
+        The remaining attributes are then passed on to the consumable item, overwriting
+        any existing attributes, and is stored/updated in the database.
+
+        One limitation of this API is that if an optional attribute is not included,
+        it will be overwritten in the database with the corresponding default value.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Consumable created!" If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         keys = [
             "name",
             "sample_size",
@@ -1067,7 +1239,6 @@ class ConsumableView(generics.CreateAPIView):
         except Consumable.MultipleObjectsReturned:
             return api_error("Multiple ingredients with the same name were found.")
 
-        # if the ingredient did not exist beforehand, the user passed through is made the owner of this ingredient
         consumable.sample_calories = request.data["sample_calories"]
         consumable.sample_macros = request.data.get("sample_macros")
         consumable.sample_size = request.data["sample_size"]
@@ -1089,9 +1260,39 @@ The LogConsumable view takes in the following parameters:
 - *macros_logged: a dictionary (keys can only be from models.macro_keys, values are all numeric), containing the macronutrient total of the consumable
 '''
 class LogConsumableView(generics.CreateAPIView):
+    """A view which handles logged consumables by users.
+
+    This view accepts the following request types:
+        * GET
+        * POST
+    """
     serializer_class = LoggedConsumableSerializer
 
     def get(self, request, *args, **kwargs):
+        """The function which retrieves a list of logged consumables for a given user.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ==================================================================
+        Parameter                 Type   Description
+        ========================  =====  ==================================================================
+        username                  str    Identifies the user.
+        email                     str    Identifies the user.
+        date_logged (optional)    str    The date that the consumable was logged in the format "YYYY-MM-DD"
+        ========================  =====  ==================================================================
+        
+        The function will start off with a list of every logged consumable object, and filter it
+        based off the given user identified, as well as the given date to filter to. This will find all
+        consumables logged by a given user on a certain date. If no date is provided, it will only filter
+        by the given user, returning every single logged consumable by the user.
+        If no user is provided or cannot be found, it will return an error.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing a list of logged consumables in a dictionary format, excluding the details of the user, to protect privacy. 
+            If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         logged_consumable_queryset = LoggedConsumable.objects.get_queryset()
 
         target_user = get_user_by_email_username(request)
@@ -1122,6 +1323,32 @@ class LogConsumableView(generics.CreateAPIView):
         return JsonResponse(serialized_consumables, safe=False)
 
     def post(self, request, *args, **kwargs):
+        """The function which logs a given consumable item for a given user.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ===================================================================
+        Parameter                 Type   Description
+        ========================  =====  ===================================================================
+        username                  str    Identifies the user.
+        email                     str    Identifies the user.
+        consumable                str    The name of the consumable logged.
+        date_logged               str    The date that the consumable was logged. In the format "YYYY-MM-DD"
+        calories_logged           int    The total amount of calories that were logged.
+        amount_logged (optional)  float  The amount of the consumable that was logged. Defaults to 1
+        macros_logged (optional)  dict   The total amount of macro-nutrients that were logged. Defaults to None
+        ========================  =====  ===================================================================
+        
+        The function will find a user by the given username/email, and if one cannot be found, an error will be raised.
+        Given a consumable name, it will attempt to find one within the database of consumable items.
+        If one cannot be found, a new consumable will be added, and will be provided all of the nutrition/sample size
+        values.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Consumable logged!" If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         keys = [
             "consumable",
             "amount_logged",
@@ -1585,10 +1812,24 @@ class ExerciseDetailView(RetrieveAPIView):
     serializer_class = ExerciseSerializer
     
 class RecommendConsumableView(generics.CreateAPIView):
+    """This view handles recommending consumables for users.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = ConsumableSerializer
 
     # TODO: be called if the size of the consumable database is 100 objects or less? to be decided
     def fill_consumable_dataset(self):
+        """This function will populate the Consumable table within the database with sample values taken from the USDA food safety website.
+        This data was transformed/processed from the following ZIP file: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip
+
+        It will read the above transformed file, and convert the contents into a list of dictionaries, parsing those into Consumable objects in the database.
+        If the consumable already exists in the dataset, it will overwrite the existing object.
+
+        :return: always returns a HTTP success response, with the message "dataset filled with foods".
+        :rtype: django.http.Response
+        """
         with open("utils/food_data/food.json") as f:
             food_file_content: list[dict] = json.loads(f.read())
 
@@ -1633,6 +1874,33 @@ class RecommendConsumableView(generics.CreateAPIView):
     # (OPTIONAL) consumables_to_recommend - number of consumables to recommend to the user (default 1)
     # (OPTIONAL) recommendation_date - date to look at when generating recommendation dataset (default today)
     def post(self, request):
+        """The function which recommends a certain number of consumables for a given user.
+
+        The request accepts the following parameters:
+        
+        =====================================  ====  =================================================================================
+        Parameter                              Type  Description
+        =====================================  ====  =================================================================================
+        username                               str   Identifies the user.
+        email                                  str   Identifies the user.
+        consumables_to_recommend (optional)    int   The number of consumables to recommend. Defaults to 1.
+        recommendation_date (optional)         int   The date to base consumed foods on. Defaults to today. In the format "YYYY-MM-DD"
+        =====================================  ====  =================================================================================
+        
+        The function will be given a username/email, and if the user cannot be found, an error will be returned.
+        If the user can be found, then it will investigate the user's consumed foods for the given **recommendation_date**.
+        It will also analyse the user's most recently recorded mood/motivation level, as well as any target goals the user has set.
+        Using these, it will influence the recommended macro-nutrients, and base the amount of food consumed to determine the size of the meal.
+        The amount of calories in a meal is determined through the Harris-Benedict formulae, alongside the user's data, such as age, sex, height and weight (if the user has opted to provide this).
+        It will then iterate through each potential meal recommendation.
+        Each potential meal recommendation has an 80% chance to be added to the meal recommendation list, until the length reaches **consumables_to_recommend** 
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A Response object containing an array of serialized recommended consumables, otherwise it will return a HTTP 400 response with a message detailing the error.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
