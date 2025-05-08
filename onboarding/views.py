@@ -314,10 +314,29 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
+    """
+    View for handling user account creation and deletion.
+    Created a new user if all inputs are valid, with checks for a valid email, username and password upon creation. 
+    The user is created as unverified and then verifies their email through a email otp upon login.
+
+    """
     serializer_class = UserSerializer
 
     # validates given email and username, checks given name within database and saves user data as unverified if valid
     def post(self, request, *args, **kwargs):
+        """
+        function to create a new user account upon valid details provided.
+        checks if email and username is already being used.
+        Password is checked for strength and error is displayed if not string enough.
+
+        Args:
+            request (httpRequest): The http post request sends the user data to the database upon valid entry.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            Response: A response object displaying a success response and any errors for the account creation.
+        """
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
         try:
@@ -361,6 +380,20 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error(error.__str__())
 
     def delete(self, request, *args, **kwargs):
+        """
+        Function to delete a user account upon valid details provided.
+        Checks if email and username is already being used.
+        The user is removed from the database upon valid details provided.
+
+    
+        Args:
+            request (httpRequest): The http get request checks for the account data of the user if it exists.
+            *args: arguments.
+            **kwargs: keyword arguments.
+        Returns:
+            Response: A response object displaying the success response and any errors for the account deletion.
+        """
+
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
         
