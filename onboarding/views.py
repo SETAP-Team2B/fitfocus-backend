@@ -108,6 +108,19 @@ def get_user_by_email_username(request):
     return target_user
 
 def get_exercise_by_name(request):
+    """The function accepts an http request and matches the ex_name within to a corresponding object
+
+    The function will attempt to find the target_exercise given by the **ex_name** parameter.
+    If no **ex_name** is given an error is raised.
+    If no target_exercise can be found with the given **ex_name**, a DoesNotExist error is raised.
+    If a single target_exercise cannot be found with the given **ex_name**, a MultipleObjectsReturned error is raised.
+
+    :param request: The name of the exercise
+    :type request: string
+    :return: A succesfull response will return the correct target_exercise object
+    :rtype: object
+    """
+    
     target_exercise: Exercise | None = None
 
     # looks for an exercise with the given name within the database
