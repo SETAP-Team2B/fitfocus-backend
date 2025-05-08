@@ -43,7 +43,6 @@ from django.core import serializers
 from statistics import median_low
 
 import requests
-import utils.api_secrets as api_secrets
 import datetime
 
 
