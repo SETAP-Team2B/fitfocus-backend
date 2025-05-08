@@ -136,52 +136,83 @@ def get_exercise_by_name(request):
     
     return target_exercise
 
-def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None, equipment_weight_units: str = None):
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = "km", equipment_weight_units: str = "kg"):
+    """The function to recommend an exercise to a given user.
+
+    The algorithm uses a K-Means nearest neighbour classification algorithm against logged exercises as well as 
+    previously recommended exercises to assess whether semi-randomly generated recommendations are good enough to be recommended.
+    
+    The following semi-pseudocode algorithm describes the general process of recommending an exercise to a user:    
+
+    | BEGIN 
+
+    1. set bad_recommendation counter to 0
+    2. generate a random exercise from all exercise objects
+    3. get all logged and recommended exercises for given user and given exercise
+    4. if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 steps above
+
+    4a. if truly_random:
+    
+        - set the following to be random integers within the given range (if applicable to given exercise):
+            - sets: [1, 5]
+            - reps: [1, 15]
+            - distance: [1, 10]
+            - duration (in minutes): [1, 20]
+
+    4b. if not truly_random:
+    
+        - set the following to be within the given range (if applicable to given exercise):
+            - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
+            - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
+            - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
+            - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
+            - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
+
+    5. combine the attributes into a given exercise
+    6. run through the ML model for recommending an exercise
+    
+    7.
+        if the recommendation is "bad":
+            - increment bad_recommendation counter by 1
+            - if equal to 3, start from BEGIN again
+            - if not equal to 3, repeat "if truly_random or not" section
+    
+        if the recommendation is "good":
+            - recommend the exercise by adding it to exercises array
+
+    8. repeat until exercises array length = exercises_to_recommend
+
+    END
+
+    :param user: The user to recommend exercises for.
+    :type user: User
+
+    :param exercises_to_recommend: The number of exercises to recommend, defaults to 1
+    :type exercises_to_recommend: int, optional
+    
+    :param truly_random: Whether the algorithm recommends a truly random exercises, defaults to False
+    :type truly_random: bool, optional
+    
+    :param bad_recommendation_limit: the amount of "bad recommendations" to generate under a given range of parameters before restarting the algorithm, defaults to 3
+    :type bad_recommendation_limit: int, optional
+    
+    :param k_neighbours: The number of neighbours to use in the K-Means algorithm, defaults to 5
+    :type k_neighbours: int, optional
+    
+    :param distance_units: The units to use if a distance is output, defaults to "km"
+    :type distance_units: str, optional
+    
+    :param equipment_weight_units: The equipment weight to use if an exercise uses equipment weights, defaults to "kg"
+    :type equipment_weight_units: str, optional
+    
+    :return: A Response containing a list of dictionary-like objects, representing recommended exercises. List can be empty.
+    :rtype: django.http.Response
+    """
     exercises: list[RecommendedExercise] = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
     # TODO: generate points based on given recommendation
     # TODO: handle the case where the user has NO logged exercises and/or NO recommended exercises
-
-    '''
-    algorithm: 
-    
-    BEGIN 
-
-    - set bad_recommendation counter to 0
-    - generate a random exercise from all exercise objects
-    - get all logged and recommended exercises for given user and given exercise
-    - if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 lines above
-
-    if truly_random:
-    - set the following to be random integers within the given range (if applicable to given exercise):
-    - sets: [1, 5]
-    - reps: [1, 15]
-    - distance: [1, 10]
-    - duration (in minutes): [1, 20]
-
-    if not truly_random:
-    - set the following to be within the given range (if applicable to given exercise):
-    - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
-    - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
-    - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
-    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
-    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
-
-    - combine the attributes into a given exercise
-    - run through the ML model for recommending an exercise
-    
-    if the recommendation is "bad":
-    - increment bad_recommendation counter by 1
-    ----- if equal to 3, start from BEGIN again
-    ----- if not equal to 3, repeat "if truly_random or not" section
-    
-    if the recommendation is "good":
-    - recommend the exercise
-    - add it to exercises array
-
-    END
-    '''
 
     for _ in range(exercises_to_recommend):
         recommended = False
@@ -1039,6 +1070,12 @@ class LogExerciseView(generics.CreateAPIView):
         return JsonResponse(filtered_response, safe=False)
 
 class RecommendExerciseView(generics.CreateAPIView):
+    """This view handles the generation and viewing of recommending exercises.
+
+    This view accepts the following request types:
+        * GET
+
+    """
     serializer_class = RecommendedExerciseSerializer
 
     # will generate recommended exercises based on the following:
@@ -1047,6 +1084,33 @@ class RecommendExerciseView(generics.CreateAPIView):
     # - exercises_to_recommend: non-negative integer (default 1)
     # - k_neighbours: positive integer (default 5)
     def get(self, request, *args, **kwargs):
+        """The function to recommend exercises.
+
+        The request accepts the following parameters:
+        
+        =================================  ====  ==============================================================================================================
+        Parameter                          Type  Description
+        =================================  ====  ==============================================================================================================
+        username                           str   Identifies the user.
+        email                              str   Identifies the user.
+        truly_random (optional)            bool  Whether the algorithm will recommend a completely random exercise. Defaults to False.
+        exercises_to_recommend (optional)  int   The total amount of exercises to recommend a user. Defaults to 1.
+        k_neighbours (optional)            int   The parameter to optimise the recommendation algorithm strength. Change if you have experience. Defaults to 5.
+        distance_units (optional)          str   The units to use for recommended distance units. Defaults to "km"
+        equipment_weight_units (optional)  str   The units to use for recommended equipment weights. Defaults to "kg"
+        =================================  ====  ==============================================================================================================
+
+        The function will recommend an exercise via the `recommend_exercise` function.
+        The request takes in a user, attempts to find a user, and raises an error if a user cannot be found.
+        It will run a K-Means nearest neighbours algorithm on the user's logged exercises and previous recommendations
+        to recommend exercises, unless truly_random is True, in which case it will recommend a completely random exercise from the database.
+        The view will return a list of dictionary-like objects representing recommended exercises.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A Response with either a 200 success message, containing serialized JSON data for recommended exercises, or a HTTP 400 status response, with a corresponding error message.
+        :rtype: django.http.Response
+        """
         truly_random: bool = False
         exercises_to_recommend: int = 1
         k_neighbours: int = 5
