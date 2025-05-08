@@ -194,6 +194,15 @@ class LoggedRoutine(models.Model):
         return f"{self.user.username} completed {self.routine.name} on {self.completed_at}"
 
 class UserMood(models.Model):
+    """
+    Model to store the mood level of the user.
+    The mood level is an integer value that represents the user's mood on a scale of 1 to 10.
+
+    Attributes:
+        user (User): The user who this mood level belongs to, foreign key to the User model.
+        mood_level (int): The mood level of the user between 1 and 10.
+        datetime_recorded (datetime): The date and time of when the mood level was recorded.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mood_level = models.SmallIntegerField(default=0)
     datetime_recorded = models.DateTimeField(default=timezone.now)
