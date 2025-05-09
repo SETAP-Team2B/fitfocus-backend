@@ -43,3 +43,6 @@ autodoc_mock_import = ['django']
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+# including this fixes a warning when building docs
+linkcheck_allowed_redirects = {}
