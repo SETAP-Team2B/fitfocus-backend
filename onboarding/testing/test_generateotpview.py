@@ -19,6 +19,8 @@ class GenerateOTPViewTests(APITestCase):
         Is called before each test to initialise the URL for the generate otp end point
 
         Creates a test User to use to simulate sending otp email
+
+        :return: None
         """
         self.url = reverse('generate-otp')
         self.user_email = 'test@example.com'
@@ -38,7 +40,7 @@ class GenerateOTPViewTests(APITestCase):
         - Response status code is OK (200)\n
         - Response message indicating success ("OTP sent.")
 
-        :param mock_smtp: Mocked SMTP_SSL object to simulate email sending.
+        :param mock_smtp: Mocked SMTP_SSL object to simulate email sending
         :type mock_smtp: unittest.mock.MagicMock
 
         :raises AssertationError: If any of the assertions fail or response content is not valid JSON
@@ -71,7 +73,7 @@ class GenerateOTPViewTests(APITestCase):
         - Response status code is Bad Request (400)\n
         - Appropriate error message ("Email failed to send.")
 
-        :param mock_smtp: Mocked SMTP_SSL object to simulate email sending.
+        :param mock_smtp: Mocked SMTP_SSL object to simulate email sending
         :type mock_smtp: unittest.mock.MagicMock
 
         :raises AssertationError: If any of the assertions fail

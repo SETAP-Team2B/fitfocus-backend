@@ -54,7 +54,7 @@ class ExerciseViewTests(APITestCase):
         """Tests exercise creation with missing fields
 
         Sends POST request with missing fields and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Necessary Field(s) are empty")
 
         :raises AssertationError: If any of the assertions fail
@@ -74,7 +74,7 @@ class ExerciseViewTests(APITestCase):
         """Tests exercise creation with invalid muscle type
 
         Sends POST request with invalid muscle type and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Invalid Muscle Type")
 
         :raises AssertationError: If any of the assertions fail
@@ -100,7 +100,7 @@ class ExerciseViewTests(APITestCase):
         """Tests exercise creation with invalid exercise type
 
         Sends POST request with invalid exercise type and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Invalid Exercise Type")
 
         :raises AssertationError: If any of the assertions fail
@@ -126,7 +126,7 @@ class ExerciseViewTests(APITestCase):
         """Tests exercise creation with invalid body area type
 
         Sends POST request with invalid body area type and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Invalid Body Area Type")
 
         :raises AssertationError: If any of the assertions fail

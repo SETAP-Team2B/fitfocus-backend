@@ -17,6 +17,8 @@ class LogExerciseViewTests(APITestCase):
         Is called before each test to initialise the URL for the log exercise end point
 
         Creates a test User and test Exercise to use in test
+
+        :return: None
         """
         self.url = reverse('log-exercise') 
         self.user = User.objects.create_user(username='testuser', email='test@example.com', password='password123')
@@ -32,7 +34,7 @@ class LogExerciseViewTests(APITestCase):
         - LoggedExercise instance was created with matching data\n
         - Response message indicating success ("Exercised Logged!")
 
-        :param mock_get_exercise: Mocked function to get exercise by name.
+        :param mock_get_exercise: Mocked function to get exercise by name
         :type mock_get_exercise: unittest.mock.MagicMock
         :param mock_get_user: Mocked function to get user by email or username
         :type mock_get_user: unittest.mock.MagicMock
@@ -73,6 +75,9 @@ class LogExerciseViewTests(APITestCase):
         Sends POST request with non existent username and verifies:\n
         - Response status code is Bad Request (400)\n
         - Appropriate error message ("Could not find associated user.")
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         data = {
             'username': 'nonexistentuser',  # Use a username that does not exist
@@ -98,7 +103,7 @@ class LogExerciseViewTests(APITestCase):
         - Response status code is Bad Request (400)\n
         - Appropriate error message ("Exercise log must contain some exercise information.")
 
-        :param mock_get_exercise: Mocked function to get exercise by name.
+        :param mock_get_exercise: Mocked function to get exercise by name
         :type mock_get_exercise: unittest.mock.MagicMock
         :param mock_get_user: Mocked function to get user by email or username
         :type mock_get_user: unittest.mock.MagicMock

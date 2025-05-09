@@ -14,7 +14,7 @@ class CreateAccountViewTests(TestCase):
     Contains tests for user creation functionality, ensuring correct responses to the functions
     """
     def setUp(self):
-        """ Sets up the Test Case
+        """Sets up the Test Case
 
         Is called before each test to initialise the URL for the user creation end point
 
@@ -54,7 +54,7 @@ class CreateAccountViewTests(TestCase):
         Creates a test user in database
 
         Sends POST request with same email and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Email already exists on a user.")
 
         :raises AssertationError: If any of the assertions fail
@@ -83,7 +83,7 @@ class CreateAccountViewTests(TestCase):
         """Tests account creation with invalid email
 
         Sends POST request with invalid existing email and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Invalid email or username.")
 
         :raises AssertationError: If any of the assertions fail
@@ -107,7 +107,7 @@ class CreateAccountViewTests(TestCase):
         """Tests account creation with missing fields
 
         Sends POST request with already missing password and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("'password' is missing.")
 
         :raises AssertationError: If any of the assertions fail
@@ -131,7 +131,7 @@ class CreateAccountViewTests(TestCase):
         """Tests account creation with weak password
 
         Sends POST request with intentionlly weak password and verifies:\n
-        - Bad request (400)\n
+        - Response status code is Bad Request (400)\n
         - Appropriate error message ("Password is too weak. Use a strong password with at least 6 upper and lower case alpha-numeric characters including special symbols")
 
         :raises AssertationError: If any of the assertions fail

@@ -8,13 +8,18 @@ from onboarding.models import VerifiedUser
 from django.contrib.auth import get_user_model
 
 class LoginViewTests(APITestCase):
-    """_summary_
+    """Test Case for the LoginView
 
-    :param APITestCase: _description_
-    :type APITestCase: _type_
+    Contains tests for the login functionality of users, ensuring the correct responses to functions
     """
     def setUp(self):
-        """_summary_
+        """Sets up the Test Case 
+       
+        Is called before each test to initialize the URL for the login endpoint 
+        
+        Creates a test User and a VerifiedUser
+
+        :return: None
         """
         self.url = reverse('login-user')  
         self.user_username = 'testuser'
@@ -36,7 +41,13 @@ class LoginViewTests(APITestCase):
         self.verified_user.save() 
 
     def test_login_success(self):
-        """_summary_
+        """Tests successful login 
+
+        Sends a POST request with valid username and password and verifies:\n
+        - Response status code is OK (200)
+        
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         data = {
             'username': self.user_username,
@@ -50,10 +61,17 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_missing_credentials(self, mock_get_tokens):
-        """_summary_
+        """Tests login with missing data
 
-        :param mock_get_tokens: _description_
-        :type mock_get_tokens: _type_
+        Sends a POST request missing a password and verifies:\n 
+        - Response status code is Bad Request (400)\n 
+        - Appropriate error message ("Username/Email and password are required")
+
+        :param mock_get_tokens: Mocked function to get tokens for the user
+        :type mock_get_tokens: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         data = {
             'username': 'testuser',  # Missing password
@@ -67,10 +85,17 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_user_not_found(self, mock_get_tokens):
-        """_summary_
+        """Tests login with invaild username
 
-        :param mock_get_tokens: _description_
-        :type mock_get_tokens: _type_
+        Sends a POST request with an invalid username and verifies:\n 
+        - Response status code is Bad Request (400)\n 
+        - Appropriate error message ("Invalid username or password.")
+
+        :param mock_get_tokens: Mocked function to get tokens for the user
+        :type mock_get_tokens: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         data = {
             'username': 'nonexistentuser',
@@ -85,10 +110,19 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_multiple_users_found(self, mock_get_tokens):
-        """_summary_
+        """Tests login with multiple users
 
-        :param mock_get_tokens: _description_
-        :type mock_get_tokens: _type_
+        Creates another user with the same email
+
+        Sends a POST request with the same email and verifies:\n 
+        - Response status code is Bad Request (400)\n 
+        - Appropriate error message ("Multiple users found with given email.")
+
+        :param mock_get_tokens: Mocked function to get tokens for the user
+        :type mock_get_tokens: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         # Create another user with the same email
         User.objects.create_user(
@@ -110,10 +144,17 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_incorrect_password(self, mock_get_tokens):
-        """_summary_
+        """Tests login with an incorrect password
 
-        :param mock_get_tokens: _description_
-        :type mock_get_tokens: _type_
+        Sends a POST request with an incorrect password and verifies:\n 
+        - Response status code is Bad Request (400)\n 
+        - Appropriate error message ("Invalid username or password.")
+
+        :param mock_get_tokens: Mocked function to get tokens for the user
+        :type mock_get_tokens: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         data = {
             'username': 'testuser',
@@ -127,7 +168,19 @@ class LoginViewTests(APITestCase):
         self.assertIn("Invalid username or password.", json.loads(response.content).get('message'))
 
     def test_unverified_user(self):
-        """_summary_
+        """Tests login with an unverified user
+
+        Creates a new unverified user
+
+        Sends a POST request with unverified username and verifies:\n 
+        - Response status code is Bad Request (400)\n 
+        - Appropriate error message ("User not verified.")
+
+        :param mock_get_tokens: Mocked function to get tokens for the user
+        :type mock_get_tokens: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
         """
         # Create a new user that is not verified
         unverified_user = get_user_model().objects.create_user(
