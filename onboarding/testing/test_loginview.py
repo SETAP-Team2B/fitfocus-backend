@@ -4,15 +4,22 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from unittest.mock import patch
 from django.contrib.auth.models import User
-from onboarding.models import VerifiedUser   # Adjust the import based on your project structure
+from onboarding.models import VerifiedUser   
 from django.contrib.auth import get_user_model
 
 class LoginViewTests(APITestCase):
+    """_summary_
+
+    :param APITestCase: _description_
+    :type APITestCase: _type_
+    """
     def setUp(self):
-        self.url = reverse('login-user')  # Adjust the URL name based on your URL configuration
+        """_summary_
+        """
+        self.url = reverse('login-user')  
         self.user_username = 'testuser'
         self.user_email = 'test@example.com'
-        self.user_password = 'OldPassword123!'  # Use a strong password
+        self.user_password = 'OldPassword123!'  
         
         # Create a user instance
         self.user = User.objects.create_user(
@@ -21,7 +28,7 @@ class LoginViewTests(APITestCase):
             password=self.user_password            
         )
 
-        # Create a VerifiedUser  instance and set it as verified
+        # Create a VerifiedUser instance and set it as verified
         self.verified_user = VerifiedUser (
             user=self.user,
             verified=True  # Mark the user as verified
@@ -29,32 +36,42 @@ class LoginViewTests(APITestCase):
         self.verified_user.save() 
 
     def test_login_success(self):
+        """_summary_
+        """
         data = {
             'username': self.user_username,
             'password': self.user_password,
         }
-        response = self.client.post(self.url, json.dumps(data), content_type='application/json')  # Use format='json' for JSON requests
+        response = self.client.post(self.url, json.dumps(data), content_type='application/json') 
 
-        # Print the response content for debugging
         print("Response content:", response.content)
 
-        # Check the response status code
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_missing_credentials(self, mock_get_tokens):
+        """_summary_
+
+        :param mock_get_tokens: _description_
+        :type mock_get_tokens: _type_
+        """
         data = {
             'username': 'testuser',  # Missing password
         }
         response = self.client.post(self.url, data, format='json')
         
-        print("Response content:", response.content)  # Debugging output
+        print("Response content:", response.content)  
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Username/Email and password are required", json.loads(response.content).get('message'))
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_user_not_found(self, mock_get_tokens):
+        """_summary_
+
+        :param mock_get_tokens: _description_
+        :type mock_get_tokens: _type_
+        """
         data = {
             'username': 'nonexistentuser',
             'password': 'somepassword',
@@ -68,6 +85,11 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_multiple_users_found(self, mock_get_tokens):
+        """_summary_
+
+        :param mock_get_tokens: _description_
+        :type mock_get_tokens: _type_
+        """
         # Create another user with the same email
         User.objects.create_user(
             username='anotheruser',
@@ -88,6 +110,11 @@ class LoginViewTests(APITestCase):
 
     @patch('onboarding.views.get_tokens_for_user')
     def test_incorrect_password(self, mock_get_tokens):
+        """_summary_
+
+        :param mock_get_tokens: _description_
+        :type mock_get_tokens: _type_
+        """
         data = {
             'username': 'testuser',
             'password': 'wrongpassword',  # Incorrect password
@@ -100,6 +127,8 @@ class LoginViewTests(APITestCase):
         self.assertIn("Invalid username or password.", json.loads(response.content).get('message'))
 
     def test_unverified_user(self):
+        """_summary_
+        """
         # Create a new user that is not verified
         unverified_user = get_user_model().objects.create_user(
             username='unverifieduser',

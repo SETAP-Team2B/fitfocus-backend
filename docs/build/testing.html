@@ -46,7 +46,18 @@
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="onboarding.html">onboarding</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">testing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#test-createaccountview-module">test_createaccountview module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_createaccountview">test_createaccountview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_email_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_invalid_email()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_missing_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_success"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_success()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password"><code class="docutils literal notranslate"><span class="pre">CreateAccountViewTests.test_create_account_weak_password()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-testing.test_exerciseview">test_exerciseview module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#testing.test_exerciseview.ExerciseViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">ExerciseViewTests.setUp()</span></code></a></li>
@@ -59,7 +70,15 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#test-generateotpview-module">test_generateotpview module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-testing.test_generateotpview">test_generateotpview module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.test_email_sending_failure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success"><code class="docutils literal notranslate"><span class="pre">GenerateOTPViewTests.test_generate_otp_success()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-testing.test_logexerciseview">test_logexerciseview module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#testing.test_logexerciseview.LogExerciseViewTests.setUp"><code class="docutils literal notranslate"><span class="pre">LogExerciseViewTests.setUp()</span></code></a></li>
@@ -137,8 +156,115 @@
              
   <section id="testing">
 <h1>testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
-<section id="test-createaccountview-module">
-<h2>test_createaccountview module<a class="headerlink" href="#test-createaccountview-module" title="Link to this heading"></a></h2>
+<section id="module-testing.test_createaccountview">
+<span id="test-createaccountview-module"></span><h2>test_createaccountview module<a class="headerlink" href="#module-testing.test_createaccountview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_createaccountview.</span></span><span class="sig-name descname"><span class="pre">CreateAccountViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>The Test Case for the CreateAccountView</p>
+<p>Contains tests for user creation functionality, ensuring correct responses to the functions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Sets up the Test Case</p>
+<p>Is called before each test to initalise the URL for the user creation end point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists">
+<span class="sig-name descname"><span class="pre">test_create_account_email_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists" title="Link to this definition"></a></dt>
+<dd><p>Tests account creation with existing email</p>
+<p>Creates user in database</p>
+<p>Sends POST request with same email and verifies:
+- Bad request (400)
+- Appropriate error message (“Email already exists on a user.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email">
+<span class="sig-name descname"><span class="pre">test_create_account_invalid_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email" title="Link to this definition"></a></dt>
+<dd><p>Tests account creation with invalid email</p>
+<p>Sends POST request with invalid existing email and verifies:
+- Bad request (400)
+- Appropriate error message (“Invalid email or username.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields">
+<span class="sig-name descname"><span class="pre">test_create_account_missing_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields" title="Link to this definition"></a></dt>
+<dd><p>Tests account creation with missing fields</p>
+<p>Sends POST request with already missing password and verifies:
+- Bad request (400)
+- Appropriate error message (“‘password’ is missing.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_success">
+<span class="sig-name descname"><span class="pre">test_create_account_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_success" title="Link to this definition"></a></dt>
+<dd><p>Test the successful creation of a user account</p>
+<p>Sends POST request with valid user data and verifies:
+- Response status code is OK (200)
+- Only one user is created in the database
+- The user email matches the input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password">
+<span class="sig-name descname"><span class="pre">test_create_account_weak_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password" title="Link to this definition"></a></dt>
+<dd><p>Tests account creation with weak password</p>
+<p>Sends POST request with intentionlly weak password and verifies:
+- Bad request (400)
+- Appropriate error message (“Password is too weak. Use a strong password with at least 6 upper and lower case alpha-numeric characters including special symbols”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-testing.test_exerciseview">
 <span id="test-exerciseview-module"></span><h2>test_exerciseview module<a class="headerlink" href="#module-testing.test_exerciseview" title="Link to this heading"></a></h2>
@@ -146,6 +272,8 @@
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_exerciseview.</span></span><span class="sig-name descname"><span class="pre">ExerciseViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<p>The Test Case for the ExerciseView</p>
+<p>Contains tests for exercise creation functionality, ensuring correct responses to functions</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.setUp">
 <span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.setUp" title="Link to this definition"></a></dt>
@@ -155,33 +283,118 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success">
 <span class="sig-name descname"><span class="pre">test_create_exercise_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the successful creation of an exercise</p>
+<p>Sends POST request with valid exercise data and verifies:
+- Response status code is OK (200)
+- the response contains correct exercise data
+- The exercise data matches the input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type">
 <span class="sig-name descname"><span class="pre">test_invalid_body_area_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid body area type</p>
+<p>Sends POST request with invalid body area type and verifies:
+- Bad request (400)
+- Appropriate error message (“Inavlid Body Area Type”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type">
 <span class="sig-name descname"><span class="pre">test_invalid_exercise_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid exercise type</p>
+<p>Sends POST request with invalid exercise type and verifies:</p>
+<ul class="simple">
+<li><p>Bad request (400)</p></li>
+<li><p>Appropriate error message (“Invalid Exercise Type”)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type">
 <span class="sig-name descname"><span class="pre">test_invalid_muscle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid muscle type</p>
+<p>Sends POST request with invalid muscle type and verifies:
+- Bad request (400)
+- Appropriate error message (“Invalid Muscle Type”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields">
 <span class="sig-name descname"><span class="pre">test_missing_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with missing fields</p>
+<p>Sends POST request with missing fields and verifies:
+- Bad request (400)
+- Appropriate error message (“Necessary Field(s) are empty”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="test-generateotpview-module">
-<h2>test_generateotpview module<a class="headerlink" href="#test-generateotpview-module" title="Link to this heading"></a></h2>
+<section id="module-testing.test_generateotpview">
+<span id="test-generateotpview-module"></span><h2>test_generateotpview module<a class="headerlink" href="#module-testing.test_generateotpview" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_generateotpview.</span></span><span class="sig-name descname"><span class="pre">GenerateOTPViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure">
+<span class="sig-name descname"><span class="pre">test_email_sending_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_smtp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.test_email_sending_failure" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success">
+<span class="sig-name descname"><span class="pre">test_generate_otp_success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_smtp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_generateotpview.GenerateOTPViewTests.test_generate_otp_success" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-testing.test_logexerciseview">
 <span id="test-logexerciseview-module"></span><h2>test_logexerciseview module<a class="headerlink" href="#module-testing.test_logexerciseview" title="Link to this heading"></a></h2>
