@@ -1344,13 +1344,52 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
 class UserDataCreateView(generics.CreateAPIView):
+
+    """
+    This API view handles the creation of user data objects and updating existing ones for the associated user logged in.
+    This handles validation for the user data fields, if the user data fields already exist in the database then this is updated with the most recent data provided.
+
+
+
+    Attributes:
+        gserializer_class (UserDataSerializer): The serializer class used for validating and serializing user data.
+
+    Raises:
+        TypeError: If any of the numeric fields are not valid numbers or negative numbers are provided.
+        ValueError: If the target weight is not a positive number.
+        api_error: If any of the required fields are not provided or invalid data is given.
+        
+        
+
+    Returns:
+        JsonResponse: A JSON response containing the serialized user data object or an error message if invalid data is provided.
+    """
+
     serializer_class = UserDataSerializer
 
     # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
     # this shouldn't happen, but isn't a problem because of user data cascade deletion
     # can be useful for tracking weight over time, but height and/or sex history should not be stored
     # TODO: potentially create another model for user weight and when that was logged, based off of this view
+
     def post(self, request, *args, **kwargs):
+
+        """
+        Method to handle POST requests for creating or updating user data upon valid input and handling errors.
+        This method validates the user data from the request body and creates or updates the user data object in the database
+        It also handles errors for invalid data types and missing required fields.
+        This will also delete all previous instances of the user data object and create a new object with the most recent data provided to ensure no duplicate user data objects are created.
+
+        Args:
+            request (Request): The HTTP request object containing the user data to be created or updated.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            JsonResponse: A JSON response containing the serialized user data object or an error message upon invalid data provided.
+        
+        """
+
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
