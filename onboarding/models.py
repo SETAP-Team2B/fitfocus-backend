@@ -298,24 +298,58 @@ class LoggedConsumable(models.Model):
     macros_logged = models.JSONField(validators=[validate_macros], null=True)
 
 class Routine(models.Model):
+    """
+    Represents a workout routine created by a user.
+
+    Attributes:
+        user (User): The user who created the routine.
+        name (str): The name of the routine.
+        description (str, optional): A description of the routine.
+        created_at (datetime): The date and time the routine was created.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Each routine belongs to a user
     name = models.CharField(max_length=255)  # Routine name
     description = models.TextField(blank=True, null=True)  # Optional description
     created_at = models.DateTimeField(auto_now_add=True)  # Automatically set timestamp
 
     def __str__(self):
+        """
+        Returns a string representation of the routine.
+        """
         return f"{self.name} ({self.user.username})"
 
 # RoutineExercise model
 class RoutineExercise(models.Model):
+    """
+    Links an exercise to a routine.
+
+    Attributes:
+        routine (Routine): The routine this exercise belongs to.
+        exercise (Exercise): The exercise being included.
+        order (int): The position of this exercise within the routine.
+    """
     routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name="routine_exercises")
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     order = models.PositiveIntegerField()
 
     def __str__(self):
+        """
+        Returns a string showing the exercise and its order in the routine.
+        """
         return f"{self.exercise.ex_name} in {self.routine.name} (Order: {self.order})"
 
 class LoggedRoutine(models.Model):
+    """
+    Stores a user's completed routine, including optional notes and performance data.
+
+    Attributes:
+        routine (Routine): The routine that was completed.
+        user (User): The user who completed the routine.
+        completed_at (datetime): When the routine was completed.
+        notes (str, optional): Additional notes provided by the user.
+        duration (timedelta, optional): How long the routine took.
+        progress (dict): JSON data containing exercise performance (e.g., sets/reps/weight).
+    """
     routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name='logged_routines')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     completed_at = models.DateTimeField(auto_now_add=True)
@@ -324,6 +358,9 @@ class LoggedRoutine(models.Model):
     progress = models.JSONField(default=dict)
 
     def __str__(self):
+        """
+        Returns a string indicating the user and when they completed the routine.
+        """
         return f"{self.user.username} completed {self.routine.name} on {self.completed_at}"
 
 class UserMood(models.Model):
