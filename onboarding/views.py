@@ -873,8 +873,8 @@ class ExerciseView(generics.CreateAPIView):
     """A view which allows for the creation and retrieval of exercises objects
     
         This view accepts the following request types:
-        *POST
-        *GET
+            * POST
+            * GET
     """
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
@@ -891,17 +891,17 @@ class ExerciseView(generics.CreateAPIView):
         
         The request accepts the following parameters:
         
-        ===============================  =====  ====================================================
-        Parameter                        Type   Description
-        ===============================  =====  ====================================================
-        ex_name                          str    The name of the exercise
-        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
-        ex_body_area                     str    The name of the body are that the exercise targets
-        equipment_needed                 str    The name of the equipment needed for the exercise
-        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
-        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
-        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
-        ===============================  =====  =====================================================
+        ================================  ====  ==================================================
+        Parameter                         Type   Description
+        ================================  ====  ==================================================
+        ex_name                           str    The name of the exercise
+        ex_type                           str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                      str    The name of the body are that the exercise targets
+        equipment_needed                  str    The name of the equipment needed for the exercise
+        ex_target_muscle (optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1 (optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2 (optional)  str    The name of any other muscles targeted
+        ================================  ====  ==================================================
         
         :param request: The request is passed through an API
         :type request: django.http.HttpRequest
@@ -978,17 +978,17 @@ class ExerciseView(generics.CreateAPIView):
     def get(self, request, *args, **kwargs):
         """This function retrieves an exercise object for the user
 
-        ===============================  =====  ====================================================
-        Parameter                        Type   Description
-        ===============================  =====  ====================================================
-        ex_name                          str    The name of the exercise
-        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
-        ex_body_area                     str    The name of the body are that the exercise targets
-        equipment_needed                 str    The name of the equipment needed for the exercise
-        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
-        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
-        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
-        ===============================  =====  =====================================================
+        ================================  ====  ==================================================
+        Parameter                         Type   Description
+        ================================  ====  ==================================================
+        ex_name                           str    The name of the exercise
+        ex_type                           str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                      str    The name of the body are that the exercise targets
+        equipment_needed                  str    The name of the equipment needed for the exercise
+        ex_target_muscle (optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1 (optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2 (optional)  str    The name of any other muscles targeted
+        ================================  ====  ==================================================
 
         :param request: The request is passed through an API
         :type request: django.http.HttpRequest
