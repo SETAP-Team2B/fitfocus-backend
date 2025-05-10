@@ -121,6 +121,19 @@ def get_user_by_email_username(request):
     return target_user
 
 def get_exercise_by_name(request):
+    """The function accepts an http request and matches the ex_name within to a corresponding object
+
+    The function will attempt to find the target_exercise given by the **ex_name** parameter.
+    If no **ex_name** is given an error is raised.
+    If no target_exercise can be found with the given **ex_name**, a DoesNotExist error is raised.
+    If a single target_exercise cannot be found with the given **ex_name**, a MultipleObjectsReturned error is raised.
+
+    :param request: The name of the exercise
+    :type request: string
+    :return: A succesfull response will return the correct target_exercise object
+    :rtype: object
+    """
+    
     target_exercise: Exercise | None = None
 
     # looks for an exercise with the given name within the database
@@ -780,6 +793,12 @@ class ResetPasswordView(generics.CreateAPIView):
 
 
 class ExerciseView(generics.CreateAPIView):
+    """A view which allows for the creation and retrieval of exercises objects
+    
+        This view accepts the following request types:
+        *POST
+        *GET
+    """
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
@@ -791,6 +810,27 @@ class ExerciseView(generics.CreateAPIView):
                     "Trapezius", "Traps", "Triceps", "Upper Back", "Upper Chest", "Wrist Extensors", "Wrist Flexors", "Wrists"]
 
     def post(self, request, *args, **kwargs):
+        """The function takes an http request and as long as all parameters are valid, saves the parameters as an exercise object in the datatabase
+        
+        The request accepts the following parameters:
+        
+        ===============================  =====  ====================================================
+        Parameter                        Type   Description
+        ===============================  =====  ====================================================
+        ex_name                          str    The name of the exercise
+        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                     str    The name of the body are that the exercise targets
+        equipment_needed                 str    The name of the equipment needed for the exercise
+        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
+        ===============================  =====  =====================================================
+        
+        :param request: The request is passed through an API
+        :type request: django.http.HttpRequest
+        :return: If succesful, will return api_success with a list of all the parameters
+        :rtype: django.http.Response
+        """
         # if no exercise objects, generate all from csv file
         if Exercise.objects.count() == 0:
             self.ExerciseFile()
@@ -859,6 +899,25 @@ class ExerciseView(generics.CreateAPIView):
 
     # given parameters equal to ex_type, filters all exercises for values
     def get(self, request, *args, **kwargs):
+        """This function retrieves an exercise object for the user
+
+        ===============================  =====  ====================================================
+        Parameter                        Type   Description
+        ===============================  =====  ====================================================
+        ex_name                          str    The name of the exercise
+        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                     str    The name of the body are that the exercise targets
+        equipment_needed                 str    The name of the equipment needed for the exercise
+        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
+        ===============================  =====  =====================================================
+
+        :param request: The request is passed through an API
+        :type request: django.http.HttpRequest
+        :return: A succesfull response will return a list of all parameters for a given exercise
+        :rtype: django.http.Response
+        """
         # if no exercise objects, generate all from csv file
         if Exercise.objects.count() == 0:
             self.ExerciseFile()
@@ -921,6 +980,8 @@ class ExerciseView(generics.CreateAPIView):
         return JsonResponse(list(exercises_page.object_list.values()), safe=False)
 
     def ExerciseFile(self):
+        """This function is used to save items in a csv file into the database
+        """
         exercise: Exercise
 
         exercise_list = open('fitfocus_exercise_list.csv')
@@ -941,11 +1002,44 @@ class ExerciseView(generics.CreateAPIView):
         exercise_list.close()
 
 class LogExerciseView(generics.CreateAPIView):
+    """This view allows for the creation and retrieval of legged exercises
+
+        This view accepts the following request types:
+        *POST
+        *GET
+
+    """
     serializer_class = LoggedExerciseSerializer
 
 
     # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
+        """The function takes an http request and as long as all parameters are valid, saves the parameters as an logged_exercise object in the datatabase
+        
+        The request accepts the following parameters:
+        =================================  ========  ====================================================
+        Parameter                          Type      Description
+        =================================  ========  ====================================================
+        user                               object    The user that is logging an exercise
+        exercise                           object    The type of exercise that is being logged
+        date_logged                        DATE      The date of when the user is logging the exercise
+        time_logged                        TIME      The time of when the user is logging the exercise
+        sets(optional)                     int       The number of sets the user has done
+        reps(optional)                     int       The number of reps the user has done
+        distance(optional)                 float     The distance covered during the exercise
+        distance_units(optional*)          str       The units for which distance is measured
+        duration(optional)                 duration  How long the exercise lasted
+        equipment_weight(optional)         list      The weight of the equipment used
+        equpment_weight_units(optional*)   str       The units for which weight is measured
+        =================================  ========  ===================================================
+        
+        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
+
+        :param request: The request is passed through an API
+        :type request: django.http.HTTpRequest
+        :return: A succesfull response will return API_Success with the text: Exercise Logged!
+        :rtype: django.http.Response
+        """
         print("Headers:", request.headers)
         print("Body:", request.body.decode('utf-8'))
         try:
@@ -1015,6 +1109,32 @@ class LogExerciseView(generics.CreateAPIView):
         return api_success("Exercised Logged!")
     
     def get(self, request, *args, **kwargs):
+        """The function retrieves a logged exerise for the user
+
+        The request accepts the following parameters:
+        =================================  ========  ====================================================
+        Parameter                          Type      Description
+        =================================  ========  ====================================================
+        user                               object    The user that is logging an exercise
+        exercise                           object    The type of exercise that is being logged
+        date_logged                        DATE      The date of when the user is logging the exercise
+        time_logged                        TIME      The time of when the user is logging the exercise
+        sets(optional)                     int       The number of sets the user has done
+        reps(optional)                     int       The number of reps the user has done
+        distance(optional)                 float     The distance covered during the exercise
+        distance_units(optional*)          str       The units for which distance is measured
+        duration(optional)                 duration  How long the exercise lasted
+        equipment_weight(optional)         list      The weight of the equipment used
+        equpment_weight_units(optional*)   str       The units for which weight is measured
+        =================================  ========  ===================================================
+        
+        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
+
+        :param request: The request is passed through an API
+        :type request: django.http.HTTpRequest
+        :return: A succesfull response will return a list of all the parameters
+        :rtype: django.http.Response
+        """
         # every single LoggedExercise object
         query_set = LoggedExercise.objects.values()
     
