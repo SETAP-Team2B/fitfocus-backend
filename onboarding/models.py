@@ -14,11 +14,32 @@ macro_keys = [
     "sugars_g",
     "cholesterol_g",
 ]
+"""A list of keys that will be used in any "macros" dictionaries, be it logged macros, or consumable macros.
+"""
 
 def positive_validator(value, include_equal: bool = False):
+    """A validator to ensure a given numeric field has a positive value.
+
+    :param value: The value to be validated.
+    :type value: int | float
+    :param include_equal: Whether or not the validator returns true on 0, defaults to False
+    :type include_equal: bool, optional
+    :return: Whether or not the value is above (or equal to, if include_equal is **True**) 0.
+    :rtype: bool
+    """
     return value > 0.0 if not include_equal else value >= 0.0
 
 def validate_macros(value):
+    """A validator to ensure that all the macro-nutrient values are non-negative.
+
+    This calls the `positive_validator` function, with include_equal = **True**.
+    Sometimes the `value` parameter may not actually be of type (dict), but checking the type will return dict.
+
+    :param value: The dictionary of macro-nutrients to be validated.
+    :type value: object
+    :return: False if the type of `value` is not dict, or if any macro-nutrient value is negative. Otherwise, returns True.
+    :rtype: bool
+    """
     if type(value) != dict: return False
 
     for key in value.keys():
@@ -30,8 +51,20 @@ def validate_macros(value):
     return True
 
 
-# Defines models and fields
 class OTP(models.Model):
+    """A one-time password.
+
+    ===========  ========  ============================  =====================================================================
+    Field        Type      Constraints                   Description
+    ===========  ========  ============================  =====================================================================
+    user         int       NOT NULL, FOREIGN KEY (User)  The user who the OTP is for.
+    otp          str       NOT NULL                      The OTP value.
+    created_at   datetime  NOT NULL                      When the OTP was created. Defaults to the current date and time.
+    expiry_time  datetime  NOT NULL                      When the OTP cannot be updated. Default is 5 minutes after created_at
+    verified     bool      NOT NULL                      Whether the OTP has been verified or not. Default is False.
+    ===========  ========  ============================  =====================================================================
+
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     otp = models.CharField(max_length=6, default="", null=False, db_comment="The OTP sent to the user.")
     created_at = models.DateTimeField(auto_now=True, db_comment="When the OTP was created. Useful for restricting the frequency of new OTP generation.")
@@ -73,13 +106,41 @@ class LoggedExercise(models.Model):
             "good": 1, # since it's been logged its obviously a good exercise (?)
         }
 
-# whether a user is verified or not
 class VerifiedUser(models.Model):
+    """Whether a user's account is verified or not.
+
+    ========  ====  ============================  =========================================================
+    Field     Type  Constraints                   Description
+    ========  ====  ============================  =========================================================
+    user      int   NOT NULL, FOREIGN KEY (User)  The user.
+    verified  bool  NOT NULL                      Whether the account is verified or not. Defaults to False
+    ========  ====  ============================  =========================================================
+
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
 
 # TODO: sort the __todict__ function to return None if applicable
 class RecommendedExercise(models.Model):
+    """A recommended exercise for a given user.
+
+    ======================  =========  ================================  ============================================================================
+    Field                   Type       Constraints                       Description
+    ======================  =========  ================================  ============================================================================
+    user                    int        NOT NULL, FOREIGN KEY (User)      The user the recommended exercise is for.
+    exercise                int        NOT NULL, FOREIGN KEY (Exercise)  The exercise that is recommended.
+    datetime_recommended    datetime   NOT NULL                          The date and time the recommendation was made. Defaults to current datetime.
+    good_recommendation     bool       NOT NULL                          Whether the recommendation is "good" or not. Defaults to True.
+    sets                    int                                          The amount of recommended sets in the exercise. Defaults to 0.
+    reps                    int                                          The amount of recommended reps per set in the exercise. Defaults to 0.
+    distance                float                                        The amount of recommended distance to travel in the exercise. Defaults to 0.
+    distance_units          str        MAX_LENGTH=5                      The units for **distance**. Choices are "km" or "mi".
+    duration                timedelta                                    The recommended duration of the exercise. Defaults to 0 seconds.
+    equipment_weight        list                                         The recommended equipment weight for the exercise.
+    equipment_weight_units  str        MAX_LENGTH=2                      The units of the given equipment weight.
+    ======================  =========  ================================  ============================================================================
+
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     datetime_recommended = models.DateTimeField(default=timezone.now)
@@ -95,6 +156,18 @@ class RecommendedExercise(models.Model):
     # only for making the ML model easier to import
     # only returns the minimum data necessary
     def __todict__(self):
+        """A function which converts any necessary features into a dictionary format.
+        Used when recommending an exercise as 
+
+        :return: A dictionary of the following attributes:
+            * sets (int)
+            * reps (int)
+            * distance (float)
+            * duration_mins (float)
+            * good (int)
+
+        :rtype: dict
+        """
         return {
             "sets": self.sets if self.sets else 0,
             "reps": self.reps if self.reps else 0,
@@ -125,6 +198,19 @@ class UserData(models.Model):
 # this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
 # i tried thinking about how to make it from other consumables but it broke my brain
 class Consumable(models.Model):
+    """A consumable item.
+
+    ===============  =====  ================================  =====================================================================
+    Field            Type   Constraints                       Description
+    ===============  =====  ================================  =====================================================================
+    name             str    NOT NULL, MAX_LENGTH=150, UNIQUE  The name of the consumable.
+    sample_size      float  NOT NULL, positive_validator      The amount of units in a sample.
+    sample_units     str    NOT NULL, MAX_LENGTH=20           The units to measure the item.
+    sample_calories  int    NOT NULL                          The calories per size of a sample.
+    sample_macros    dict   validate_macros                   The macro-nutrients per size of a sample.
+    ===============  =====  ================================  =====================================================================
+
+    """
     global macro_keys, positive_validator, validate_macros
 
     name = models.CharField(max_length=150, primary_key=True, unique=True) # primary key because it's unique. also stops consumable logging
@@ -135,6 +221,20 @@ class Consumable(models.Model):
     logged_user = models.ManyToManyField(to=User, through="LoggedConsumable")
 
 class LoggedConsumable(models.Model):
+    """A logged consumable item.
+
+    ===============  =====  ===================================  ===========================================
+    Field            Type   Constraints                          Description
+    ===============  =====  ===================================  ===========================================
+    user             int    NOT NULL, FOREIGN KEY (User)         The user who logged the consumable.
+    consumable       str    NOT NULL, FORIEIGN KEY (Consumable)  The name of the consumable that was logged.
+    amount_logged    float  NOT NULL, positive_validator         The amount of samples that were logged.
+    date_logged      date   NOT NULL                             The date the consumable was logged.
+    calories_logged  int    NOT NULL                             The total amount of calories logged.
+    macros_logged    dict   validate_macros                      The total amount of macro-nutrients logged.
+    ===============  =====  ===================================  ===========================================
+
+    """
     global macro_keys, positive_validator, validate_macros
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

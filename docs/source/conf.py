@@ -36,20 +36,13 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 # may have to use all django settings when importing
-autodoc_mock_import = [
-    'django', 
-    'django.contrib'
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'onboarding.models'
-]
+autodoc_mock_import = ['django']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+# including this fixes a warning when building docs
+linkcheck_allowed_redirects = {}
