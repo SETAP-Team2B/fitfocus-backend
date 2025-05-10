@@ -1,7 +1,7 @@
 urls module
 ===========
 
-.. automodule:: urls
+.. automodule:: onboarding.urls
    :members:
    :show-inheritance:
    :undoc-members:
