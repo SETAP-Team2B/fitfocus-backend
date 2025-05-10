@@ -9,7 +9,19 @@ from django.utils import timezone
 from datetime import timedelta
 
 class ValidateOTPViewTests(APITestCase):
+    """Test Case for the ValidateOTPView
+
+    Contains tests for the OTP validation functionality, ensuring that the correct responses to the functions
+    """
     def setUp(self):
+        """Sets up the Test Case
+
+        Is called before each test to initialize the URL for the validate otp endpoint 
+        
+        Creates test user with an OTP instance marked as unverified
+
+        :return: None
+        """
         self.url = reverse('validate-otp') 
         self.user_email = 'test@example.com'
         self.user_password = 'OldPassword123!'  
@@ -32,6 +44,18 @@ class ValidateOTPViewTests(APITestCase):
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_validate_otp_success(self, mock_get_user):
+        """Tests successful OTP validation
+        
+        Sends a POST request with valid otp and verifies:\n
+        - Response status code is OK (200)\n
+        - Message indicating success ("success")
+
+        :param mock_get_user: Mocked function to get user by email or username
+        :type mock_get_user: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail or the response content is not valid JSON
+        :return: None
+        """
         mock_get_user.return_value = self.user 
 
         data = {
@@ -39,7 +63,7 @@ class ValidateOTPViewTests(APITestCase):
         }
         response = self.client.post(self.url, json.dumps(data), content_type='application/json')
         
-        print("Response content:", response.content)  #Debugging output
+        print("Response content:", response.content) 
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -53,6 +77,20 @@ class ValidateOTPViewTests(APITestCase):
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_otp_expired(self, mock_get_user):
+        """Tests OTP validation attempt with expried OTP
+
+        Sets OTP to be expired
+        
+        Sends a POST request with expired otp and verifies:\n
+        - Response status code is Bad Request (400)\n
+        - Appropriate error message ("The OTP has expired. Please request a new OTP.")
+
+        :param mock_get_user: Mocked function to get user by email or username
+        :type mock_get_user: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
+        """
         mock_get_user.return_value = self.user
 
         # Set the OTP to be expired
@@ -71,6 +109,20 @@ class ValidateOTPViewTests(APITestCase):
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_incorrect_otp(self, mock_get_user):
+        """Tests OTP validation attempt with incorrect OTP
+
+        Sets OTP to be expired
+        
+        Sends a POST request with expired otp and verifies:\n
+        - Response status code is Bad Request (400)\n
+        - Appropriate error message ("The OTP has expired. Please request a new OTP.")
+
+        :param mock_get_user: Mocked function to get user by email or username
+        :type mock_get_user: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
+        """
         mock_get_user.return_value = self.user 
 
         data = {
@@ -85,6 +137,20 @@ class ValidateOTPViewTests(APITestCase):
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_otp_already_verified(self, mock_get_user):
+        """Tests OTP validation attempt with already verified OTP
+
+        Sets OTP to be verified
+        
+        Sends a POST request with verified otp and verifies:\n
+        - Response status code is Bad Request (400)\n
+        - Appropriate error message ("This OTP has already been entered before.")
+
+        :param mock_get_user: Mocked function to get user by email or username
+        :type mock_get_user: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
+        """
         mock_get_user.return_value = self.user
 
         # Mark the OTP as verified
@@ -103,6 +169,18 @@ class ValidateOTPViewTests(APITestCase):
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_no_otp_provided(self, mock_get_user):
+        """Tests OTP validation attempt with no OTP
+        
+        Sends a POST request with no otp and verifies:\n
+        - Response status code is Bad Request (400)\n
+        - Appropriate error message ("No OTP was provided.")
+
+        :param mock_get_user: Mocked function to get user by email or username
+        :type mock_get_user: unittest.mock.MagicMock
+
+        :raises AssertationError: If any of the assertions fail
+        :return: None
+        """
         mock_get_user.return_value = self.user
 
         data = {}  # No OTP provided

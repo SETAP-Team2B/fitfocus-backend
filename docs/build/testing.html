@@ -162,36 +162,106 @@
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_createaccountview.</span></span><span class="sig-name descname"><span class="pre">CreateAccountViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>The Test Case for the CreateAccountView</p>
+<p>Contains tests for user creation functionality, ensuring correct responses to the functions</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.setUp">
 <span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.setUp" title="Link to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+<dd><p>Sets up the Test Case</p>
+<p>Is called before each test to initalise the URL for the user creation end point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists">
 <span class="sig-name descname"><span class="pre">test_create_account_email_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_email_exists" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests account creation with existing email</p>
+<p>Creates user in database</p>
+<p>Sends POST request with same email and verifies:
+- Bad request (400)
+- Appropriate error message (“Email already exists on a user.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email">
 <span class="sig-name descname"><span class="pre">test_create_account_invalid_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_invalid_email" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests account creation with invalid email</p>
+<p>Sends POST request with invalid existing email and verifies:
+- Bad request (400)
+- Appropriate error message (“Invalid email or username.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields">
 <span class="sig-name descname"><span class="pre">test_create_account_missing_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_missing_fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests account creation with missing fields</p>
+<p>Sends POST request with already missing password and verifies:
+- Bad request (400)
+- Appropriate error message (“‘password’ is missing.”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_success">
 <span class="sig-name descname"><span class="pre">test_create_account_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_success" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the successful creation of a user account</p>
+<p>Sends POST request with valid user data and verifies:
+- Response status code is OK (200)
+- Only one user is created in the database
+- The user email matches the input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password">
 <span class="sig-name descname"><span class="pre">test_create_account_weak_password</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_createaccountview.CreateAccountViewTests.test_create_account_weak_password" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests account creation with weak password</p>
+<p>Sends POST request with intentionlly weak password and verifies:
+- Bad request (400)
+- Appropriate error message (“Password is too weak. Use a strong password with at least 6 upper and lower case alpha-numeric characters including special symbols”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -202,6 +272,8 @@
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testing.test_exerciseview.</span></span><span class="sig-name descname"><span class="pre">ExerciseViewTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<p>The Test Case for the ExerciseView</p>
+<p>Contains tests for exercise creation functionality, ensuring correct responses to functions</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.setUp">
 <span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.setUp" title="Link to this definition"></a></dt>
@@ -211,27 +283,90 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success">
 <span class="sig-name descname"><span class="pre">test_create_exercise_success</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_create_exercise_success" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the successful creation of an exercise</p>
+<p>Sends POST request with valid exercise data and verifies:
+- Response status code is OK (200)
+- the response contains correct exercise data
+- The exercise data matches the input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type">
 <span class="sig-name descname"><span class="pre">test_invalid_body_area_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_body_area_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid body area type</p>
+<p>Sends POST request with invalid body area type and verifies:
+- Bad request (400)
+- Appropriate error message (“Inavlid Body Area Type”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type">
 <span class="sig-name descname"><span class="pre">test_invalid_exercise_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_exercise_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid exercise type</p>
+<p>Sends POST request with invalid exercise type and verifies:</p>
+<ul class="simple">
+<li><p>Bad request (400)</p></li>
+<li><p>Appropriate error message (“Invalid Exercise Type”)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type">
 <span class="sig-name descname"><span class="pre">test_invalid_muscle_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_invalid_muscle_type" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with invalid muscle type</p>
+<p>Sends POST request with invalid muscle type and verifies:
+- Bad request (400)
+- Appropriate error message (“Invalid Muscle Type”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields">
 <span class="sig-name descname"><span class="pre">test_missing_required_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#testing.test_exerciseview.ExerciseViewTests.test_missing_required_fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Tests exercise creation with missing fields</p>
+<p>Sends POST request with missing fields and verifies:
+- Bad request (400)
+- Appropriate error message (“Necessary Field(s) are empty”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertationError</strong> – If any of the assertions fail</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
