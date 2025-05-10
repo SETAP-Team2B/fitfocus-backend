@@ -39,6 +39,19 @@ class OTP(models.Model):
     verified = models.BooleanField(default=False, db_comment="Whether the OTP for the user has been verified. Good for preventing repeat entries and also ensuring user is secure.")
 
 class Exercise(models.Model):  
+    """An exercise object
+    ======================  =========  ================================  ============================================================================
+    Field                   Type       Constraints                       Description
+    ======================  =========  ================================  ============================================================================
+    ex_name                 str        NOT NULL, MAX_LENGTH=80, UNIQUE   The name of the exercise
+    ex_type                 str        NOT NULL, MAX_LENGTH=100          Type of exercise, Cardio, Muscle etc
+    ex_body_area            str        NOT NULL, MAX_LENGTH=15           What body part the exercise is working on: Legs, back, chest etc
+    equipment_needed        str        NOT NULL, MAX_LENGTH=80           Equipment needed for exercise
+    ex_target_muscle        str        MAX_LENGTH=20                     Target Muscle - can be null for cardio
+    ex_secondary_muscle_1   str        MAX_LENGTH=30                     Secondary muscle targeted
+    ex_secondary_muscle_2   str        MAX_LENGTH=30                     Other Secondary Muscle Targeted
+    ======================  =========  ================================  ============================================================================
+    """
     ex_name = models.CharField(max_length=80, default="", null=False, db_comment="The name of the exercise")
     ex_type = models.CharField(max_length=100, default="", null=False, db_comment="Type of exercise, Cardio, Muscle etc")
     ex_body_area = models.CharField(max_length=15, default="", null=False, db_comment="What body part the exercise is working on: Legs, back, chest etc")
@@ -50,6 +63,26 @@ class Exercise(models.Model):
 # TODO: sort the __todict__ function to return None if applicable
 # subject to change with extra fields
 class LoggedExercise(models.Model):
+    """A logged exercise
+
+    ======================  =========  ========================================  ============================================================================
+    Field                   Type       Constraints                               Description
+    ======================  =========  ========================================  ============================================================================
+    user                    object     NOT NULL, UNIQUE, FOREIGN KEY (user)      The user that is logging an exercise
+    exercise                object     NOT NULL, UNIQUE, FOREIGN KEY (exercise)  The type of exercise that is being logged
+    date_logged             DATE                                                 The date of when the user is logging the exercise
+    time_logged             TIME                                                 The time of when the user is logging the exercise   
+    sets                    int                                                  The number of sets the user has done
+    reps                    int                                                  The number of reps the user has done
+    distance                float                                                The distance covered during the exercise
+    distance_units          str        MAX_LENGTH=5                              The units for which distance is measured
+    duration                duration                                             How long the exercise lasted
+    equpment_weight         list                                                 The weight of the equipment used
+    equipment_weight_units  str        MAX_LENGTH=2                              The units for which weight is measured               
+    ======================  =========  ========================================  ============================================================================
+
+
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=False)
     date_logged = models.DateField(default=timezone.now)
