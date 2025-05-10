@@ -6,4 +6,3 @@ utils/secrets.py
 onboarding/migrations/__pycache__/
 onboarding/__pycache__/
 utils/__pycache__/
-utils/api_secrets.py

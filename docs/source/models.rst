@@ -1,7 +1,7 @@
 models module
 =============
 
-.. automodule:: models
+.. automodule:: onboarding.models
    :members:
    :show-inheritance:
    :undoc-members:

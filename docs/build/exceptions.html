@@ -89,12 +89,18 @@
 <dt class="sig sig-object py" id="exceptions.InvalidNameException">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidNameException</span></span><a class="headerlink" href="#exceptions.InvalidNameException" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+<p>A generic exception that gets raised whenever a given name (not username) is invalid.
+Will raise with the following message:
+“Name cannot exceed 50 or contain less than 2 characters.”</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="exceptions.WeakPasswordError">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exceptions.</span></span><span class="sig-name descname"><span class="pre">WeakPasswordError</span></span><a class="headerlink" href="#exceptions.WeakPasswordError" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseException</span></code></p>
+<p>A generic exception that gets raised whenever a password is too weak.
+Will raise with the following message:
+“Password is too weak. Use a strong password with at least 6 upper and lower case alpha-numeric characters including special symbols”</p>
 </dd></dl>
 
 </section>
