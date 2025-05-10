@@ -459,8 +459,6 @@ class CreateAccountView(generics.CreateAPIView):
     
         Args:
             request (httpRequest): The http get request checks for the account data of the user if it exists.
-            *args: arguments.
-            **kwargs: keyword arguments.
         Returns:
             Response: A response object displaying the success response and any errors for the account deletion.
         """
@@ -895,13 +893,13 @@ class ExerciseView(generics.CreateAPIView):
         ================================  ====  ==================================================
         Parameter                         Type  Description
         ================================  ====  ==================================================
-        ex_name                           str    The name of the exercise
-        ex_type                           str    The name of the exercise type, Muscle, Cardio etc
-        ex_body_area                      str    The name of the body are that the exercise targets
-        equipment_needed                  str    The name of the equipment needed for the exercise
-        ex_target_muscle (optional)       str    The name of the muscle that the exercise targets
-        ex_secondary_muscle_1 (optional)  str    The name of any other muscles targeted
-        ex_secondary_muscle_2 (optional)  str    The name of any other muscles targeted
+        ex_name                           str   The name of the exercise
+        ex_type                           str   The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                      str   The name of the body are that the exercise targets
+        equipment_needed                  str   The name of the equipment needed for the exercise
+        ex_target_muscle (optional)       str   The name of the muscle that the exercise targets
+        ex_secondary_muscle_1 (optional)  str   The name of any other muscles targeted
+        ex_secondary_muscle_2 (optional)  str   The name of any other muscles targeted
         ================================  ====  ==================================================
         
         :param request: The request is passed through an API
