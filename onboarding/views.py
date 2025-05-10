@@ -371,10 +371,29 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 
 # Create your views here.
 class CreateAccountView(generics.CreateAPIView):
+    """
+    View for handling user account creation and deletion.
+    Created a new user if all inputs are valid, with checks for a valid email, username and password upon creation. 
+    The user is created as unverified and then verifies their email through a email otp upon login.
+
+    """
     serializer_class = UserSerializer
 
     # validates given email and username, checks given name within database and saves user data as unverified if valid
     def post(self, request, *args, **kwargs):
+        """
+        function to create a new user account upon valid details provided.
+        checks if email and username is already being used.
+        Password is checked for strength and error is displayed if not string enough.
+
+        Args:
+            request (httpRequest): The http post request sends the user data to the database upon valid entry.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            Response: A response object displaying a success response and any errors for the account creation.
+        """
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
         try:
@@ -418,6 +437,20 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error(error.__str__())
 
     def delete(self, request, *args, **kwargs):
+        """
+        Function to delete a user account upon valid details provided.
+        Checks if email and username is already being used.
+        The user is removed from the database upon valid details provided.
+
+    
+        Args:
+            request (httpRequest): The http get request checks for the account data of the user if it exists.
+            *args: arguments.
+            **kwargs: keyword arguments.
+        Returns:
+            Response: A response object displaying the success response and any errors for the account deletion.
+        """
+
         if type(request.data) is not dict:
             return api_error("Invalid request type.")
         
@@ -1718,13 +1751,52 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
 class UserDataCreateView(generics.CreateAPIView):
+
+    """
+    This API view handles the creation of user data objects and updating existing ones for the associated user logged in.
+    This handles validation for the user data fields, if the user data fields already exist in the database then this is updated with the most recent data provided.
+
+
+
+    Attributes:
+        serializer_class (UserDataSerializer): The serializer class used for validating and serializing user data.
+
+    Raises:
+        TypeError: If any of the numeric fields are not valid numbers or negative numbers are provided.
+        ValueError: If the target weight is not a positive number.
+        api_error: If any of the required fields are not provided or invalid data is given.
+        
+        
+
+    Returns:
+        JsonResponse: A JSON response containing the serialized user data object or an error message if invalid data is provided.
+    """
+
     serializer_class = UserDataSerializer
 
     # NOTE: THIS CREATES A NEW OBJECT FOR EACH POST
     # this shouldn't happen, but isn't a problem because of user data cascade deletion
     # can be useful for tracking weight over time, but height and/or sex history should not be stored
     # TODO: potentially create another model for user weight and when that was logged, based off of this view
+
     def post(self, request, *args, **kwargs):
+
+        """
+        Method to handle POST requests for creating or updating user data upon valid input and handling errors.
+        This method validates the user data from the request body and creates or updates the user data object in the database
+        It also handles errors for invalid data types and missing required fields.
+        This will also delete all previous instances of the user data object and create a new object with the most recent data provided to ensure no duplicate user data objects are created.
+
+        Args:
+            request (Request): The HTTP request object containing the user data to be created or updated.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            JsonResponse: A JSON response containing the serialized user data object or an error message upon invalid data provided.
+        
+        """
+
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
@@ -1808,9 +1880,47 @@ class UserDataCreateView(generics.CreateAPIView):
 
 
 class UserMoodView(generics.CreateAPIView):
+
+    """
+    This View handles the creation and retrieval of user mood data which is stored in the database.
+    It allows users to log their mood levels and the date/time when the mood was recorded.
+    The mood level can be an integer between -2 and 2, with -2 being the worst mood level, 0 being neutral, and 2 being the best mood level.
+    The date/time when the mood was recorded is optional for the user to provide and the current date/time is used if not provided.
+    The view also handles retrieving the latest mood level for the user along with the date/time it was recorded.
+
+    Attributes:
+        serializer_class (UserMoodSerializer): The serializer class used for validating and serializing user mood data.
+
+    Raises:
+        TypeError: If the mood level is not an integer or if the integer is not between -2 and 2.
+        TypeError: If the date/time format is incorrect or in the wrong format.
+        api_error: If the mood level is not provided or if the date/time format is incorrect.
+        api_error: If the user is not found or if the mood level is not provided.
+        api_success: If the mood level is successfully logged and the date/time is recorded.
+
+
+    Returns:
+        JsonResponse: A JSON response containing the serialized user mood data to POST to database or an error message if invalid data is provided.
+        Response: GET request for the most recent mood level and date/time recorded for the user from the database.
+    """
+
     serializer_class = UserMoodSerializer
 
     def post(self, request, *args, **kwargs):
+
+        """
+        Function to create user data mood records in the database and POST them to the database.
+        Checks if user is valid.
+        Handles errors for invalid data types and required fields which are missing.
+        Args:
+            request (Request): The HTTP request object containing the user mood data to be created or updated.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            JsonResponse: A JSON response containing the serialized user mood data to POST to database for the associated user or an error message if invalid data is provided.
+        """
+
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
@@ -1842,6 +1952,22 @@ class UserMoodView(generics.CreateAPIView):
         })
 
     def get(self, request, *args, **kwargs):
+
+        """
+        Function to retrieve the most recent mood level and date/time recorded for the user from the database.
+        Checks if user is valid.
+        Handles errors for invalid data types and required fields which are missing.
+        If there are no mood records for the user, a new UserMood object is created with mood level being 0 and a default date/time stamp.
+
+        Args:
+            request (Request): The HTTP GET request for retrieving the user mood data.     
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            Response: A JSON response containing the most recent mood level and date/time recorded for the user from the database.
+            
+        """
         user_mood_queryset = UserMood.objects.get_queryset()
 
         target_user: User | Response = get_user_by_email_username(request)
