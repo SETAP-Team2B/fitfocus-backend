@@ -1,6 +1,6 @@
 from django.db.utils import IntegrityError
 
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -9,12 +9,11 @@ from rest_framework import status
 from django.http import Http404
 from django.db.models import F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
-from utils.api import api_error, api_success, check_input
+from rest_framework.generics import RetrieveAPIView
+from utils.api import api_error, api_success
 from utils.exceptions import InvalidNameException, WeakPasswordError
-from utils.validator import Messages, validate_email, \
+from utils.validator import validate_email, \
     validate_username, check_password, check_name
-from django.core import serializers
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.models import User
@@ -33,24 +32,27 @@ import csv
 
 # for exercise recommendation
 import random
-from django.db.models import Avg, Count
+from django.db.models import Avg
 from math import floor
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from django.forms.models import model_to_dict
-from django.core import serializers
 from statistics import median_low
 
-import requests
-import utils.api_secrets as api_secrets
 import datetime
 
 
-# ensures all required attributes are in the request
-# reusable to all get/post functions
+def check_all_required_keys_present(request, keys: list[str]):
+    """A function to check that all the required keys for a given HTTP request are present in the request data.
 
-def check_all_required_keys_present(request, keys: list):
+    :param request: The HTTP request serialized via Django.
+    :type request: django.http.HttpRequest
+    :param keys: An array containing each key to check for within the request data.
+    :type keys: list[str]
+    :return: A HTTP 400 error if a key is not present within the request data. Otherwise returns None.
+    :rtype: None or django.http.Response
+    """
     if type(request) != dict:
         return api_error("Request was not a dictionary.")
 
@@ -79,6 +81,17 @@ def get_tokens_for_user(user):
 # should either return a User object or call an api_error.
 # ALSO LOOKS THROUGH QUERY PARAMS AS THAT IS THE ONLY WAY TO HANDLE IT IN DART
 def get_user_by_email_username(request):
+    """Finds a User model that corresponds to a given user identifier within an HTTP request.
+
+    Valid parameters to get a user by:
+    * username: the username of the User.
+    * email: the email address of the User.
+
+    :param request: The request to identify a user
+    :type request: django.http.HttpRequest
+    :return: A User object if a User can be found. If a user cannot be found, returns a Response with HTTP status code 400.
+    :rtype: django.auth.contrib.models.User or django.http.Response
+    """
     target_user: User | None = None
 
     # following if/elif/else statements find the user based on the inputted email/username
@@ -108,6 +121,19 @@ def get_user_by_email_username(request):
     return target_user
 
 def get_exercise_by_name(request):
+    """The function accepts an http request and matches the ex_name within to a corresponding object
+
+    The function will attempt to find the target_exercise given by the **ex_name** parameter.
+    If no **ex_name** is given an error is raised.
+    If no target_exercise can be found with the given **ex_name**, a DoesNotExist error is raised.
+    If a single target_exercise cannot be found with the given **ex_name**, a MultipleObjectsReturned error is raised.
+
+    :param request: The name of the exercise
+    :type request: string
+    :return: A succesfull response will return the correct target_exercise object
+    :rtype: object
+    """
+    
     target_exercise: Exercise | None = None
 
     # looks for an exercise with the given name within the database
@@ -123,52 +149,83 @@ def get_exercise_by_name(request):
     
     return target_exercise
 
-def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = None, equipment_weight_units: str = None):
+def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_random = False, bad_recommendation_limit: int = 3, k_neighbours: int = 5, distance_units: str = "km", equipment_weight_units: str = "kg"):
+    """The function to recommend an exercise to a given user.
+
+    The algorithm uses a K-Means nearest neighbour classification algorithm against logged exercises as well as 
+    previously recommended exercises to assess whether semi-randomly generated recommendations are good enough to be recommended.
+    
+    The following semi-pseudocode algorithm describes the general process of recommending an exercise to a user:    
+
+    | BEGIN 
+
+    1. set bad_recommendation counter to 0
+    2. generate a random exercise from all exercise objects
+    3. get all logged and recommended exercises for given user and given exercise
+    4. if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 steps above
+
+    4a. if truly_random:
+    
+        - set the following to be random integers within the given range (if applicable to given exercise):
+            - sets: [1, 5]
+            - reps: [1, 15]
+            - distance: [1, 10]
+            - duration (in minutes): [1, 20]
+
+    4b. if not truly_random:
+    
+        - set the following to be within the given range (if applicable to given exercise):
+            - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
+            - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
+            - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
+            - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
+            - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
+
+    5. combine the attributes into a given exercise
+    6. run through the ML model for recommending an exercise
+    
+    7.
+        if the recommendation is "bad":
+            - increment bad_recommendation counter by 1
+            - if equal to 3, start from BEGIN again
+            - if not equal to 3, repeat "if truly_random or not" section
+    
+        if the recommendation is "good":
+            - recommend the exercise by adding it to exercises array
+
+    8. repeat until exercises array length = exercises_to_recommend
+
+    END
+
+    :param user: The user to recommend exercises for.
+    :type user: User
+
+    :param exercises_to_recommend: The number of exercises to recommend, defaults to 1
+    :type exercises_to_recommend: int, optional
+    
+    :param truly_random: Whether the algorithm recommends a truly random exercises, defaults to False
+    :type truly_random: bool, optional
+    
+    :param bad_recommendation_limit: the amount of "bad recommendations" to generate under a given range of parameters before restarting the algorithm, defaults to 3
+    :type bad_recommendation_limit: int, optional
+    
+    :param k_neighbours: The number of neighbours to use in the K-Means algorithm, defaults to 5
+    :type k_neighbours: int, optional
+    
+    :param distance_units: The units to use if a distance is output, defaults to "km"
+    :type distance_units: str, optional
+    
+    :param equipment_weight_units: The equipment weight to use if an exercise uses equipment weights, defaults to "kg"
+    :type equipment_weight_units: str, optional
+    
+    :return: A Response containing a list of dictionary-like objects, representing recommended exercises. List can be empty.
+    :rtype: django.http.Response
+    """
     exercises: list[RecommendedExercise] = []
 
     # TODO: implement factors that affect a recommendation e.g. user's daily mood/motivation, etc.
     # TODO: generate points based on given recommendation
     # TODO: handle the case where the user has NO logged exercises and/or NO recommended exercises
-
-    '''
-    algorithm: 
-    
-    BEGIN 
-
-    - set bad_recommendation counter to 0
-    - generate a random exercise from all exercise objects
-    - get all logged and recommended exercises for given user and given exercise
-    - if (proportion of good_recommendation >= 40%) OR (number of recommended_exercises + logged_exercises < 5), continue OTHERWISE repeat from 2 lines above
-
-    if truly_random:
-    - set the following to be random integers within the given range (if applicable to given exercise):
-    - sets: [1, 5]
-    - reps: [1, 15]
-    - distance: [1, 10]
-    - duration (in minutes): [1, 20]
-
-    if not truly_random:
-    - set the following to be within the given range (if applicable to given exercise):
-    - sets: [1, ROUND(AVERAGE(exercise_history.sets) * random_range([0.8, 1.2]))]
-    - reps: [1, ROUND(AVERAGE(exercise_history.reps WHERE exercise_history.sets >= sets - 1))]
-    - distance: [1, ROUND(AVERAGE(exercise_history.distance) * random_range([0.7, 1.3]))]
-    - duration (in minutes): [1, ROUND(AVERAGE(exercise_history.duration) * random_range([0.8, 1.2]))]
-    - equipment_weight: [1, ROUND(AVERAGE(exercise_history.equipment_weight) * random_range([0.9, 1.3]))]
-
-    - combine the attributes into a given exercise
-    - run through the ML model for recommending an exercise
-    
-    if the recommendation is "bad":
-    - increment bad_recommendation counter by 1
-    ----- if equal to 3, start from BEGIN again
-    ----- if not equal to 3, repeat "if truly_random or not" section
-    
-    if the recommendation is "good":
-    - recommend the exercise
-    - add it to exercises array
-
-    END
-    '''
 
     for _ in range(exercises_to_recommend):
         recommended = False
@@ -480,27 +537,53 @@ class LoginView(APIView):
 
 
 class GenerateOTPView(generics.CreateAPIView):
+    """A view which is used to generate One-Time Passwords to a given user.
+
+    This view accepts the following request types:
+        * POST
+    """
+
     serializer_class = OTPSerializer
 
     # function which uses the OTP model
 
     # input should be:
     # - valid username/email
-    # - a custom OTP (optional, probably never useful)
 
     # output should be (no actual values are necessary to be returned, only for debug purposes):
     # - SUCCESS if the following conditions are met:
     # ----- there exists a user with the inputted username and/or email address
     # ----- the email is succesfully sent
     # - FAIL if any of the above conditions are not met
-    def post(self, request, custom_otp: str = None, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        """The function which generates a one-time password for a given user.
+
+        The request accepts the following parameters:
+        
+        =========  ====  ====================
+        Parameter  Type  Description
+        =========  ====  ====================
+        username   str   Identifies the user.
+        email      str   Identifies the user.
+        =========  ====  ====================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then an OTP will be sent to the user's email.
+        This OTP will last for 5 minutes from sending the email.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "API sent." If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
             return target_user
 
         # generates OTP and send to user, contains 6 digits from 0-9
-        otp = (f"{randint(0, 999999):06d}" if custom_otp == None else custom_otp)
+        otp = f"{randint(0, 999999):06d}"
 
         try:
             # REMOVE FROM GITHUB IF POSSIBLE
@@ -567,6 +650,11 @@ class GenerateOTPView(generics.CreateAPIView):
 
 
 class ValidateOTPView(generics.CreateAPIView):
+    """A view which is used to validate a requested One-Time Password for a given user.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = OTPSerializer
 
     # post should include:
@@ -580,6 +668,32 @@ class ValidateOTPView(generics.CreateAPIView):
     # ----- attempted OTP = stored OTP
     # - "fail" OR an error description if any of the above conditions are not met
     def post(self, request, *args, **kwargs):
+        """The function which validates a one-time password for a given user.
+
+        The request accepts the following parameters:
+        
+        =========  ====  ==================================
+        Parameter  Type  Description
+        =========  ====  ==================================
+        username   str   Identifies the user.
+        email      str   Identifies the user.
+        otp        str   The one-time password to validate.
+        =========  ====  ==================================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then the given one-time password will be checked against the database.
+        If the OTP is correct and has not expired (5 minutes from requesting an OTP), then the OTP will be verified and
+        the user can proceed with a specific task. If the user has not yet verified their account, this will
+        also verify their account. If the given OTP has already been verified before, then the request will
+        be unsuccessful, and the user will have to generate a new OTP.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "success". If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
@@ -625,9 +739,44 @@ class ValidateOTPView(generics.CreateAPIView):
             return api_error("The OTP you entered is incorrect.")
         
 class ResetPasswordView(generics.CreateAPIView):
+    """A view which is used to reset a given user's password.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
+        """The function which changes a given user's password.
+
+        The request accepts the following parameters:
+        
+        ================  ====  =================================
+        Parameter         Type  Description
+        ================  ====  =================================
+        username          str   Identifies the user.
+        email             str   Identifies the user.
+        new_password      str   The new password for the user.
+        confirm_password  str   Confirmation of the new password.
+        ================  ====  =================================
+        
+
+        The function will attempt to find the user by the given username/email input,
+        and if a user can be found, then it will check if the OTP for the user has been verified.
+        If the OTP has not been verified, it will raise an error.
+        It will then compare the "new_password" and "confirm_password" parameters.
+        If they do not match, an error will be raised.
+        If they do match, then these values will be checked to ensure the passwords are strong enough,
+        and if they are not strong enough, then an error will be raised.
+        If the new password is strong enough, the user's OTP will be changed and unverified, preventing
+        repeated OTP verification without explicitly requesting a new one.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Password Successfully Changed". If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
 
         if type(target_user) == Response:
@@ -662,10 +811,11 @@ class ResetPasswordView(generics.CreateAPIView):
             target_user.set_password(raw_password=new_password)
             target_user.save()
 
-            # sets the current OTP to become invalid, otherwise this would make the user able to change their password an unlimited amount of times through the API
+            # change the user's OTP and un-verify it, because otherwise the user can repetitively validate the same OTP to reset a password without explicitly requesting a new one
             # while not possible in the app as changing the password redirects the user to the login/home screen
             # very rare scenario but good for security
             currentOTP: OTP = OTP.objects.get(user=target_user)
+            currentOTP.otp = f"{randint(0, 999999):06d}"
             currentOTP.verified = False
             currentOTP.save()
 
@@ -676,6 +826,12 @@ class ResetPasswordView(generics.CreateAPIView):
 
 
 class ExerciseView(generics.CreateAPIView):
+    """A view which allows for the creation and retrieval of exercises objects
+    
+        This view accepts the following request types:
+        *POST
+        *GET
+    """
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
     exercise_type = ["Muscle" ,"Cardio","Flexibility"]
@@ -687,6 +843,27 @@ class ExerciseView(generics.CreateAPIView):
                     "Trapezius", "Traps", "Triceps", "Upper Back", "Upper Chest", "Wrist Extensors", "Wrist Flexors", "Wrists"]
 
     def post(self, request, *args, **kwargs):
+        """The function takes an http request and as long as all parameters are valid, saves the parameters as an exercise object in the datatabase
+        
+        The request accepts the following parameters:
+        
+        ===============================  =====  ====================================================
+        Parameter                        Type   Description
+        ===============================  =====  ====================================================
+        ex_name                          str    The name of the exercise
+        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                     str    The name of the body are that the exercise targets
+        equipment_needed                 str    The name of the equipment needed for the exercise
+        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
+        ===============================  =====  =====================================================
+        
+        :param request: The request is passed through an API
+        :type request: django.http.HttpRequest
+        :return: If succesful, will return api_success with a list of all the parameters
+        :rtype: django.http.Response
+        """
         # if no exercise objects, generate all from csv file
         if Exercise.objects.count() == 0:
             self.ExerciseFile()
@@ -755,6 +932,25 @@ class ExerciseView(generics.CreateAPIView):
 
     # given parameters equal to ex_type, filters all exercises for values
     def get(self, request, *args, **kwargs):
+        """This function retrieves an exercise object for the user
+
+        ===============================  =====  ====================================================
+        Parameter                        Type   Description
+        ===============================  =====  ====================================================
+        ex_name                          str    The name of the exercise
+        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
+        ex_body_area                     str    The name of the body are that the exercise targets
+        equipment_needed                 str    The name of the equipment needed for the exercise
+        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
+        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
+        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
+        ===============================  =====  =====================================================
+
+        :param request: The request is passed through an API
+        :type request: django.http.HttpRequest
+        :return: A succesfull response will return a list of all parameters for a given exercise
+        :rtype: django.http.Response
+        """
         # if no exercise objects, generate all from csv file
         if Exercise.objects.count() == 0:
             self.ExerciseFile()
@@ -817,6 +1013,8 @@ class ExerciseView(generics.CreateAPIView):
         return JsonResponse(list(exercises_page.object_list.values()), safe=False)
 
     def ExerciseFile(self):
+        """This function is used to save items in a csv file into the database
+        """
         exercise: Exercise
 
         exercise_list = open('fitfocus_exercise_list.csv')
@@ -837,11 +1035,44 @@ class ExerciseView(generics.CreateAPIView):
         exercise_list.close()
 
 class LogExerciseView(generics.CreateAPIView):
+    """This view allows for the creation and retrieval of legged exercises
+
+        This view accepts the following request types:
+        *POST
+        *GET
+
+    """
     serializer_class = LoggedExerciseSerializer
 
 
     # retrieves target user and target exercise from username
     def post(self, request, *args, **kwargs):
+        """The function takes an http request and as long as all parameters are valid, saves the parameters as an logged_exercise object in the datatabase
+        
+        The request accepts the following parameters:
+        =================================  ========  ====================================================
+        Parameter                          Type      Description
+        =================================  ========  ====================================================
+        user                               object    The user that is logging an exercise
+        exercise                           object    The type of exercise that is being logged
+        date_logged                        DATE      The date of when the user is logging the exercise
+        time_logged                        TIME      The time of when the user is logging the exercise
+        sets(optional)                     int       The number of sets the user has done
+        reps(optional)                     int       The number of reps the user has done
+        distance(optional)                 float     The distance covered during the exercise
+        distance_units(optional*)          str       The units for which distance is measured
+        duration(optional)                 duration  How long the exercise lasted
+        equipment_weight(optional)         list      The weight of the equipment used
+        equpment_weight_units(optional*)   str       The units for which weight is measured
+        =================================  ========  ===================================================
+        
+        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
+
+        :param request: The request is passed through an API
+        :type request: django.http.HTTpRequest
+        :return: A succesfull response will return API_Success with the text: Exercise Logged!
+        :rtype: django.http.Response
+        """
         print("Headers:", request.headers)
         print("Body:", request.body.decode('utf-8'))
         try:
@@ -911,6 +1142,32 @@ class LogExerciseView(generics.CreateAPIView):
         return api_success("Exercised Logged!")
     
     def get(self, request, *args, **kwargs):
+        """The function retrieves a logged exerise for the user
+
+        The request accepts the following parameters:
+        =================================  ========  ====================================================
+        Parameter                          Type      Description
+        =================================  ========  ====================================================
+        user                               object    The user that is logging an exercise
+        exercise                           object    The type of exercise that is being logged
+        date_logged                        DATE      The date of when the user is logging the exercise
+        time_logged                        TIME      The time of when the user is logging the exercise
+        sets(optional)                     int       The number of sets the user has done
+        reps(optional)                     int       The number of reps the user has done
+        distance(optional)                 float     The distance covered during the exercise
+        distance_units(optional*)          str       The units for which distance is measured
+        duration(optional)                 duration  How long the exercise lasted
+        equipment_weight(optional)         list      The weight of the equipment used
+        equpment_weight_units(optional*)   str       The units for which weight is measured
+        =================================  ========  ===================================================
+        
+        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
+
+        :param request: The request is passed through an API
+        :type request: django.http.HTTpRequest
+        :return: A succesfull response will return a list of all the parameters
+        :rtype: django.http.Response
+        """
         # every single LoggedExercise object
         query_set = LoggedExercise.objects.values()
     
@@ -966,6 +1223,12 @@ class LogExerciseView(generics.CreateAPIView):
         return JsonResponse(filtered_response, safe=False)
 
 class RecommendExerciseView(generics.CreateAPIView):
+    """This view handles the generation and viewing of recommending exercises.
+
+    This view accepts the following request types:
+        * GET
+
+    """
     serializer_class = RecommendedExerciseSerializer
 
     # will generate recommended exercises based on the following:
@@ -974,6 +1237,33 @@ class RecommendExerciseView(generics.CreateAPIView):
     # - exercises_to_recommend: non-negative integer (default 1)
     # - k_neighbours: positive integer (default 5)
     def get(self, request, *args, **kwargs):
+        """The function to recommend exercises.
+
+        The request accepts the following parameters:
+        
+        =================================  ====  ==============================================================================================================
+        Parameter                          Type  Description
+        =================================  ====  ==============================================================================================================
+        username                           str   Identifies the user.
+        email                              str   Identifies the user.
+        truly_random (optional)            bool  Whether the algorithm will recommend a completely random exercise. Defaults to False.
+        exercises_to_recommend (optional)  int   The total amount of exercises to recommend a user. Defaults to 1.
+        k_neighbours (optional)            int   The parameter to optimise the recommendation algorithm strength. Change if you have experience. Defaults to 5.
+        distance_units (optional)          str   The units to use for recommended distance units. Defaults to "km"
+        equipment_weight_units (optional)  str   The units to use for recommended equipment weights. Defaults to "kg"
+        =================================  ====  ==============================================================================================================
+
+        The function will recommend an exercise via the `recommend_exercise` function.
+        The request takes in a user, attempts to find a user, and raises an error if a user cannot be found.
+        It will run a K-Means nearest neighbours algorithm on the user's logged exercises and previous recommendations
+        to recommend exercises, unless truly_random is True, in which case it will recommend a completely random exercise from the database.
+        The view will return a list of dictionary-like objects representing recommended exercises.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A Response with either a 200 success message, containing serialized JSON data for recommended exercises, or a HTTP 400 status response, with a corresponding error message.
+        :rtype: django.http.Response
+        """
         truly_random: bool = False
         exercises_to_recommend: int = 1
         k_neighbours: int = 5
@@ -1064,9 +1354,38 @@ class RecommendExerciseView(generics.CreateAPIView):
         )
     
 class UpdateRecommendedExerciseView(generics.CreateAPIView):
+    """A view which is used to update whether a recommended exercise was a good recommendation or not.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = RecommendedExerciseSerializer
 
     def post(self, request, *args, **kwargs):
+        """The function which updates a given recommended exercise.
+
+        The request accepts the following parameters:
+        
+        ===================  ====  ==============================================
+        Parameter            Type  Description
+        ===================  ====  ==============================================
+        rec_ex_id            int   The ID for the given recommended exercise.
+        good_recommendation  bool  If the recommended exercise was "good" or not.
+        ===================  ====  ==============================================
+        
+
+        The function will attempt to find a recommended exercise given by the **rec_ex_id** parameter.
+        If a single recommended exercise cannot be found, an error will be raised.
+        If **good_recommendation** can be parsed to a boolean, then the *good_recommendation* property
+        of the recommended exercise will be set to this **good_recommendation** request parameter.
+        If it cannot be parsed, it will always be set to **True**.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Recommended exercise successfully updated." If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         print(request.data)
         rec_ex_id = request.data.get("rec_ex_id")
         good_recommendation = request.data.get("good_recommendation")
@@ -1079,17 +1398,50 @@ class UpdateRecommendedExerciseView(generics.CreateAPIView):
             rec_ex.good_recommendation = good_recommendation if type(good_recommendation) == bool else True
             rec_ex.save()
 
-            return api_success("Exercise successfully updated.")
+            return api_success("Recommended exercise successfully updated.")
         except RecommendedExercise.DoesNotExist:
             return api_error("A recommended exercise could not be found.")
         except RecommendedExercise.MultipleObjectsReturned:
             return api_error("Multiple recommended exercises were found.") # should never happen
 
 class ConsumableView(generics.CreateAPIView):
+    """A view which handles the creation and updates of consumable items.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = ConsumableSerializer
 
-    # handles creating OR updating a consumable based on the name
     def post(self, request, *args, **kwargs):
+        """The function which creates or updates a given consumable item.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ======================================================================
+        Parameter                 Type   Description
+        ========================  =====  ======================================================================
+        name                      str    The name of the consumable item. (e.g. apple, water)
+        sample_size               float  The amount of a given sample to store.
+        sample_calories           int    The amount of calories in the given sample.
+        sample_units (optional)   str    The units of the sample (e.g. portion, slice). Defaults to "serving".
+        sample_macros (optional)  dict   A dictionary of macro-nutrient values of the sample. Defaults to None.
+        ========================  =====  ======================================================================
+        
+        The function attempts to find a consumable with the given **name** parameter input.
+        If one cannot be found, then a new consumable will be created from scratch.
+        If multiple consumables are found, then an error will be raised.
+        The remaining attributes are then passed on to the consumable item, overwriting
+        any existing attributes, and is stored/updated in the database.
+
+        One limitation of this API is that if an optional attribute is not included,
+        it will be overwritten in the database with the corresponding default value.
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Consumable created!" If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         keys = [
             "name",
             "sample_size",
@@ -1104,7 +1456,6 @@ class ConsumableView(generics.CreateAPIView):
         except Consumable.MultipleObjectsReturned:
             return api_error("Multiple ingredients with the same name were found.")
 
-        # if the ingredient did not exist beforehand, the user passed through is made the owner of this ingredient
         consumable.sample_calories = request.data["sample_calories"]
         consumable.sample_macros = request.data.get("sample_macros")
         consumable.sample_size = request.data["sample_size"]
@@ -1126,9 +1477,39 @@ The LogConsumable view takes in the following parameters:
 - *macros_logged: a dictionary (keys can only be from models.macro_keys, values are all numeric), containing the macronutrient total of the consumable
 '''
 class LogConsumableView(generics.CreateAPIView):
+    """A view which handles logged consumables by users.
+
+    This view accepts the following request types:
+        * GET
+        * POST
+    """
     serializer_class = LoggedConsumableSerializer
 
     def get(self, request, *args, **kwargs):
+        """The function which retrieves a list of logged consumables for a given user.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ==================================================================
+        Parameter                 Type   Description
+        ========================  =====  ==================================================================
+        username                  str    Identifies the user.
+        email                     str    Identifies the user.
+        date_logged (optional)    str    The date that the consumable was logged in the format "YYYY-MM-DD"
+        ========================  =====  ==================================================================
+        
+        The function will start off with a list of every logged consumable object, and filter it
+        based off the given user identified, as well as the given date to filter to. This will find all
+        consumables logged by a given user on a certain date. If no date is provided, it will only filter
+        by the given user, returning every single logged consumable by the user.
+        If no user is provided or cannot be found, it will return an error.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing a list of logged consumables in a dictionary format, excluding the details of the user, to protect privacy. 
+            If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         logged_consumable_queryset = LoggedConsumable.objects.get_queryset()
 
         target_user = get_user_by_email_username(request)
@@ -1159,6 +1540,32 @@ class LogConsumableView(generics.CreateAPIView):
         return JsonResponse(serialized_consumables, safe=False)
 
     def post(self, request, *args, **kwargs):
+        """The function which logs a given consumable item for a given user.
+
+        The request accepts the following parameters:
+        
+        ========================  =====  ===================================================================
+        Parameter                 Type   Description
+        ========================  =====  ===================================================================
+        username                  str    Identifies the user.
+        email                     str    Identifies the user.
+        consumable                str    The name of the consumable logged.
+        date_logged               str    The date that the consumable was logged. In the format "YYYY-MM-DD"
+        calories_logged           int    The total amount of calories that were logged.
+        amount_logged (optional)  float  The amount of the consumable that was logged. Defaults to 1
+        macros_logged (optional)  dict   The total amount of macro-nutrients that were logged. Defaults to None
+        ========================  =====  ===================================================================
+        
+        The function will find a user by the given username/email, and if one cannot be found, an error will be raised.
+        Given a consumable name, it will attempt to find one within the database of consumable items.
+        If one cannot be found, a new consumable will be added, and will be provided all of the nutrition/sample size
+        values.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response containing the message "Consumable logged!" If any errors occurred, returns a HTTP status code 400 response, alongside the corresponding error message.
+        :rtype: django.http.Response
+        """
         keys = [
             "consumable",
             "amount_logged",
@@ -1715,10 +2122,24 @@ class ExerciseDetailView(RetrieveAPIView):
     serializer_class = ExerciseSerializer
     
 class RecommendConsumableView(generics.CreateAPIView):
+    """This view handles recommending consumables for users.
+
+    This view accepts the following request types:
+        * POST
+    """
     serializer_class = ConsumableSerializer
 
     # TODO: be called if the size of the consumable database is 100 objects or less? to be decided
     def fill_consumable_dataset(self):
+        """This function will populate the Consumable table within the database with sample values taken from the USDA food safety website.
+        This data was transformed/processed from the following ZIP file: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip
+
+        It will read the above transformed file, and convert the contents into a list of dictionaries, parsing those into Consumable objects in the database.
+        If the consumable already exists in the dataset, it will overwrite the existing object.
+
+        :return: always returns a HTTP success response, with the message "dataset filled with foods".
+        :rtype: django.http.Response
+        """
         with open("utils/food_data/food.json") as f:
             food_file_content: list[dict] = json.loads(f.read())
 
@@ -1763,6 +2184,33 @@ class RecommendConsumableView(generics.CreateAPIView):
     # (OPTIONAL) consumables_to_recommend - number of consumables to recommend to the user (default 1)
     # (OPTIONAL) recommendation_date - date to look at when generating recommendation dataset (default today)
     def post(self, request):
+        """The function which recommends a certain number of consumables for a given user.
+
+        The request accepts the following parameters:
+        
+        =====================================  ====  =================================================================================
+        Parameter                              Type  Description
+        =====================================  ====  =================================================================================
+        username                               str   Identifies the user.
+        email                                  str   Identifies the user.
+        consumables_to_recommend (optional)    int   The number of consumables to recommend. Defaults to 1.
+        recommendation_date (optional)         int   The date to base consumed foods on. Defaults to today. In the format "YYYY-MM-DD"
+        =====================================  ====  =================================================================================
+        
+        The function will be given a username/email, and if the user cannot be found, an error will be returned.
+        If the user can be found, then it will investigate the user's consumed foods for the given **recommendation_date**.
+        It will also analyse the user's most recently recorded mood/motivation level, as well as any target goals the user has set.
+        Using these, it will influence the recommended macro-nutrients, and base the amount of food consumed to determine the size of the meal.
+        The amount of calories in a meal is determined through the Harris-Benedict formulae, alongside the user's data, such as age, sex, height and weight (if the user has opted to provide this).
+        It will then iterate through each potential meal recommendation.
+        Each potential meal recommendation has an 80% chance to be added to the meal recommendation list, until the length reaches **consumables_to_recommend** 
+
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A Response object containing an array of serialized recommended consumables, otherwise it will return a HTTP 400 response with a message detailing the error.
+        :rtype: django.http.Response
+        """
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
