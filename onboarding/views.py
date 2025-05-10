@@ -1352,7 +1352,7 @@ class UserDataCreateView(generics.CreateAPIView):
 
 
     Attributes:
-        gserializer_class (UserDataSerializer): The serializer class used for validating and serializing user data.
+        serializer_class (UserDataSerializer): The serializer class used for validating and serializing user data.
 
     Raises:
         TypeError: If any of the numeric fields are not valid numbers or negative numbers are provided.
@@ -1473,9 +1473,47 @@ class UserDataCreateView(generics.CreateAPIView):
 
 
 class UserMoodView(generics.CreateAPIView):
+
+    """
+    This View handles the creation and retrieval of user mood data which is stored in the database.
+    It allows users to log their mood levels and the date/time when the mood was recorded.
+    The mood level can be an integer between -2 and 2, with -2 being the worst mood level, 0 being neutral, and 2 being the best mood level.
+    The date/time when the mood was recorded is optional for the user to provide and the current date/time is used if not provided.
+    The view also handles retrieving the latest mood level for the user along with the date/time it was recorded.
+
+    Attributes:
+        serializer_class (UserMoodSerializer): The serializer class used for validating and serializing user mood data.
+
+    Raises:
+        TypeError: If the mood level is not an integer or if the integer is not between -2 and 2.
+        TypeError: If the date/time format is incorrect or in the wrong format.
+        api_error: If the mood level is not provided or if the date/time format is incorrect.
+        api_error: If the user is not found or if the mood level is not provided.
+        api_success: If the mood level is successfully logged and the date/time is recorded.
+
+
+    Returns:
+        JsonResponse: A JSON response containing the serialized user mood data to POST to database or an error message if invalid data is provided.
+        Response: GET request for the most recent mood level and date/time recorded for the user from the database.
+    """
+
     serializer_class = UserMoodSerializer
 
     def post(self, request, *args, **kwargs):
+
+        """
+        Function to create user data mood records in the database and POST them to the database.
+        Checks if user is valid.
+        Handles errors for invalid data types and required fields which are missing.
+        Args:
+            request (Request): The HTTP request object containing the user mood data to be created or updated.
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            JsonResponse: A JSON response containing the serialized user mood data to POST to database for the associated user or an error message if invalid data is provided.
+        """
+
         target_user: User | Response = get_user_by_email_username(request)
         if type(target_user) == Response: return target_user
 
@@ -1507,6 +1545,22 @@ class UserMoodView(generics.CreateAPIView):
         })
 
     def get(self, request, *args, **kwargs):
+
+        """
+        Function to retrieve the most recent mood level and date/time recorded for the user from the database.
+        Checks if user is valid.
+        Handles errors for invalid data types and required fields which are missing.
+        If there are no mood records for the user, a new UserMood object is created with mood level being 0 and a default date/time stamp.
+
+        Args:
+            request (Request): The HTTP GET request for retrieving the user mood data.     
+            *args: arguments.
+            **kwargs: keyword arguments.
+
+        Returns:
+            Response: A JSON response containing the most recent mood level and date/time recorded for the user from the database.
+            
+        """
         user_mood_queryset = UserMood.objects.get_queryset()
 
         target_user: User | Response = get_user_by_email_username(request)
