@@ -872,9 +872,10 @@ class ResetPasswordView(generics.CreateAPIView):
 class ExerciseView(generics.CreateAPIView):
     """A view which allows for the creation and retrieval of exercises objects
     
-        This view accepts the following request types:
-            * POST
-            * GET
+    This view accepts the following request types:
+        * POST
+        * GET
+
     """
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
@@ -892,7 +893,7 @@ class ExerciseView(generics.CreateAPIView):
         The request accepts the following parameters:
         
         ================================  ====  ==================================================
-        Parameter                         Type   Description
+        Parameter                         Type  Description
         ================================  ====  ==================================================
         ex_name                           str    The name of the exercise
         ex_type                           str    The name of the exercise type, Muscle, Cardio etc
