@@ -371,7 +371,7 @@ class LoggedRoutine(models.Model):
 class UserMood(models.Model):
     """
     Model to store the mood level of the user.
-    The mood level is an integer value that represents the user's mood on a scale of 1 to 10.
+    The mood level is an integer value that represents the user's mood on a scale of -2 to 2.
 
     Attributes:
         - user (User): The user who this mood level belongs to, foreign key to the User model.
