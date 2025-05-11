@@ -2175,27 +2175,28 @@ class LogRoutineView(APIView):
         """
         Logs a completed routine for the authenticated user with exercise data.
 
-        Expects JSON:
+        Expects (json):
         .. code-block:: json
-            {
-                "routine_id": <int>,
-                | "notes": <optional str>,
-                "duration": <optional "hh:mm:ss">,
-                "progress": {
-                    "exercises": [
-                        {
-                            "exercise_id": <int>,
-                            "sets": <int>,             # for strength
-                            "reps": <int>,             # for strength
-                            "weight": <float>,         # for strength
-                            "distance": <float>,       # for cardio
-                            "distance_units": <str>,   # for cardio
-                            "duration": "hh:mm:ss"     # required for cardio
-                        },
-                    ]
-                }
+
+        {
+            "routine_id": <int>,
+            "notes": <optional str>,
+            "duration": <optional "hh:mm:ss">,
+            "progress": {
+                "exercises": [
+                    {
+                        "exercise_id": <int>,
+                        "sets": <int>,             # for strength
+                        "reps": <int>,             # for strength
+                        "weight": <float>,         # for strength
+                        "distance": <float>,       # for cardio
+                        "distance_units": <str>,   # for cardio
+                        "duration": "hh:mm:ss"     # required for cardio
+                    },
+                    ...
+                ]
             }
-            ...
+        }
 
         Validates all input before logging. If any validation fails, the entire log is rejected.
 
