@@ -375,7 +375,7 @@ class UserMood(models.Model):
 
     Attributes:
         - user (User): The user who this mood level belongs to, foreign key to the User model.
-        - mood_level (int): The mood level of the user between 1 and 10.
+        - mood_level (int): The mood level of the user between -2 and 2 inclusive.
         - datetime_recorded (datetime): The date and time of when the mood level was recorded.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
