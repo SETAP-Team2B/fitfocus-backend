@@ -45,3 +45,6 @@ html_static_path = ['_static']
 
 # including this fixes a warning when building docs
 linkcheck_allowed_redirects = {}
+
+autodoc_member_order = "bysource"
+# can be "alphabetical" or "groupwise", configures how data is displayed in HTML
