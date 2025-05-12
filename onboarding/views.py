@@ -1082,8 +1082,8 @@ class LogExerciseView(generics.CreateAPIView):
     """This view allows for the creation and retrieval of legged exercises
 
         This view accepts the following request types:
-        *POST
-        *GET
+            * POST
+            * GET
 
     """
     serializer_class = LoggedExerciseSerializer
@@ -1095,23 +1095,23 @@ class LogExerciseView(generics.CreateAPIView):
         
         The request accepts the following parameters:
 
-        =================================  ========  ====================================================
-        Parameter                          Type      Description
-        =================================  ========  ====================================================
-        user                               object    The user that is logging an exercise.
-        exercise                           object    The type of exercise that is being logged.
-        date_logged                        DATE      The date of when the user is logging the exercise.
-        time_logged                        TIME      The time of when the user is logging the exercise.
-        sets (optional)                    int       The number of sets the user has done.
-        reps (optional)                    int       The number of reps the user has done.
-        distance (optional)                float     The distance covered during the exercise.
-        distance_units (optional*)         str       The units for which distance is measured.
-        duration (optional)                duration  How long the exercise lasted.
-        equipment_weight (optional)        list      The weight of the equipment used.
-        equpment_weight_units (optional*)  str       The units for which weight is measured.
-        =================================  ========  ===================================================
+        =================================  =========  ==================================================
+        Parameter                          Type       Description
+        =================================  =========  ==================================================
+        user                               object     The user that is logging an exercise.
+        exercise                           object     The type of exercise that is being logged.
+        date_logged                        date       The date of when the user is logging the exercise.
+        time_logged                        time       The time of when the user is logging the exercise.
+        sets (optional)                    int        The number of sets the user has done.
+        reps (optional)                    int        The number of reps the user has done.
+        distance (optional)                float      The distance covered during the exercise.
+        distance_units (optional*)         str        The units for which distance is measured.
+        duration (optional)                timedelta  How long the exercise lasted.
+        equipment_weight (optional)        list       The weight of the equipment used.
+        equpment_weight_units (optional*)  str        The units for which weight is measured.
+        =================================  =========  ==================================================
         
-        * parameter is optional only if distance/equipment_weight_units are left null, if not they are required.
+        \\* A parameter is optional only if distance/equipment_weight_units are left null, if not they are required.
 
         :param request: The request passed through the API.
         :type request: django.http.HttpRequest
@@ -1191,23 +1191,28 @@ class LogExerciseView(generics.CreateAPIView):
 
         The request accepts the following parameters:
 
-        =================================  ========  ====================================================
-        Parameter                          Type      Description
-        =================================  ========  ====================================================
-        user                               object    The user that is logging an exercise.
-        exercise                           object    The type of exercise that is being logged.
-        date_logged                        DATE      The date of when the user is logging the exercise.
-        time_logged                        TIME      The time of when the user is logging the exercise.
-        sets (optional)                    int       The number of sets the user has done.
-        reps (optional)                    int       The number of reps the user has done.
-        distance (optional)                float     The distance covered during the exercise.
-        distance_units (optional*)         str       The units for which distance is measured.
-        duration (optional)                duration  How long the exercise lasted.
-        equipment_weight (optional)        list      The weight of the equipment used.
-        equpment_weight_units (optional*)  str       The units for which weight is measured.
-        =================================  ========  ===================================================
-        
-        * The parameter is optional only if distance/equipment_weight_units are left null, if not they are required
+        =================================  =========  ===================================================
+        Parameter                          Type       Description
+        =================================  =========  ===================================================
+        username                           str        The username to filter.
+        email                              str        The email to filter.
+        ex_name                            str        The name of the exercise.
+        date_logged                        date       The specific date of when to filter for.
+        date_logged__gt                    date       Filters exercise dates after the given date.
+        date_logged__lte                   date       Filters exercise dates before or on the given date.
+        time_logged                        time       The specific time of when to filter for.
+        sets                               int        The number of sets done.
+        reps                               int        The number of reps done.
+        distance                           float      The distance covered during the exercise.
+        distance_units                     str        The units for which distance is measured.
+        duration                           timedelta  How long the exercise lasted.
+        equipment_weight                   list       The weights of the equipment used.
+        equpment_weight_units              str        The units for which weight is measured.
+        =================================  =========  ===================================================
+
+        The request will filter every LoggedExercise object by any given values in the dataset.
+
+        All parameters are optional, and the "user" in a LoggedExercise object is filtered out for privacy.
 
         :param request: The request passed through the API.
         :type request: django.http.HttpRequest
@@ -2138,9 +2143,7 @@ class LogRoutineView(APIView):
         Deletes a logged routine for the authenticated user.
 
         Expects:
-            {
-                "id": <logged_routine_id>
-            }
+        * id (int): The ID for the logged routine.
 
         Returns:
             - 204 NO CONTENT on success.
@@ -2175,26 +2178,16 @@ class LogRoutineView(APIView):
         """
         Logs a completed routine for the authenticated user with exercise data.
 
-        Expects (JSON):
-        {
-            "routine_id": <int>,
-            "notes": <optional str>,
-            "duration": <optional "hh:mm:ss">,
-            "progress": {
-                "exercises": [
-                    {
-                        "exercise_id": <int>,
-                        "sets": <int>,             # for strength
-                        "reps": <int>,             # for strength
-                        "weight": <float>,         # for strength
-                        "distance": <float>,       # for cardio
-                        "distance_units": <str>,   # for cardio
-                        "duration": "hh:mm:ss"     # required for cardio
-                    },
-                    ...
-                ]
-            }
-        }
+        Parameters expected:
+
+        ===================  =========  ================================================================================================================
+        Parameter            Type       Description
+        ===================  =========  ================================================================================================================
+        routine_id           str        The routine ID to log.
+        notes (optional)     str        Any notes for the routine.
+        duration (optional)  timedelta  The current/total duration of the routine.
+        progress             dict       The current progress of the given routine. Dictionary contains "exercises", which is a list of Exercise objects.
+        ===================  =========  ================================================================================================================
 
         Validates all input before logging. If any validation fails, the entire log is rejected.
 

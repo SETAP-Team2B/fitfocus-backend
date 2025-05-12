@@ -48,32 +48,40 @@
 <li class="toctree-l1 current"><a class="reference internal" href="onboarding.html">onboarding</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="models.html">models module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">serializers module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.ConsumableSerializer"><code class="docutils literal notranslate"><span class="pre">ConsumableSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.ConsumableSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">ConsumableSerializer.Meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.UserSerializer"><code class="docutils literal notranslate"><span class="pre">UserSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.UserSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserSerializer.Meta</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.ExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">ExerciseSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.ExerciseSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">ExerciseSerializer.Meta</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedConsumableSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedConsumableSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedConsumableSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedConsumableSerializer.Meta</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedExerciseSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedExerciseSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedExerciseSerializer.Meta</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedRoutineSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedRoutineSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedRoutineSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedRoutineSerializer.Meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.VerifiedUserSerializer"><code class="docutils literal notranslate"><span class="pre">VerifiedUserSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.VerifiedUserSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">VerifiedUserSerializer.Meta</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#serializers.OTPSerializer"><code class="docutils literal notranslate"><span class="pre">OTPSerializer</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#serializers.OTPSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">OTPSerializer.Meta</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.ExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">ExerciseSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.ExerciseSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">ExerciseSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedExerciseSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedExerciseSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedExerciseSerializer.Meta</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#serializers.RecommendedExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">RecommendedExerciseSerializer</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#serializers.RecommendedExerciseSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">RecommendedExerciseSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.ConsumableSerializer"><code class="docutils literal notranslate"><span class="pre">ConsumableSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.ConsumableSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">ConsumableSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedConsumableSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedConsumableSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedConsumableSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedConsumableSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.UserDataSerializer"><code class="docutils literal notranslate"><span class="pre">UserDataSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.UserDataSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserDataSerializer.Meta</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#serializers.RoutineExerciseSerializer"><code class="docutils literal notranslate"><span class="pre">RoutineExerciseSerializer</span></code></a><ul>
@@ -89,20 +97,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#serializers.RoutineUpdateSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">RoutineUpdateSerializer.Meta</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.UserDataSerializer"><code class="docutils literal notranslate"><span class="pre">UserDataSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.UserDataSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserDataSerializer.Meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serializers.LoggedRoutineSerializer"><code class="docutils literal notranslate"><span class="pre">LoggedRoutineSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#serializers.LoggedRoutineSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">LoggedRoutineSerializer.Meta</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#serializers.UserMoodSerializer"><code class="docutils literal notranslate"><span class="pre">UserMoodSerializer</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#serializers.UserMoodSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserMoodSerializer.Meta</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.UserSerializer"><code class="docutils literal notranslate"><span class="pre">UserSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.UserSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserSerializer.Meta</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#serializers.VerifiedUserSerializer"><code class="docutils literal notranslate"><span class="pre">VerifiedUserSerializer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#serializers.VerifiedUserSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">VerifiedUserSerializer.Meta</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -142,314 +142,24 @@
   <section id="module-serializers">
 <span id="serializers-module"></span><h1>serializers module<a class="headerlink" href="#module-serializers" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="serializers.ConsumableSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">ConsumableSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.ConsumableSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.ConsumableSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.ConsumableSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.ConsumableSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Consumable" title="onboarding.models.Consumable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Consumable</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.ExerciseSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">ExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.ExerciseSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.ExerciseSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.ExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.ExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Exercise" title="onboarding.models.Exercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exercise</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedConsumableSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedConsumableSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedConsumable" title="onboarding.models.LoggedConsumable"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedConsumable</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedExerciseSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedExercise" title="onboarding.models.LoggedExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedExercise</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedRoutineSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedRoutineSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.extra_kwargs">
-<span class="sig-name descname"><span class="pre">extra_kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'user':</span> <span class="pre">{'read_only':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.extra_kwargs" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'routine',</span> <span class="pre">'user',</span> <span class="pre">'completed_at',</span> <span class="pre">'notes',</span> <span class="pre">'duration',</span> <span class="pre">'progress',</span> <span class="pre">'routine_name',</span> <span class="pre">'user_name']</span></em><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedRoutine" title="onboarding.models.LoggedRoutine"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedRoutine</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.OTPSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">OTPSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.OTPSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.OTPSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.OTPSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.OTPSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.OTP" title="onboarding.models.OTP"><code class="xref py py-class docutils literal notranslate"><span class="pre">OTP</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RecommendedExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.RecommendedExercise" title="onboarding.models.RecommendedExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecommendedExercise</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineExerciseSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'routine',</span> <span class="pre">'exercise',</span> <span class="pre">'exercise_name',</span> <span class="pre">'order']</span></em><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.RoutineExercise" title="onboarding.models.RoutineExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineExercise</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.extra_kwargs">
-<span class="sig-name descname"><span class="pre">extra_kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'user':</span> <span class="pre">{'read_only':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#serializers.RoutineSerializer.Meta.extra_kwargs" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'user',</span> <span class="pre">'name',</span> <span class="pre">'description',</span> <span class="pre">'created_at',</span> <span class="pre">'routine_exercises']</span></em><a class="headerlink" href="#serializers.RoutineSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Routine" title="onboarding.models.Routine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Routine</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="serializers.RoutineSerializer.validate_name">
-<span class="sig-name descname"><span class="pre">validate_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineSerializer.validate_name" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineUpdateSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineUpdateSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'description']</span></em><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Routine" title="onboarding.models.Routine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Routine</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.UserDataSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">UserDataSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.UserDataSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.UserDataSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserDataSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.UserDataSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.UserData" title="onboarding.models.UserData"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.UserMoodSerializer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">UserMoodSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.UserMoodSerializer" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.UserMoodSerializer.Meta" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserMoodSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.UserMoodSerializer.Meta.model" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.UserMood" title="onboarding.models.UserMood"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserMood</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="serializers.UserSerializer">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">UserSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.UserSerializer" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the built-in Django User model.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="serializers.UserSerializer.Meta">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.UserSerializer.Meta" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.UserSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="serializers.UserSerializer.Meta.model">
 <span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.UserSerializer.Meta.model" title="Link to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.UserSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -459,20 +169,338 @@
 <dt class="sig sig-object py" id="serializers.VerifiedUserSerializer">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">VerifiedUserSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.VerifiedUserSerializer" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the VerifiedUser model.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="serializers.VerifiedUserSerializer.Meta">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.VerifiedUserSerializer.Meta" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="serializers.VerifiedUserSerializer.Meta.fields">
-<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.VerifiedUserSerializer.Meta.fields" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="serializers.VerifiedUserSerializer.Meta.model">
 <span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.VerifiedUserSerializer.Meta.model" title="Link to this definition"></a></dt>
 <dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.VerifiedUser" title="onboarding.models.VerifiedUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">VerifiedUser</span></code></a></p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.VerifiedUserSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.VerifiedUserSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.OTPSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">OTPSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.OTPSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the OTP (one-time password) model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.OTPSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.OTPSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.OTP" title="onboarding.models.OTP"><code class="xref py py-class docutils literal notranslate"><span class="pre">OTP</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.OTPSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.OTPSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.ExerciseSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">ExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.ExerciseSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the Exercise model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.ExerciseSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.ExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Exercise" title="onboarding.models.Exercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exercise</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.ExerciseSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.ExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedExerciseSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the LoggedExercise model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedExercise" title="onboarding.models.LoggedExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedExercise</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedExerciseSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.LoggedExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RecommendedExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the RecommendedExercise model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.RecommendedExercise" title="onboarding.models.RecommendedExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecommendedExercise</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RecommendedExerciseSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.RecommendedExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.ConsumableSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">ConsumableSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.ConsumableSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the Consumable model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.ConsumableSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.ConsumableSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Consumable" title="onboarding.models.Consumable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Consumable</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.ConsumableSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.ConsumableSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedConsumableSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedConsumableSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the LoggedConsumable model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedConsumable" title="onboarding.models.LoggedConsumable"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedConsumable</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedConsumableSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.LoggedConsumableSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.UserDataSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">UserDataSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.UserDataSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the UserData model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.UserDataSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.UserDataSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.UserData" title="onboarding.models.UserData"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.UserDataSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserDataSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineExerciseSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineExerciseSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes the RoutineExercise model and includes the exercise’s name.</p>
+<dl class="simple">
+<dt>Additional Fields:</dt><dd><p>exercise_name (str): Read-only field from the related Exercise model.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.RoutineExercise" title="onboarding.models.RoutineExercise"><code class="xref py py-class docutils literal notranslate"><span class="pre">RoutineExercise</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineExerciseSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'routine',</span> <span class="pre">'exercise',</span> <span class="pre">'exercise_name',</span> <span class="pre">'order']</span></em><a class="headerlink" href="#serializers.RoutineExerciseSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes the Routine model including related routine exercises.</p>
+<dl class="simple">
+<dt>Additional Fields:</dt><dd><p>routine_exercises (list): Read-only nested list of RoutineExerciseSerializer.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Routine" title="onboarding.models.Routine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Routine</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'user',</span> <span class="pre">'name',</span> <span class="pre">'description',</span> <span class="pre">'created_at',</span> <span class="pre">'routine_exercises']</span></em><a class="headerlink" href="#serializers.RoutineSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer.Meta.extra_kwargs">
+<span class="sig-name descname"><span class="pre">extra_kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'user':</span> <span class="pre">{'read_only':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#serializers.RoutineSerializer.Meta.extra_kwargs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="serializers.RoutineSerializer.validate_name">
+<span class="sig-name descname"><span class="pre">validate_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineSerializer.validate_name" title="Link to this definition"></a></dt>
+<dd><p>Returns a default name if none is provided.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">RoutineUpdateSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.RoutineUpdateSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer used for updating a routine’s name and description.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.Routine" title="onboarding.models.Routine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Routine</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.RoutineUpdateSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'description']</span></em><a class="headerlink" href="#serializers.RoutineUpdateSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">LoggedRoutineSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.LoggedRoutineSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes the LoggedRoutine model with extra info like names.</p>
+<dl class="simple">
+<dt>Additional Fields:</dt><dd><p>routine_name (str): Read-only name of the related routine.
+user_name (str): Read-only username of the user who completed the routine.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.LoggedRoutine" title="onboarding.models.LoggedRoutine"><code class="xref py py-class docutils literal notranslate"><span class="pre">LoggedRoutine</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'routine',</span> <span class="pre">'user',</span> <span class="pre">'completed_at',</span> <span class="pre">'notes',</span> <span class="pre">'duration',</span> <span class="pre">'progress',</span> <span class="pre">'routine_name',</span> <span class="pre">'user_name']</span></em><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.LoggedRoutineSerializer.Meta.extra_kwargs">
+<span class="sig-name descname"><span class="pre">extra_kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'user':</span> <span class="pre">{'read_only':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#serializers.LoggedRoutineSerializer.Meta.extra_kwargs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.UserMoodSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">serializers.</span></span><span class="sig-name descname"><span class="pre">UserMoodSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#serializers.UserMoodSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializes all fields of the UserMood model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#serializers.UserMoodSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#serializers.UserMoodSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="models.html#onboarding.models.UserMood" title="onboarding.models.UserMood"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserMood</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="serializers.UserMoodSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#serializers.UserMoodSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

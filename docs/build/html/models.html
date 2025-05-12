@@ -46,7 +46,72 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="onboarding.html">onboarding</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">models module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.macro_keys"><code class="docutils literal notranslate"><span class="pre">macro_keys</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.positive_validator"><code class="docutils literal notranslate"><span class="pre">positive_validator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.validate_macros"><code class="docutils literal notranslate"><span class="pre">validate_macros()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.OTP"><code class="docutils literal notranslate"><span class="pre">OTP</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.OTP.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">OTP.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.OTP.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">OTP.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.Exercise"><code class="docutils literal notranslate"><span class="pre">Exercise</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Exercise.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Exercise.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Exercise.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Exercise.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.LoggedExercise"><code class="docutils literal notranslate"><span class="pre">LoggedExercise</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedExercise.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">LoggedExercise.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedExercise.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">LoggedExercise.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.VerifiedUser"><code class="docutils literal notranslate"><span class="pre">VerifiedUser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.VerifiedUser.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">VerifiedUser.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.VerifiedUser.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">VerifiedUser.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.RecommendedExercise"><code class="docutils literal notranslate"><span class="pre">RecommendedExercise</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.RecommendedExercise.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">RecommendedExercise.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.RecommendedExercise.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">RecommendedExercise.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.UserData"><code class="docutils literal notranslate"><span class="pre">UserData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.UserData.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserData.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.UserData.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserData.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.Consumable"><code class="docutils literal notranslate"><span class="pre">Consumable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Consumable.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Consumable.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Consumable.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Consumable.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.LoggedConsumable"><code class="docutils literal notranslate"><span class="pre">LoggedConsumable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedConsumable.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">LoggedConsumable.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedConsumable.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">LoggedConsumable.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.Routine"><code class="docutils literal notranslate"><span class="pre">Routine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Routine.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Routine.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.Routine.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Routine.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.RoutineExercise"><code class="docutils literal notranslate"><span class="pre">RoutineExercise</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.RoutineExercise.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">RoutineExercise.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.RoutineExercise.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">RoutineExercise.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.LoggedRoutine"><code class="docutils literal notranslate"><span class="pre">LoggedRoutine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedRoutine.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">LoggedRoutine.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.LoggedRoutine.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">LoggedRoutine.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding.models.UserMood"><code class="docutils literal notranslate"><span class="pre">UserMood</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.UserMood.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">UserMood.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding.models.UserMood.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">UserMood.MultipleObjectsReturned</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="serializers.html">serializers module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="urls.html">urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="views.html">views module</a></li>
@@ -80,8 +145,644 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="models-module">
-<h1>models module<a class="headerlink" href="#models-module" title="Link to this heading"></a></h1>
+  <section id="module-onboarding.models">
+<span id="models-module"></span><h1>models module<a class="headerlink" href="#module-onboarding.models" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="onboarding.models.macro_keys">
+<span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">macro_keys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['fat_g',</span> <span class="pre">'saturates_g',</span> <span class="pre">'trans_fat_g',</span> <span class="pre">'protein_g',</span> <span class="pre">'salt_g',</span> <span class="pre">'fiber_g',</span> <span class="pre">'carbohydrates_g',</span> <span class="pre">'sugars_g',</span> <span class="pre">'cholesterol_g']</span></em><a class="headerlink" href="#onboarding.models.macro_keys" title="Link to this definition"></a></dt>
+<dd><p>A list of keys that will be used in any “macros” dictionaries, be it logged macros, or consumable macros.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="onboarding.models.positive_validator">
+<span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">positive_validator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_equal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.positive_validator" title="Link to this definition"></a></dt>
+<dd><p>A validator to ensure a given numeric field has a positive value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>int</em><em> | </em><em>float</em>) – The value to be validated.</p></li>
+<li><p><strong>include_equal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not the validator returns true on 0, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether or not the value is above (or equal to, if include_equal is <strong>True</strong>) 0.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="onboarding.models.validate_macros">
+<span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">validate_macros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.validate_macros" title="Link to this definition"></a></dt>
+<dd><p>A validator to ensure that all the macro-nutrient values are non-negative.</p>
+<p>This calls the <cite>positive_validator</cite> function, with include_equal = <strong>True</strong>.
+Sometimes the <cite>value</cite> parameter may not actually be of type (dict), but checking the type will return dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>object</em>) – The dictionary of macro-nutrients to be validated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>False if the type of <cite>value</cite> is not dict, or if any macro-nutrient value is negative. Otherwise, returns True.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.OTP">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">OTP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.OTP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A one-time password.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, FOREIGN KEY (User)</p></td>
+<td><p>The user who the OTP is for.</p></td>
+</tr>
+<tr class="row-odd"><td><p>otp</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>The OTP value.</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>datetime</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>When the OTP was created. Defaults to the current date and time.</p></td>
+</tr>
+<tr class="row-odd"><td><p>expiry_time</p></td>
+<td><p>datetime</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>When the OTP cannot be updated. Default is 5 minutes after created_at</p></td>
+</tr>
+<tr class="row-even"><td><p>verified</p></td>
+<td><p>bool</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Whether the OTP has been verified or not. Default is False.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.OTP.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.OTP.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.OTP.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.OTP.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.Exercise">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">Exercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.Exercise" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>An exercise object</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ex_name</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=80, UNIQUE</p></td>
+<td><p>The name of the exercise</p></td>
+</tr>
+<tr class="row-odd"><td><p>ex_type</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=100</p></td>
+<td><p>Type of exercise, Cardio, Muscle etc</p></td>
+</tr>
+<tr class="row-even"><td><p>ex_body_area</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=15</p></td>
+<td><p>What body part the exercise is working on: Legs, back, chest etc</p></td>
+</tr>
+<tr class="row-odd"><td><p>equipment_needed</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=80</p></td>
+<td><p>Equipment needed for exercise</p></td>
+</tr>
+<tr class="row-even"><td><p>ex_target_muscle</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=20</p></td>
+<td><p>Target Muscle - can be null for cardio</p></td>
+</tr>
+<tr class="row-odd"><td><p>ex_secondary_muscle_1</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=30</p></td>
+<td><p>Secondary muscle targeted</p></td>
+</tr>
+<tr class="row-even"><td><p>ex_secondary_muscle_2</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=30</p></td>
+<td><p>Other Secondary Muscle Targeted</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Exercise.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.Exercise.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Exercise.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.Exercise.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.LoggedExercise">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">LoggedExercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.LoggedExercise" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A logged exercise</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, UNIQUE, FOREIGN KEY (User)</p></td>
+<td><p>The user that is logging an exercise</p></td>
+</tr>
+<tr class="row-odd"><td><p>exercise</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, UNIQUE, FOREIGN KEY (Exercise)</p></td>
+<td><p>The type of exercise that is being logged</p></td>
+</tr>
+<tr class="row-even"><td><p>date_logged</p></td>
+<td><p>date</p></td>
+<td></td>
+<td><p>The date of when the user is logging the exercise. Defaults to current date.</p></td>
+</tr>
+<tr class="row-odd"><td><p>time_logged</p></td>
+<td><p>time</p></td>
+<td></td>
+<td><p>The time of when the user is logging the exercise. Defaults to current time.</p></td>
+</tr>
+<tr class="row-even"><td><p>sets</p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>The number of sets the user has done. Defaults to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>reps</p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>The number of reps the user has done. Defaults to 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>distance</p></td>
+<td><p>float</p></td>
+<td></td>
+<td><p>The distance covered during the exercise. Defaults to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>distance_units</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=5</p></td>
+<td><p>The units for which distance is measured.</p></td>
+</tr>
+<tr class="row-even"><td><p>duration</p></td>
+<td><p>timedelta</p></td>
+<td></td>
+<td><p>How long the exercise lasted. Defaults to 0 seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>equpment_weight</p></td>
+<td><p>list</p></td>
+<td></td>
+<td><p>The weight of the equipment used</p></td>
+</tr>
+<tr class="row-even"><td><p>equipment_weight_units</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=2</p></td>
+<td><p>The units for which weight is measured</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedExercise.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.LoggedExercise.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedExercise.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.LoggedExercise.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.VerifiedUser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">VerifiedUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.VerifiedUser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Whether a user’s account is verified or not.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, FOREIGN KEY (User)</p></td>
+<td><p>The user.</p></td>
+</tr>
+<tr class="row-odd"><td><p>verified</p></td>
+<td><p>bool</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Whether the account is verified or not. Defaults to False</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.VerifiedUser.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.VerifiedUser.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.VerifiedUser.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.VerifiedUser.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.RecommendedExercise">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">RecommendedExercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.RecommendedExercise" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A recommended exercise for a given user.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, FOREIGN KEY (User)</p></td>
+<td><p>The user the recommended exercise is for.</p></td>
+</tr>
+<tr class="row-odd"><td><p>exercise</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, FOREIGN KEY (Exercise)</p></td>
+<td><p>The exercise that is recommended.</p></td>
+</tr>
+<tr class="row-even"><td><p>datetime_recommended</p></td>
+<td><p>datetime</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>The date and time the recommendation was made. Defaults to current datetime.</p></td>
+</tr>
+<tr class="row-odd"><td><p>good_recommendation</p></td>
+<td><p>bool</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Whether the recommendation is “good” or not. Defaults to True.</p></td>
+</tr>
+<tr class="row-even"><td><p>sets</p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>The amount of recommended sets in the exercise. Defaults to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>reps</p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>The amount of recommended reps per set in the exercise. Defaults to 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>distance</p></td>
+<td><p>float</p></td>
+<td></td>
+<td><p>The amount of recommended distance to travel in the exercise. Defaults to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>distance_units</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=5</p></td>
+<td><p>The units for <strong>distance</strong>. Choices are “km” or “mi”.</p></td>
+</tr>
+<tr class="row-even"><td><p>duration</p></td>
+<td><p>timedelta</p></td>
+<td></td>
+<td><p>The recommended duration of the exercise. Defaults to 0 seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p>equipment_weight</p></td>
+<td><p>list</p></td>
+<td></td>
+<td><p>The recommended equipment weight for the exercise.</p></td>
+</tr>
+<tr class="row-even"><td><p>equipment_weight_units</p></td>
+<td><p>str</p></td>
+<td><p>MAX_LENGTH=2</p></td>
+<td><p>The units of the given equipment weight.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.RecommendedExercise.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.RecommendedExercise.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.RecommendedExercise.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.RecommendedExercise.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.UserData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">UserData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.UserData" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Stores user data for the user</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>user (User) : The user who this data belongs to, foreign key to the User model</p></li>
+<li><p>user_age (int) : The age of the user, must be a positive integer</p></li>
+<li><p>user_sex (str) : The sex of the user, M / F / X (Other/Prefer not to say)</p></li>
+<li><p>user_height (float) : The height of the user</p></li>
+<li><p>user_height_units (str) : The units of the users height, choices (in / cm)</p></li>
+<li><p>user_weight (float) : The weight of the user</p></li>
+<li><p>user_weight_units (str) : The units of the users weight, choices (lb / kg)</p></li>
+<li><p>user_target_weight (float) : The target weight of which the user aims to achieve</p></li>
+<li><p>user_body_goals (JSON) : The body goals of the user, JSON field (stored as a multiple choice field)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.UserData.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.UserData.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.UserData.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.UserData.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.Consumable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">Consumable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.Consumable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A consumable item.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=150, UNIQUE</p></td>
+<td><p>The name of the consumable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sample_size</p></td>
+<td><p>float</p></td>
+<td><p>NOT NULL, positive_validator</p></td>
+<td><p>The amount of units in a sample.</p></td>
+</tr>
+<tr class="row-even"><td><p>sample_units</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, MAX_LENGTH=20</p></td>
+<td><p>The units to measure the item.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sample_calories</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>The calories per size of a sample.</p></td>
+</tr>
+<tr class="row-even"><td><p>sample_macros</p></td>
+<td><p>dict</p></td>
+<td><p>validate_macros</p></td>
+<td><p>The macro-nutrients per size of a sample.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Consumable.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.Consumable.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Consumable.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.Consumable.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.LoggedConsumable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">LoggedConsumable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.LoggedConsumable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>A logged consumable item.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL, FOREIGN KEY (User)</p></td>
+<td><p>The user who logged the consumable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>consumable</p></td>
+<td><p>str</p></td>
+<td><p>NOT NULL, FORIEIGN KEY (Consumable)</p></td>
+<td><p>The name of the consumable that was logged.</p></td>
+</tr>
+<tr class="row-even"><td><p>amount_logged</p></td>
+<td><p>float</p></td>
+<td><p>NOT NULL, positive_validator</p></td>
+<td><p>The amount of samples that were logged.</p></td>
+</tr>
+<tr class="row-odd"><td><p>date_logged</p></td>
+<td><p>date</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>The date the consumable was logged.</p></td>
+</tr>
+<tr class="row-even"><td><p>calories_logged</p></td>
+<td><p>int</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>The total amount of calories logged.</p></td>
+</tr>
+<tr class="row-odd"><td><p>macros_logged</p></td>
+<td><p>dict</p></td>
+<td><p>validate_macros</p></td>
+<td><p>The total amount of macro-nutrients logged.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedConsumable.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.LoggedConsumable.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedConsumable.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.LoggedConsumable.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.Routine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">Routine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.Routine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Represents a workout routine created by a user.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>user (User): The user who created the routine.</p></li>
+<li><p>name (str): The name of the routine.</p></li>
+<li><p>description (str, optional): A description of the routine.</p></li>
+<li><p>created_at (datetime): The date and time the routine was created.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Routine.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.Routine.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.Routine.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.Routine.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.RoutineExercise">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">RoutineExercise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.RoutineExercise" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Links an exercise to a routine.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>routine (Routine): The routine this exercise belongs to.</p></li>
+<li><p>exercise (Exercise): The exercise being included.</p></li>
+<li><p>order (int): The position of this exercise within the routine.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.RoutineExercise.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.RoutineExercise.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.RoutineExercise.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.RoutineExercise.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.LoggedRoutine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">LoggedRoutine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.LoggedRoutine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Stores a user’s completed routine, including optional notes and performance data.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>routine (Routine): The routine that was completed.</p></li>
+<li><p>user (User): The user who completed the routine.</p></li>
+<li><p>completed_at (datetime): When the routine was completed.</p></li>
+<li><p>notes (str, optional): Additional notes provided by the user.</p></li>
+<li><p>duration (timedelta, optional): How long the routine took.</p></li>
+<li><p>progress (dict): JSON data containing exercise performance (e.g., sets/reps/weight).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedRoutine.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.LoggedRoutine.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.LoggedRoutine.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.LoggedRoutine.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="onboarding.models.UserMood">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onboarding.models.</span></span><span class="sig-name descname"><span class="pre">UserMood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#onboarding.models.UserMood" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model to store the mood level of the user.
+The mood level is an integer value that represents the user’s mood on a scale of -2 to 2.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>user (User): The user who this mood level belongs to, foreign key to the User model.</p></li>
+<li><p>mood_level (int): The mood level of the user between -2 and 2 inclusive.</p></li>
+<li><p>datetime_recorded (datetime): The date and time of when the mood level was recorded.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.UserMood.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#onboarding.models.UserMood.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="onboarding.models.UserMood.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#onboarding.models.UserMood.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
