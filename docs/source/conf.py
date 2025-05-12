@@ -28,8 +28,7 @@ release = '1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.autodoc'
 ]
 
 templates_path = ['_templates']
@@ -46,3 +45,6 @@ html_static_path = ['_static']
 
 # including this fixes a warning when building docs
 linkcheck_allowed_redirects = {}
+
+autodoc_member_order = "bysource"
+# can be "alphabetical" or "groupwise", configures how data is displayed in HTML

@@ -58,10 +58,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#validator.Status.SUCCESS"><code class="docutils literal notranslate"><span class="pre">Status.SUCCESS</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#validator.check_name"><code class="docutils literal notranslate"><span class="pre">check_name()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#validator.check_password"><code class="docutils literal notranslate"><span class="pre">check_password()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validator.validate_email"><code class="docutils literal notranslate"><span class="pre">validate_email()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validator.validate_username"><code class="docutils literal notranslate"><span class="pre">validate_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validator.check_name"><code class="docutils literal notranslate"><span class="pre">check_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validator.check_password"><code class="docutils literal notranslate"><span class="pre">check_password()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -101,6 +101,7 @@
 <dt class="sig sig-object py" id="validator.Messages">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><a class="headerlink" href="#validator.Messages" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generic messages for HTTP responses.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="validator.Messages.error_400">
 <span class="sig-name descname"><span class="pre">error_400</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Invalid</span> <span class="pre">request.</span> <span class="pre">{}</span> <span class="pre">is</span> <span class="pre">invalid'</span></em><a class="headerlink" href="#validator.Messages.error_400" title="Link to this definition"></a></dt>
@@ -117,36 +118,90 @@
 <dt class="sig sig-object py" id="validator.Status">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">Status</span></span><a class="headerlink" href="#validator.Status" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Describes HTTP request status codes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="validator.Status.INVALID_REQUEST">
 <span class="sig-name descname"><span class="pre">INVALID_REQUEST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">400</span></em><a class="headerlink" href="#validator.Status.INVALID_REQUEST" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Used for invalid HTTP requests, equivalent to HTTP error 400.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="validator.Status.SUCCESS">
 <span class="sig-name descname"><span class="pre">SUCCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#validator.Status.SUCCESS" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Used for successful HTTP requests, equivalent to HTTP error 200.</p>
+</dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="validator.validate_email">
+<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">validate_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.validate_email" title="Link to this definition"></a></dt>
+<dd><p>A function which determines if a given email is a valid email or not.</p>
+<dl class="simple">
+<dt>An email address is valid if all of the following are met:</dt><dd><ul class="simple">
+<li><p>The email address contains exactly 1 “&#64;” and at least 1 “.”</p></li>
+<li><p>The first character of the email address is an alphabet character.</p></li>
+<li><p>The domain segment of the email address contains either 1 or 2 “.”</p></li>
+<li><p>The first character of each segment within the domain segment is an alphabet character.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>email</strong> (<em>str</em>) – The email address of the user creating an account.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>True</strong> if the email is valid, otherwise <strong>False</strong>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="validator.validate_username">
+<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">validate_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.validate_username" title="Link to this definition"></a></dt>
+<dd><p>A function which determines if a given username is valid or not.</p>
+<dl class="simple">
+<dt>A username is valid if:</dt><dd><ul class="simple">
+<li><p>The entire username is alphanumeric.</p></li>
+<li><p>The first character of the username is an alphabet character.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username to be validated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether <strong>username</strong> is valid or not. Returns <strong>True</strong> if <strong>username</strong> is valid, otherwise <strong>False</strong>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="validator.check_name">
 <span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">check_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.check_name" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="validator.check_password">
-<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">check_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.check_password" title="Link to this definition"></a></dt>
-<dd><p>Password checker function for valid strength.</p>
+<dd><p>A function to assess the validity of a given name.</p>
+<dl class="simple">
+<dt>For a name to be valid:</dt><dd><ul class="simple">
+<li><p>The name must contain 2-50 (inclusive) alphanumeric characters.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>password</strong> (<em>str</em>) – The password to be checked.</p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name to be checked.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="exceptions.html#exceptions.WeakPasswordError" title="exceptions.WeakPasswordError"><strong>WeakPasswordError</strong></a> – if the valid strength for a password has not been met.</p>
+<dd class="field-even"><p><a class="reference internal" href="exceptions.html#exceptions.InvalidNameException" title="exceptions.InvalidNameException"><strong>InvalidNameException</strong></a> – if the name does not meet the given requirements.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>returns <cite>password</cite></p>
+<dd class="field-odd"><p><strong>name</strong></p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
@@ -155,15 +210,35 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="validator.validate_email">
-<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">validate_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.validate_email" title="Link to this definition"></a></dt>
-<dd><p>Validate if an email is correct or not</p>
+<dt class="sig sig-object py" id="validator.check_password">
+<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">check_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.check_password" title="Link to this definition"></a></dt>
+<dd><p>Password checker function for valid strength.</p>
+<dl class="simple">
+<dt>All of the following must be met to be considered valid:</dt><dd><ul class="simple">
+<li><p>The password must have at least 6 characters.</p></li>
+<li><p>The password must contain at least 1 digit.</p></li>
+<li><p>The password must contain at least 1 lowercase letter.</p></li>
+<li><p>The password must contain at least 1 uppercase letter.</p></li>
+<li><p>The password must contain at least 1 non-alphanumeric character (excluding underscores).</p></li>
+<li><p>The password must not contain any whitespace at all (e.g. space, tab, form/line feed).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>password</strong> (<em>str</em>) – The password to be checked.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="exceptions.html#exceptions.WeakPasswordError" title="exceptions.WeakPasswordError"><strong>WeakPasswordError</strong></a> – if the valid strength for a password has not been met.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>password</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="validator.validate_username">
-<span class="sig-prename descclassname"><span class="pre">validator.</span></span><span class="sig-name descname"><span class="pre">validate_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#validator.validate_username" title="Link to this definition"></a></dt>
-<dd></dd></dl>
 
 </section>
 

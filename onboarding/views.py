@@ -135,7 +135,7 @@ def get_user_by_email_username(request):
     return target_user
 
 def get_exercise_by_name(request):
-    """The function accepts an http request and matches the ex_name within to a corresponding object
+    """The function accepts an http request and matches the ex_name parameter within the request to a corresponding object.
 
     The function will attempt to find the target_exercise given by the **ex_name** parameter.
     If no **ex_name** is given an error is raised.
@@ -143,9 +143,9 @@ def get_exercise_by_name(request):
     If a single target_exercise cannot be found with the given **ex_name**, a MultipleObjectsReturned error is raised.
 
     :param request: The name of the exercise
-    :type request: string
-    :return: A succesfull response will return the correct target_exercise object
-    :rtype: object
+    :type request: django.http.Request
+    :return: A succesfull response will return the correct target_exercise object, otherwise None
+    :rtype: Exercise or None (if an Exercise could be found or not)
     """
     
     target_exercise: Exercise | None = None
@@ -387,8 +387,6 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
 class CreateAccountView(generics.CreateAPIView):
     """
     View for handling user account creation and deletion.
-    Created a new user if all inputs are valid, with checks for a valid email, username and password upon creation. 
-    The user is created as unverified and then verifies their email through a email otp upon login.
 
     """
     serializer_class = UserSerializer
@@ -396,14 +394,15 @@ class CreateAccountView(generics.CreateAPIView):
     # validates given email and username, checks given name within database and saves user data as unverified if valid
     def post(self, request, *args, **kwargs):
         """
-        function to create a new user account upon valid details provided.
-        checks if email and username is already being used.
+        Function to create a new user account upon valid details provided.
+        Checks if email and username is already being used.
         Password is checked for strength and error is displayed if not string enough.
+        Creates a new user if all inputs are valid, with checks for a valid email, username and password upon creation. 
+        The user is created as unverified and then verifies their email through a email otp upon login.
+
 
         Args:
             request (httpRequest): The http post request sends the user data to the database upon valid entry.
-            *args: arguments.
-            **kwargs: keyword arguments.
 
         Returns:
             Response: A response object displaying a success response and any errors for the account creation.
@@ -459,8 +458,6 @@ class CreateAccountView(generics.CreateAPIView):
     
         Args:
             request (httpRequest): The http get request checks for the account data of the user if it exists.
-            *args: arguments.
-            **kwargs: keyword arguments.
         Returns:
             Response: A response object displaying the success response and any errors for the account deletion.
         """
@@ -504,19 +501,21 @@ class LoginView(APIView):
     Handles the login process by authenticating a user based on username or email
     and returning JWT tokens upon successful authentication.
 
-    Process:
-        1. Checks if both username/email and password are provided.
-        2. Attempts to find the user by email or username.
-        3. Verifies if the user is registered and authenticated.
-        4. If the user is not verified, a verification object is created.
-        5. Generates and returns access and refresh JWT tokens for the authenticated user.
-
-    Methods:
-        post(request): Authenticates the user and returns JWT tokens.
+    Supports:
+        * POST
+    
     """
     def post(self, request):
         """
-        Authenticates the user based on the provided username/email and password.
+        Authenticates the user based on the provided username/email and password and returns JWT tokens.
+        
+        Process:
+            1. Checks if both username/email and password are provided.
+            2. Attempts to find the user by email or username.
+            3. Verifies if the user is registered and authenticated.
+            4. If the user is not verified, a verification object is created.
+            5. Generates and returns access and refresh JWT tokens for the authenticated user.
+
 
         Args:
             request (Request): The HTTP request object containing the user's credentials.
@@ -872,9 +871,10 @@ class ResetPasswordView(generics.CreateAPIView):
 class ExerciseView(generics.CreateAPIView):
     """A view which allows for the creation and retrieval of exercises objects
     
-        This view accepts the following request types:
-        *POST
-        *GET
+    This view accepts the following request types:
+        * POST
+        * GET
+
     """
     serializer_class = ExerciseSerializer
     # valid inputs for exercise variables stored in database
@@ -887,25 +887,25 @@ class ExerciseView(generics.CreateAPIView):
                     "Trapezius", "Traps", "Triceps", "Upper Back", "Upper Chest", "Wrist Extensors", "Wrist Flexors", "Wrists"]
 
     def post(self, request, *args, **kwargs):
-        """The function takes an http request and as long as all parameters are valid, saves the parameters as an exercise object in the datatabase
+        """The function takes an http request and as long as all parameters are valid, saves the parameters as an exercise object in the database.
         
         The request accepts the following parameters:
         
-        ===============================  =====  ====================================================
-        Parameter                        Type   Description
-        ===============================  =====  ====================================================
-        ex_name                          str    The name of the exercise
-        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
-        ex_body_area                     str    The name of the body are that the exercise targets
-        equipment_needed                 str    The name of the equipment needed for the exercise
-        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
-        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
-        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
-        ===============================  =====  =====================================================
+        ================================  ====  ==================================================
+        Parameter                         Type  Description
+        ================================  ====  ==================================================
+        ex_name                           str   The name of the exercise.
+        ex_type                           str   The name of the exercise type, Muscle, Cardio etc.
+        ex_body_area                      str   The name of the body are that the exercise targets.
+        equipment_needed                  str   The name of the equipment needed for the exercise.
+        ex_target_muscle (optional)       str   The name of the muscle that the exercise targets.
+        ex_secondary_muscle_1 (optional)  str   The name of any other muscles targeted.
+        ex_secondary_muscle_2 (optional)  str   The name of any other muscles targeted.
+        ================================  ====  ==================================================
         
-        :param request: The request is passed through an API
+        :param request: The request passed through the API.
         :type request: django.http.HttpRequest
-        :return: If succesful, will return api_success with a list of all the parameters
+        :return: If successful, will return a Response with a list of all the given Exercise parameters.
         :rtype: django.http.Response
         """
         # if no exercise objects, generate all from csv file
@@ -976,23 +976,23 @@ class ExerciseView(generics.CreateAPIView):
 
     # given parameters equal to ex_type, filters all exercises for values
     def get(self, request, *args, **kwargs):
-        """This function retrieves an exercise object for the user
+        """This function retrieves an exercise object for the user.
 
-        ===============================  =====  ====================================================
-        Parameter                        Type   Description
-        ===============================  =====  ====================================================
-        ex_name                          str    The name of the exercise
-        ex_type                          str    The name of the exercise type, Muscle, Cardio etc
-        ex_body_area                     str    The name of the body are that the exercise targets
-        equipment_needed                 str    The name of the equipment needed for the exercise
-        ex_target_muscle(optional)       str    The name of the muscle that the exercise targets
-        ex_secondary_muscle_1(optional)  str    The name of any other muscles targeted
-        ex_secondary_muscle_2(optional)  str    The name of any other muscles targeted
-        ===============================  =====  =====================================================
+        ================================  ====  ==================================================
+        Parameter                         Type   Description
+        ================================  ====  ==================================================
+        ex_name                           str    The name of the exercise.
+        ex_type                           str    The name of the exercise type, Muscle, Cardio etc.
+        ex_body_area                      str    The name of the body are that the exercise targets.
+        equipment_needed                  str    The name of the equipment needed for the exercise.
+        ex_target_muscle (optional)       str    The name of the muscle that the exercise targets.
+        ex_secondary_muscle_1 (optional)  str    The name of any other muscles targeted.
+        ex_secondary_muscle_2 (optional)  str    The name of any other muscles targeted.
+        ================================  ====  ==================================================
 
-        :param request: The request is passed through an API
+        :param request: The request is passed through an API.++
         :type request: django.http.HttpRequest
-        :return: A succesfull response will return a list of all parameters for a given exercise
+        :return: A successful response will return a list of all parameters for a given exercise.
         :rtype: django.http.Response
         """
         # if no exercise objects, generate all from csv file
@@ -1057,7 +1057,7 @@ class ExerciseView(generics.CreateAPIView):
         return JsonResponse(list(exercises_page.object_list.values()), safe=False)
 
     def ExerciseFile(self):
-        """This function is used to save items in a csv file into the database
+        """This function is used to write items from a CSV file into the database.
         """
         exercise: Exercise
 
@@ -1082,8 +1082,8 @@ class LogExerciseView(generics.CreateAPIView):
     """This view allows for the creation and retrieval of legged exercises
 
         This view accepts the following request types:
-        *POST
-        *GET
+            * POST
+            * GET
 
     """
     serializer_class = LoggedExerciseSerializer
@@ -1094,27 +1094,28 @@ class LogExerciseView(generics.CreateAPIView):
         """The function takes an http request and as long as all parameters are valid, saves the parameters as an logged_exercise object in the datatabase
         
         The request accepts the following parameters:
-        =================================  ========  ====================================================
-        Parameter                          Type      Description
-        =================================  ========  ====================================================
-        user                               object    The user that is logging an exercise
-        exercise                           object    The type of exercise that is being logged
-        date_logged                        DATE      The date of when the user is logging the exercise
-        time_logged                        TIME      The time of when the user is logging the exercise
-        sets(optional)                     int       The number of sets the user has done
-        reps(optional)                     int       The number of reps the user has done
-        distance(optional)                 float     The distance covered during the exercise
-        distance_units(optional*)          str       The units for which distance is measured
-        duration(optional)                 duration  How long the exercise lasted
-        equipment_weight(optional)         list      The weight of the equipment used
-        equpment_weight_units(optional*)   str       The units for which weight is measured
-        =================================  ========  ===================================================
-        
-        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
 
-        :param request: The request is passed through an API
-        :type request: django.http.HTTpRequest
-        :return: A succesfull response will return API_Success with the text: Exercise Logged!
+        =================================  =========  ==================================================
+        Parameter                          Type       Description
+        =================================  =========  ==================================================
+        user                               object     The user that is logging an exercise.
+        exercise                           object     The type of exercise that is being logged.
+        date_logged                        date       The date of when the user is logging the exercise.
+        time_logged                        time       The time of when the user is logging the exercise.
+        sets (optional)                    int        The number of sets the user has done.
+        reps (optional)                    int        The number of reps the user has done.
+        distance (optional)                float      The distance covered during the exercise.
+        distance_units (optional*)         str        The units for which distance is measured.
+        duration (optional)                timedelta  How long the exercise lasted.
+        equipment_weight (optional)        list       The weight of the equipment used.
+        equpment_weight_units (optional*)  str        The units for which weight is measured.
+        =================================  =========  ==================================================
+        
+        \\* A parameter is optional only if distance/equipment_weight_units are left null, if not they are required.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A succesful response will return a Response with the text "Exercise Logged!"
         :rtype: django.http.Response
         """
         print("Headers:", request.headers)
@@ -1189,27 +1190,33 @@ class LogExerciseView(generics.CreateAPIView):
         """The function retrieves a logged exerise for the user
 
         The request accepts the following parameters:
-        =================================  ========  ====================================================
-        Parameter                          Type      Description
-        =================================  ========  ====================================================
-        user                               object    The user that is logging an exercise
-        exercise                           object    The type of exercise that is being logged
-        date_logged                        DATE      The date of when the user is logging the exercise
-        time_logged                        TIME      The time of when the user is logging the exercise
-        sets(optional)                     int       The number of sets the user has done
-        reps(optional)                     int       The number of reps the user has done
-        distance(optional)                 float     The distance covered during the exercise
-        distance_units(optional*)          str       The units for which distance is measured
-        duration(optional)                 duration  How long the exercise lasted
-        equipment_weight(optional)         list      The weight of the equipment used
-        equpment_weight_units(optional*)   str       The units for which weight is measured
-        =================================  ========  ===================================================
-        
-        *The parameters are optional only if distance/equpment_weight_units are left null, if not they are required
 
-        :param request: The request is passed through an API
-        :type request: django.http.HTTpRequest
-        :return: A succesfull response will return a list of all the parameters
+        =================================  =========  ===================================================
+        Parameter                          Type       Description
+        =================================  =========  ===================================================
+        username                           str        The username to filter.
+        email                              str        The email to filter.
+        ex_name                            str        The name of the exercise.
+        date_logged                        date       The specific date of when to filter for.
+        date_logged__gt                    date       Filters exercise dates after the given date.
+        date_logged__lte                   date       Filters exercise dates before or on the given date.
+        time_logged                        time       The specific time of when to filter for.
+        sets                               int        The number of sets done.
+        reps                               int        The number of reps done.
+        distance                           float      The distance covered during the exercise.
+        distance_units                     str        The units for which distance is measured.
+        duration                           timedelta  How long the exercise lasted.
+        equipment_weight                   list       The weights of the equipment used.
+        equpment_weight_units              str        The units for which weight is measured.
+        =================================  =========  ===================================================
+
+        The request will filter every LoggedExercise object by any given values in the dataset.
+
+        All parameters are optional, and the "user" in a LoggedExercise object is filtered out for privacy.
+
+        :param request: The request passed through the API.
+        :type request: django.http.HttpRequest
+        :return: A successful response will return a list of all the parameters.
         :rtype: django.http.Response
         """
         # every single LoggedExercise object
@@ -1665,18 +1672,6 @@ class LogConsumableView(generics.CreateAPIView):
 class RoutineListCreateView(generics.ListCreateAPIView):
     """
     Handles listing all routines for the logged-in user and creating new routines.
-
-    This view supports the following actions:
-        1. Listing all routines associated with the logged-in user.
-        2. Creating a new routine and associating it with the logged-in user.
-
-    Attributes:
-        serializer_class (RoutineSerializer): The serializer used to validate and serialize routine data.
-        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
-
-    Methods:
-        get_queryset(): Filters the routines to return only those belonging to the logged-in user.
-        perform_create(serializer): Saves a new routine and associates it with the logged-in user.
     """
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
@@ -1703,15 +1698,8 @@ class RoutineListCreateView(generics.ListCreateAPIView):
 class RoutineDetailView(generics.RetrieveAPIView):
     """
     Handles retrieving a single routine for the logged-in user.
-
     This view allows the authenticated user to retrieve details of a specific routine they own.
 
-    Attributes:
-        serializer_class (RoutineSerializer): The serializer used to serialize routine data.
-        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
-
-    Methods:
-        get_queryset(): Filters the routines to return only the routine belonging to the logged-in user.
     """
     serializer_class = RoutineSerializer
     permission_classes = [IsAuthenticated]
@@ -1732,12 +1720,9 @@ class RoutineUpdateView(APIView):
 
     This view supports updating the details of a routine, including setting a default name if not provided.
 
-    Attributes:
-        permission_classes ([IsAuthenticated]): Ensures only authenticated users can access this view.
-
-    Methods:
-        put(): Handles updating an existing routine with new data.
-        get_object(): Retrieves the routine to be updated, ensuring the logged-in user owns it.
+    Supports:
+        * PUT
+    
     """
     permission_classes = [IsAuthenticated]
 
@@ -1784,26 +1769,17 @@ class RoutineDeleteView(APIView):
     """
     API view to delete a routine and all of its associated routine exercises.
 
-    Only the authenticated owner of the routine can delete it. This view first deletes
-    all RoutineExercise entries associated with the routine, then deletes the routine itself.
-
-    Attributes:
-        permission_classes (list): Ensures only authenticated users can access this view.
-
-    Methods:
-        delete(request, *args, **kwargs): Deletes the routine and its related exercises.
-        get_object(): Retrieves the routine instance owned by the requesting user.
     """
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
         """
         Deletes the routine and all related RoutineExercise instances.
+        Only the authenticated owner of the routine can delete it. This view first deletes
+        all RoutineExercise entries associated with the routine, then deletes the routine itself.
 
         Args:
-            request (Request): The HTTP request object.
-            *args: Additional positional arguments.
-            **kwargs: Keyword arguments including the routine primary key ('pk').
+            - request (Request): The HTTP request object.
 
         Returns:
             Response: HTTP 204 NO CONTENT if deletion is successful.
@@ -1838,13 +1814,6 @@ class RoutineExerciseListCreateView(generics.ListCreateAPIView):
 
     This view allows users to retrieve a list of routine exercises that belong to them,
     and to add new exercises to their routines.
-
-    Attributes:
-        serializer_class (RoutineExerciseSerializer): Serializer used for routine exercises.
-        queryset (QuerySet): The base queryset, overridden by get_queryset.
-
-    Methods:
-        get_queryset(): Filters the RoutineExercise objects to only those owned by the user.
     """
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
@@ -1866,14 +1835,9 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
     Ensures that the user can only access and modify exercises associated with their own routines.
     Includes logic to update the order of exercises when one is deleted or reordered.
 
-    Attributes:
-        serializer_class (RoutineExerciseSerializer): Serializer used for routine exercises.
-        queryset (QuerySet): The base queryset, overridden by get_queryset.
+    Supports:
+        * UPDATE
 
-    Methods:
-        get_queryset(): Filters exercises to ensure user can only modify their own.
-        perform_destroy(instance): Adjusts the order of remaining exercises when one is deleted.
-        update(request, *args, **kwargs): Reorders other exercises as necessary when order is changed.
     """
     queryset = RoutineExercise.objects.all()
     serializer_class = RoutineExerciseSerializer
@@ -1943,25 +1907,12 @@ class RoutineExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
 class UserDataCreateView(generics.CreateAPIView):
-
     """
     This API view handles the creation of user data objects and updating existing ones for the associated user logged in.
     This handles validation for the user data fields, if the user data fields already exist in the database then this is updated with the most recent data provided.
 
-
-
-    Attributes:
-        serializer_class (UserDataSerializer): The serializer class used for validating and serializing user data.
-
-    Raises:
-        TypeError: If any of the numeric fields are not valid numbers or negative numbers are provided.
-        ValueError: If the target weight is not a positive number.
-        api_error: If any of the required fields are not provided or invalid data is given.
-        
-        
-
-    Returns:
-        JsonResponse: A JSON response containing the serialized user data object or an error message if invalid data is provided.
+    Supports:
+        * POST
     """
 
     serializer_class = UserDataSerializer
@@ -1978,11 +1929,13 @@ class UserDataCreateView(generics.CreateAPIView):
         This method validates the user data from the request body and creates or updates the user data object in the database
         It also handles errors for invalid data types and missing required fields.
         This will also delete all previous instances of the user data object and create a new object with the most recent data provided to ensure no duplicate user data objects are created.
-
+        
+        Raises:
+            TypeError: If any of the numeric fields are not valid numbers or negative numbers are provided.
+            ValueError: If the target weight is not a positive number.
+            
         Args:
             request (Request): The HTTP request object containing the user data to be created or updated.
-            *args: arguments.
-            **kwargs: keyword arguments.
 
         Returns:
             JsonResponse: A JSON response containing the serialized user data object or an error message upon invalid data provided.
@@ -2080,20 +2033,10 @@ class UserMoodView(generics.CreateAPIView):
     The date/time when the mood was recorded is optional for the user to provide and the current date/time is used if not provided.
     The view also handles retrieving the latest mood level for the user along with the date/time it was recorded.
 
-    Attributes:
-        serializer_class (UserMoodSerializer): The serializer class used for validating and serializing user mood data.
-
     Raises:
         TypeError: If the mood level is not an integer or if the integer is not between -2 and 2.
         TypeError: If the date/time format is incorrect or in the wrong format.
-        api_error: If the mood level is not provided or if the date/time format is incorrect.
-        api_error: If the user is not found or if the mood level is not provided.
-        api_success: If the mood level is successfully logged and the date/time is recorded.
 
-
-    Returns:
-        JsonResponse: A JSON response containing the serialized user mood data to POST to database or an error message if invalid data is provided.
-        Response: GET request for the most recent mood level and date/time recorded for the user from the database.
     """
 
     serializer_class = UserMoodSerializer
@@ -2104,13 +2047,12 @@ class UserMoodView(generics.CreateAPIView):
         Function to create user data mood records in the database and POST them to the database.
         Checks if user is valid.
         Handles errors for invalid data types and required fields which are missing.
+
         Args:
             request (Request): The HTTP request object containing the user mood data to be created or updated.
-            *args: arguments.
-            **kwargs: keyword arguments.
 
         Returns:
-            JsonResponse: A JSON response containing the serialized user mood data to POST to database for the associated user or an error message if invalid data is provided.
+            Response: A JSON response containing the serialized user mood data or an error message if invalid data is provided.
         """
 
         target_user: User | Response = get_user_by_email_username(request)
@@ -2153,12 +2095,9 @@ class UserMoodView(generics.CreateAPIView):
 
         Args:
             request (Request): The HTTP GET request for retrieving the user mood data.     
-            *args: arguments.
-            **kwargs: keyword arguments.
-
+        
         Returns:
-            Response: A JSON response containing the most recent mood level and date/time recorded for the user from the database.
-            
+            Response: GET request for the most recent mood level and date/time recorded for the user from the database.
         """
         user_mood_queryset = UserMood.objects.get_queryset()
 
@@ -2191,9 +2130,9 @@ class LogRoutineView(APIView):
     API view to manage logging of completed routines.
 
     Supports:
-    - POST: Log a completed routine with associated exercise data.
-    - GET: Retrieve a list of logged routines for the authenticated user.
-    - DELETE: Delete a specific logged routine by ID (sent in request body).
+        * POST 
+        * GET
+        * DELETE
 
     Only authenticated users can interact with this view.
     """
@@ -2204,9 +2143,7 @@ class LogRoutineView(APIView):
         Deletes a logged routine for the authenticated user.
 
         Expects:
-            {
-                "id": <logged_routine_id>
-            }
+        * id (int): The ID for the logged routine.
 
         Returns:
             - 204 NO CONTENT on success.
@@ -2241,26 +2178,16 @@ class LogRoutineView(APIView):
         """
         Logs a completed routine for the authenticated user with exercise data.
 
-        Expects JSON:
-        {
-            "routine_id": <int>,
-            "notes": <optional str>,
-            "duration": <optional "hh:mm:ss">,
-            "progress": {
-                "exercises": [
-                    {
-                        "exercise_id": <int>,
-                        "sets": <int>,             # for strength
-                        "reps": <int>,             # for strength
-                        "weight": <float>,         # for strength
-                        "distance": <float>,       # for cardio
-                        "distance_units": <str>,   # for cardio
-                        "duration": "hh:mm:ss"     # required for cardio
-                    },
-                    ...
-                ]
-            }
-        }
+        Parameters expected:
+
+        ===================  =========  ================================================================================================================
+        Parameter            Type       Description
+        ===================  =========  ================================================================================================================
+        routine_id           str        The routine ID to log.
+        notes (optional)     str        Any notes for the routine.
+        duration (optional)  timedelta  The current/total duration of the routine.
+        progress             dict       The current progress of the given routine. Dictionary contains "exercises", which is a list of Exercise objects.
+        ===================  =========  ================================================================================================================
 
         Validates all input before logging. If any validation fails, the entire log is rejected.
 
@@ -2368,8 +2295,8 @@ class ExerciseDetailView(RetrieveAPIView):
     Accessible to any authenticated user.
 
     Attributes:
-        queryset (QuerySet): All Exercise instances.
-        serializer_class (Serializer): Serializes Exercise objects.
+        - queryset (QuerySet): All Exercise instances.
+        - serializer_class (Serializer): Serializes Exercise objects.
     """
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer

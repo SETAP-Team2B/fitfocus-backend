@@ -73,17 +73,19 @@ class OTP(models.Model):
 
 class Exercise(models.Model):  
     """An exercise object
-    ======================  =========  ================================  ============================================================================
-    Field                   Type       Constraints                       Description
-    ======================  =========  ================================  ============================================================================
-    ex_name                 str        NOT NULL, MAX_LENGTH=80, UNIQUE   The name of the exercise
-    ex_type                 str        NOT NULL, MAX_LENGTH=100          Type of exercise, Cardio, Muscle etc
-    ex_body_area            str        NOT NULL, MAX_LENGTH=15           What body part the exercise is working on: Legs, back, chest etc
-    equipment_needed        str        NOT NULL, MAX_LENGTH=80           Equipment needed for exercise
-    ex_target_muscle        str        MAX_LENGTH=20                     Target Muscle - can be null for cardio
-    ex_secondary_muscle_1   str        MAX_LENGTH=30                     Secondary muscle targeted
-    ex_secondary_muscle_2   str        MAX_LENGTH=30                     Other Secondary Muscle Targeted
-    ======================  =========  ================================  ============================================================================
+
+    =====================  ====  ===============================  ================================================================
+    Field                  Type  Constraints                      Description
+    =====================  ====  ===============================  ================================================================
+    ex_name                str   NOT NULL, MAX_LENGTH=80, UNIQUE  The name of the exercise
+    ex_type                str   NOT NULL, MAX_LENGTH=100         Type of exercise, Cardio, Muscle etc
+    ex_body_area           str   NOT NULL, MAX_LENGTH=15          What body part the exercise is working on: Legs, back, chest etc
+    equipment_needed       str   NOT NULL, MAX_LENGTH=80          Equipment needed for exercise
+    ex_target_muscle       str   MAX_LENGTH=20                    Target Muscle - can be null for cardio
+    ex_secondary_muscle_1  str   MAX_LENGTH=30                    Secondary muscle targeted
+    ex_secondary_muscle_2  str   MAX_LENGTH=30                    Other Secondary Muscle Targeted
+    =====================  ====  ===============================  ================================================================
+    
     """
     ex_name = models.CharField(max_length=80, default="", null=False, db_comment="The name of the exercise")
     ex_type = models.CharField(max_length=100, default="", null=False, db_comment="Type of exercise, Cardio, Muscle etc")
@@ -101,15 +103,15 @@ class LoggedExercise(models.Model):
     ======================  =========  ========================================  ============================================================================
     Field                   Type       Constraints                               Description
     ======================  =========  ========================================  ============================================================================
-    user                    object     NOT NULL, UNIQUE, FOREIGN KEY (user)      The user that is logging an exercise
-    exercise                object     NOT NULL, UNIQUE, FOREIGN KEY (exercise)  The type of exercise that is being logged
-    date_logged             DATE                                                 The date of when the user is logging the exercise
-    time_logged             TIME                                                 The time of when the user is logging the exercise   
-    sets                    int                                                  The number of sets the user has done
-    reps                    int                                                  The number of reps the user has done
-    distance                float                                                The distance covered during the exercise
-    distance_units          str        MAX_LENGTH=5                              The units for which distance is measured
-    duration                duration                                             How long the exercise lasted
+    user                    int        NOT NULL, UNIQUE, FOREIGN KEY (User)      The user that is logging an exercise
+    exercise                int        NOT NULL, UNIQUE, FOREIGN KEY (Exercise)  The type of exercise that is being logged
+    date_logged             date                                                 The date of when the user is logging the exercise. Defaults to current date.
+    time_logged             time                                                 The time of when the user is logging the exercise. Defaults to current time.
+    sets                    int                                                  The number of sets the user has done. Defaults to 0.
+    reps                    int                                                  The number of reps the user has done. Defaults to 0.
+    distance                float                                                The distance covered during the exercise. Defaults to 0.
+    distance_units          str        MAX_LENGTH=5                              The units for which distance is measured.
+    duration                timedelta                                            How long the exercise lasted. Defaults to 0 seconds.
     equpment_weight         list                                                 The weight of the equipment used
     equipment_weight_units  str        MAX_LENGTH=2                              The units for which weight is measured               
     ======================  =========  ========================================  ============================================================================
@@ -212,15 +214,15 @@ class UserData(models.Model):
     """Stores user data for the user 
 
     Attributes:
-        user (User) : The user who this data belongs to, foreign key to the User model
-        user_age (int) : The age of the user, must be a positive integer
-        user_sex (str) : The sex of the user, M / F / X (Other/Prefer not to say) 
-        user_height (float) : The height of the user
-        user_height_units (str) : The units of the users height, choices (in / cm)
-        user_weight (float) : The weight of the user
-        user_weight_units (str) : The units of the users weight, choices (lb / kg)
-        user_target_weight (float) : The target weight of which the user aims to achieve
-        user_body_goals (JSON) : The body goals of the user, JSON field (stored as a multiple choice field)
+        - user (User) : The user who this data belongs to, foreign key to the User model
+        - user_age (int) : The age of the user, must be a positive integer
+        - user_sex (str) : The sex of the user, M / F / X (Other/Prefer not to say) 
+        - user_height (float) : The height of the user
+        - user_height_units (str) : The units of the users height, choices (in / cm)
+        - user_weight (float) : The weight of the user
+        - user_weight_units (str) : The units of the users weight, choices (lb / kg)
+        - user_target_weight (float) : The target weight of which the user aims to achieve
+        - user_body_goals (JSON) : The body goals of the user, JSON field (stored as a multiple choice field)
     """
     
     SEX_CHOICES = [
@@ -239,13 +241,13 @@ class UserData(models.Model):
     user_target_weight = models.FloatField(null=True)
     user_body_goals = models.JSONField(null=True)
     
-    """
-    Function for the UserData model which returns a string representation of the user data.
+    def __str__(self):    
+        """
+        Function for the UserData model which returns a string representation of the user data.
 
-    Returns:
-        str: A string representation of the user data in the format of "User Data for {username}"
-    """
-    def __str__(self):
+        Returns:
+            str: A string representation of the user data in the format of "User Data for {username}"
+        """
         return f"User Data for {self.user.username}"
 
 # this took a LOT of thinking to make but for simplicity of implementation, we are keeping it as so for now
@@ -302,11 +304,12 @@ class Routine(models.Model):
     Represents a workout routine created by a user.
 
     Attributes:
-        user (User): The user who created the routine.
-        name (str): The name of the routine.
-        description (str, optional): A description of the routine.
-        created_at (datetime): The date and time the routine was created.
-    """
+        - user (User): The user who created the routine.
+        - name (str): The name of the routine.
+        - description (str, optional): A description of the routine.
+        - created_at (datetime): The date and time the routine was created.
+
+            """
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Each routine belongs to a user
     name = models.CharField(max_length=255)  # Routine name
     description = models.TextField(blank=True, null=True)  # Optional description
@@ -324,9 +327,10 @@ class RoutineExercise(models.Model):
     Links an exercise to a routine.
 
     Attributes:
-        routine (Routine): The routine this exercise belongs to.
-        exercise (Exercise): The exercise being included.
-        order (int): The position of this exercise within the routine.
+        - routine (Routine): The routine this exercise belongs to.
+        - exercise (Exercise): The exercise being included.
+        - order (int): The position of this exercise within the routine.
+
     """
     routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name="routine_exercises")
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
@@ -343,12 +347,13 @@ class LoggedRoutine(models.Model):
     Stores a user's completed routine, including optional notes and performance data.
 
     Attributes:
-        routine (Routine): The routine that was completed.
-        user (User): The user who completed the routine.
-        completed_at (datetime): When the routine was completed.
-        notes (str, optional): Additional notes provided by the user.
-        duration (timedelta, optional): How long the routine took.
-        progress (dict): JSON data containing exercise performance (e.g., sets/reps/weight).
+        - routine (Routine): The routine that was completed.
+        - user (User): The user who completed the routine.
+        - completed_at (datetime): When the routine was completed.
+        - notes (str, optional): Additional notes provided by the user.
+        - duration (timedelta, optional): How long the routine took.
+        - progress (dict): JSON data containing exercise performance (e.g., sets/reps/weight).
+    
     """
     routine = models.ForeignKey(Routine, on_delete=models.CASCADE, related_name='logged_routines')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -366,12 +371,12 @@ class LoggedRoutine(models.Model):
 class UserMood(models.Model):
     """
     Model to store the mood level of the user.
-    The mood level is an integer value that represents the user's mood on a scale of 1 to 10.
+    The mood level is an integer value that represents the user's mood on a scale of -2 to 2.
 
     Attributes:
-        user (User): The user who this mood level belongs to, foreign key to the User model.
-        mood_level (int): The mood level of the user between 1 and 10.
-        datetime_recorded (datetime): The date and time of when the mood level was recorded.
+        - user (User): The user who this mood level belongs to, foreign key to the User model.
+        - mood_level (int): The mood level of the user between -2 and 2 inclusive.
+        - datetime_recorded (datetime): The date and time of when the mood level was recorded.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mood_level = models.SmallIntegerField(default=0)

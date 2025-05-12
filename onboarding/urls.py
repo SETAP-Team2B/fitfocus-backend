@@ -2,36 +2,37 @@ from django.urls import path
 import onboarding.views as views
 from rest_framework_simplejwt.views import TokenRefreshView
 
-# URL patterns that connect the views to a URL/sub-URL for the domain
-"""The differenct urls used to pass HTTP requests
-============================  ===========================
-Path                          Name
-============================  ===========================
-create-user/                  create-user
-login-user/                   login-user
-token/refresh/                token-refresh
-generate-otp/                 generate-otp
-validate-otp/                 validate-otp
-reset-password/               reset-password
-create-exercise/              create-exercise
-create-exercise/<int:pk>/     get-exercise-by-ID
-log-exercise/                 log-exercise
-userdata/                     userdata-create
-recommend-exercise/           recommend-exercise
-update-recommendation/        update-recommendation
-create-consumable/            create-consumable
-log-consumable/               log-consumable
-routines/                     routines
-routines/<int:pk>/            routine-detail
-routines/<int:pk>/update/     routine-update
-routines/<int:pk>/delete/     routine-delete
-routine-exercises/            routine-exercise-list
-routine-exercises/<int:pk>/   routine-exercise-detail
-log-routine/                  log-routine
-user-mood/                    user-mood
-recommend-consumable/         recommend-consumable
-============================  ===========================
-    """
+"""The different urls used to pass HTTP requests.
+
+===========================  =============================
+Path                         View
+===========================  =============================
+create-user/                 CreateAccountView
+login-user/                  LoginView
+token/refresh/               TokenRefreshView
+generate-otp/                GenerateOTPView
+validate-otp/                ValidateOTPView
+reset-password/              ResetPasswordView
+create-exercise/             ExerciseView
+create-exercise/<int:pk>/    ExerciseDetailView
+log-exercise/                LogExerciseView
+userdata/                    UserDataCreateView
+recommend-exercise/          RecommendExerciseView
+update-recommendation/       UpdateRecommendedExerciseView
+create-consumable/           ConsumableView
+log-consumable/              LogConsumableView
+routines/                    RoutineListCreateView
+routines/<int:pk>/           RoutineDetailView
+routines/<int:pk>/update/    RoutineUpdateView
+routines/<int:pk>/delete/    RoutineDeleteView
+routine-exercises/           RoutineExerciseListCreateView
+routine-exercises/<int:pk>/  RoutineExerciseDetailView
+log-routine/                 LogRoutineView
+user-mood/                   UserMoodView
+recommend-consumable/        RecommendConsumableView
+===========================  =============================
+
+"""
 urlpatterns = [
     path("create-user/", views.CreateAccountView.as_view(), name="create-user"),
     path("login-user/", views.LoginView.as_view(), name="login-user"),
@@ -45,7 +46,6 @@ urlpatterns = [
     path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("recommend-exercise/", views.RecommendExerciseView.as_view(), name="recommend-exercise"),
     path("update-recommendation/", views.UpdateRecommendedExerciseView.as_view(), name="update-recommendation"),
-    path("userdata/", views.UserDataCreateView().as_view(), name="userdata-create"),
     path("create-consumable/", views.ConsumableView().as_view(), name="create-consumable"),
     path("log-consumable/", views.LogConsumableView().as_view(), name="log-consumable"),
     path("routines/", views.RoutineListCreateView.as_view(), name="routines"),
