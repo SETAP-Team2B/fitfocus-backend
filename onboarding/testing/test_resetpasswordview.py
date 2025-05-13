@@ -5,6 +5,8 @@ from rest_framework.test import APITestCase
 from unittest.mock import patch
 from django.contrib.auth.models import User 
 from onboarding.models import OTP  
+from datetime import timedelta
+from django.utils import timezone
 
 class ResetPasswordViewTests(APITestCase):
     """Test Case for the ResetPasswordView
@@ -31,7 +33,7 @@ class ResetPasswordViewTests(APITestCase):
             password=self.user_password
         )
         
-        self.otp = OTP.objects.create(user=self.user, verified=True)
+        self.otp = OTP.objects.create(user=self.user, verified=True, expiry_time=timezone.now() + timedelta(minutes=5))
 
     @patch('onboarding.views.get_user_by_email_username')
     def test_reset_password_success(self, mock_get_user):
