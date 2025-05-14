@@ -276,6 +276,7 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     recommended_exercise.distance = random.randint(10, 100) / 10.0
                     recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
                     recommended_exercise.distance_units = "km"
+                    recommended_exercise.equipment_weight = [random.randint(5, 20)]
                     recommended_exercise.equipment_weight_units = "kg"
                 else:
                     # TODO: factor in user mood when it comes to the random multiplier at the end
