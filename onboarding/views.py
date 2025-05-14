@@ -466,6 +466,8 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error('{} is missing.'.format(keyErr.__str__()))
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
+        except Exception as e:
+            return api_error(e.__str__())
 
     def delete(self, request, *args, **kwargs):
         """
@@ -513,6 +515,8 @@ class CreateAccountView(generics.CreateAPIView):
 
         except IntegrityError:
             return api_error("Incorrect Details")
+        except Exception as e:
+            return api_error(e.__str__())
 
 class LoginView(APIView):
     """
