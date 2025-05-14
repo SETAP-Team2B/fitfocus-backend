@@ -50,7 +50,7 @@ class LogExerciseViewTests(APITestCase):
             'sets': 3,
             'reps': 10,
             'distance': None,
-            'duration': None,
+            'duration': "",
             'equipment_weight': 50,
             'equipment_weight_units': 'kg'
         }
