@@ -270,42 +270,27 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                         (all_recommended_exercises.filter(good_recommendation=True).__len__() / all_recommended_exercises.__len__() > 0.6)
 
                 recommended_exercise.exercise = exercise
-                if truly_random:
+                if truly_random or len(LoggedExercise.objects.filter(user=user)) == 0:
                     recommended_exercise.sets = random.randint(1, 5)
                     recommended_exercise.reps = random.randint(1, 15)
                     recommended_exercise.distance = random.randint(10, 100) / 10.0
                     recommended_exercise.duration = timedelta(minutes=random.randint(1, 20))
+                    recommended_exercise.distance_units = "km"
+                    recommended_exercise.equipment_weight = [random.randint(5, 20)]
+                    recommended_exercise.equipment_weight_units = "kg"
                 else:
-                    # since duration is a timedelta, avg has to be handled differently
-                    all_durations = list(filter(lambda x: x is not None, list(all_logged_exercises.values_list('duration', flat=True)))) # remove all None instances of all duration values
-                    all_duration_mins = [x.total_seconds() / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
-                    minutes = \
-                        round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
-                        if all_duration_mins != [0] \
-                        else None
-                    if minutes == None: minutes = 0
-                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) \
-
                     # TODO: factor in user mood when it comes to the random multiplier at the end
 
                     recommended_exercise.sets = \
                         round((all_logged_exercises.aggregate(Avg("sets", default=1))["sets__avg"]) * random.uniform(0.8, 1.2)) \
                         if all_logged_exercises.aggregate(Avg("sets"))["sets__avg"] != None \
-                        else None
+                        else random.randint(1, 5)
                     
                     recommended_exercise.reps = \
                         round((all_logged_exercises.filter(sets__gte=recommended_exercise.sets-1).aggregate(Avg("reps", default=1))["reps__avg"]) * random.uniform(0.9, 1.2)) \
                         if all_logged_exercises.aggregate(Avg("reps"))["reps__avg"] != None \
-                        else None
-
-                    recommended_exercise.distance = \
-                        round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)) \
-                        if all_logged_exercises.aggregate(Avg("distance"))["distance__avg"] != None \
-                        else None
-                    # set distance units to given units or KM by default
-                    if recommended_exercise.distance:
-                        recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
-
+                        else random.randint(1, 15)
+                    
                     # sets equipment weight range between median of all recorded weights and maximum possible weight
                     all_equipment_weights = list(filter(lambda x: x is not None, list(all_logged_exercises.filter(equipment_weight_units=(equipment_weight_units or "kg")).values_list('equipment_weight', flat=True))))
                     if len(all_equipment_weights) > 0:
@@ -318,10 +303,30 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                         max_weight = round(max([max(w) for w in all_equipment_weights]) * random.uniform(1, 1.2)) # the maximum recorded weight across all exercises
 
                         recommended_exercise.equipment_weight = \
-                            np.linspace(start=median_weight, stop=max_weight, num=(recommended_exercise.sets or 1)).round().tolist()                        
+                            np.linspace(start=median_weight, stop=max_weight, num=(recommended_exercise.sets or 1)).round().tolist()   
+                    else:
+                        recommended_exercise.equipment_weight = \
+                            np.linspace(start=randint(5, 10), stop=randint(15, 20), num=(recommended_exercise.sets or 1)).round().tolist()              
 
-                    if recommended_exercise.equipment_weight:
+                    if recommended_exercise.equipment_weight != None:
                         recommended_exercise.equipment_weight_units = equipment_weight_units if equipment_weight_units != "" else "kg"
+                        
+                    # since duration is a timedelta, avg has to be handled differently
+                    all_durations = list(filter(lambda x: x is not None, list(all_logged_exercises.values_list('duration', flat=True)))) # remove all None instances of all duration values
+                    all_duration_mins = [x.total_seconds() / 60.0 for x in all_durations] if len(all_durations) > 0 else [0]
+                    minutes = \
+                        round(np.mean(all_duration_mins) * random.uniform(0.8, 1.2), 2) \
+                        if all_duration_mins != [0] \
+                        else 0
+                    recommended_exercise.duration = timedelta(hours=minutes//60, minutes=floor(minutes%60), seconds=((minutes % 1) * 60) // 1) if minutes > 0 else timedelta(minutes=random.randint(1, 20))
+
+                    recommended_exercise.distance = \
+                        round((all_logged_exercises.aggregate(Avg("distance", default=1))["distance__avg"]) * random.uniform(0.7, 1.3)) \
+                        if all_logged_exercises.aggregate(Avg("distance"))["distance__avg"] != None \
+                        else random.randint(10, 100) / 10.0
+                    # set distance units to given units or KM by default
+                    if recommended_exercise.distance != None:
+                        recommended_exercise.distance_units = distance_units if distance_units != "" else "km"
 
                 # convert all existing recommended exercises into a dataframe
                 # treats all existing logged exercises as good recommendations
@@ -351,6 +356,18 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                     # TODO: find a better solution than this len() check
 
                 if prediction == 1:
+                    # toggles whether to display sets/reps/weight, or distance/duration, 50/50 chance
+                    do_sets_reps_weight = (randint(0, 1) == 0)
+                    if do_sets_reps_weight:
+                        recommended_exercise.duration = None
+                        recommended_exercise.distance = None
+                        recommended_exercise.distance_units = None
+                    else:
+                        recommended_exercise.sets = None
+                        recommended_exercise.reps = None
+                        recommended_exercise.equipment_weight = None
+                        recommended_exercise.equipment_weight_units = None
+
                     exercises.append(recommended_exercise)
                     recommended_exercise.save()
                     recommended = True
@@ -379,6 +396,8 @@ def recommend_exercises(user: User, exercises_to_recommend: int = 1, truly_rando
                         serialized_model[key] = value
 
         serialized_exercises.append(serialized_model)
+
+    print(serialized_exercises)
 
     return JsonResponse(serialized_exercises, safe=False)
 
@@ -448,6 +467,8 @@ class CreateAccountView(generics.CreateAPIView):
             return api_error('{} is missing.'.format(keyErr.__str__()))
         except (WeakPasswordError, InvalidNameException, TypeError) as error:
             return api_error(error.__str__())
+        except Exception as e:
+            return api_error(e.__str__())
 
     def delete(self, request, *args, **kwargs):
         """
@@ -495,6 +516,8 @@ class CreateAccountView(generics.CreateAPIView):
 
         except IntegrityError:
             return api_error("Incorrect Details")
+        except Exception as e:
+            return api_error(e.__str__())
 
 class LoginView(APIView):
     """
@@ -2276,7 +2299,6 @@ class LogRoutineView(APIView):
         for ex in validated_exercises:
             LoggedExercise.objects.create(
                 user=request.user,
-                logged_routine=logged_routine,
                 exercise=ex['exercise'],
                 sets=ex['sets'],
                 reps=ex['reps'],
@@ -2425,7 +2447,9 @@ class RecommendConsumableView(generics.CreateAPIView):
             "Boosting Metabolism"
         ]
         try:
-            target_goals: list[str] = UserData.objects.get(user=target_user).user_body_goals
+            if type(UserData.objects.get(user=target_user).user_body_goals) == list[str]:
+                target_goals: list[str] = UserData.objects.get(user=target_user).user_body_goals
+            else: target_goals = []
         except:
             target_goals = []
 

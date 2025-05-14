@@ -133,11 +133,14 @@ class LoggedExercise(models.Model):
     # only for making the ML model easier to import
     # only returns the minimum data necessary
     def __todict__(self):
+        duration_mins = 0.0
+        if self.duration != None: duration_mins = self.duration.seconds / 60.0
+
         return {
             "sets": self.sets if self.sets else 0,
             "reps": self.reps if self.reps else 0,
             "distance": self.distance if self.distance else 0.0,
-            "duration_mins": self.duration.seconds / 60.0 if self.duration else 0.0,
+            "duration_mins": duration_mins,
             "good": 1, # since it's been logged its obviously a good exercise (?)
         }
 
@@ -203,11 +206,14 @@ class RecommendedExercise(models.Model):
 
         :rtype: dict
         """
+        duration_mins = 0.0
+        if self.duration != None: duration_mins = self.duration.seconds / 60.0
+
         return {
             "sets": self.sets if self.sets else 0,
             "reps": self.reps if self.reps else 0,
             "distance": self.distance if self.distance else 0.0,
-            "duration_mins": self.duration.seconds / 60.0,
+            "duration_mins": duration_mins,
             "good": 1 if self.good_recommendation else 0,
         }
 class UserData(models.Model):
